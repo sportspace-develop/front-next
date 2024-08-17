@@ -1,95 +1,118 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { useEffect } from 'react';
+import Head from 'next/head';
+import { CacheProvider } from '@emotion/react';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { SplashScreen } from '@/components/splash-screen';
+import { Toaster } from '@/components/toaster';
+import { createEmotionCache } from '@/lib/create-emotion-cache';
+// Remove if nprogress is not used
+import '../libs/nprogress';
+// Remove if mapbox is not used
+import '../libs/mapbox';
+// Remove if locales are not used
+import '../locales/i18n';
+import { SettingsButton } from '../components/settings-button';
+import { SettingsDrawer } from '../components/settings-drawer';
 
-export default function Home() {
+const clientSideEmotionCache = createEmotionCache();
+
+const App = (props) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+
+  const getLayout = Component.getLayout ?? ((page) => page);
+  console.log('-------------------')
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <CacheProvider value={emotionCache}>
+      <Head>
+        {/* <title>
+          Devias Kit PRO
+        </title>
+        <meta
+          name="viewport"
+          content="initial-scale=1, width=device-width"
+        /> */}
+      </Head>
+      <ReduxProvider store={store}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <AuthProvider>
+            <AuthConsumer>
+              {(auth) => (
+                <SettingsProvider>
+                  <SettingsConsumer>
+                    {(settings) => {
+                      // Prevent theme flicker when restoring custom settings from browser storage
+                      if (!settings.isInitialized) {
+                        // return null;
+                      }
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+                      const theme = createTheme({
+                        colorPreset: settings.colorPreset,
+                        contrast: settings.contrast,
+                        direction: settings.direction,
+                        paletteMode: settings.paletteMode,
+                        responsiveFontSizes: settings.responsiveFontSizes
+                      });
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+                      // Prevent guards from redirecting
+                      const showSlashScreen = !auth.isInitialized;
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+                      return (
+                        <ThemeProvider theme={theme}>
+                          <Head>
+                            <meta
+                              name="color-scheme"
+                              content={settings.paletteMode}
+                            />
+                            <meta
+                              name="theme-color"
+                              content={theme.palette.neutral[900]}
+                            />
+                          </Head>
+                          <RTL direction={settings.direction}>
+                            <CssBaseline />
+                            {showSlashScreen
+                              ? <SplashScreen />
+                              : (
+                                <>
+                                  {getLayout(
+                                    <Component {...pageProps} />
+                                  )}
+                                  <SettingsButton onClick={settings.handleDrawerOpen} />
+                                  <SettingsDrawer
+                                    canReset={settings.isCustom}
+                                    onClose={settings.handleDrawerClose}
+                                    onReset={settings.handleReset}
+                                    onUpdate={settings.handleUpdate}
+                                    open={settings.openDrawer}
+                                    values={{
+                                      colorPreset: settings.colorPreset,
+                                      contrast: settings.contrast,
+                                      direction: settings.direction,
+                                      paletteMode: settings.paletteMode,
+                                      responsiveFontSizes: settings.responsiveFontSizes,
+                                      stretch: settings.stretch,
+                                      layout: settings.layout,
+                                      navColor: settings.navColor
+                                    }}
+                                  />
+                                </>
+                              )}
+                            <Toaster />
+                          </RTL>
+                        </ThemeProvider>
+                      );
+                    }}
+                  </SettingsConsumer>
+                </SettingsProvider>
+              )}
+            </AuthConsumer>
+          </AuthProvider>
+        </LocalizationProvider>
+      </ReduxProvider>
+    </CacheProvider>
   );
-}
+};
+
+export default App;
