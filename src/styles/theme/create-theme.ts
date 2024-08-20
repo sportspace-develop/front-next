@@ -1,8 +1,10 @@
+import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 
-// TODO - разобраться что за experimental_extendTheme as extendTheme - и можно ли им заменить createTheme
-import {createTheme as createMuiTheme, responsiveFontSizes} from '@mui/material/styles';
-import { createOptions as createDarkOptions } from './dark/create-options';
-import { createOptions as createLightOptions } from './light/create-options';
+import { colorSchemes } from './color-schemes';
+import { components } from './components/components';
+import { shadows } from './shadows';
+import type { Theme } from './types';
+import { typography } from './typography';
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteRange {
@@ -34,24 +36,15 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-// TODO: config не передается - по факту всегда light мод срабатывает
-export const createTheme = (config?: any) => {
-  let theme = createMuiTheme(
-    // Options based on selected palette mode, color preset and contrast
-    // @ts-ignore
-    config.paletteMode === 'dark'
-      ? createDarkOptions({
-        colorPreset: 'indigo',
-        contrast: 'normal'
-      })
-      : createLightOptions({
-        colorPreset: 'indigo',
-        contrast: 'normal'
-      }));
-
-  if (config.responsiveFontSizes) {
-    theme = responsiveFontSizes(theme);
-  }
+export function createTheme(): Theme {
+  const theme = extendTheme({
+    breakpoints: { values: { xs: 0, sm: 600, md: 900, lg: 1200, xl: 1440 } },
+    components,
+    colorSchemes,
+    shadows,
+    shape: { borderRadius: 8 },
+    typography,
+  });
 
   return theme;
-};
+}

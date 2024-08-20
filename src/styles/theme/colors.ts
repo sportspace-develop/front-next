@@ -100,7 +100,7 @@ export const stormGrey = {
 
 import { alpha } from '@mui/material/styles';
 
-const withAlphas = (color) => {
+const withAlphas = (color: { lightest?: string; light?: string; main: any; dark?: string; darkest?: string; contrastText?: string; }) => {
   return {
     ...color,
     alpha4: alpha(color.main, 0.04),

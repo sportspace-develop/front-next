@@ -1,19 +1,16 @@
-import * as React from 'react';
+import {SideNav} from '@/components/dashboard/layout/side-nav';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import GlobalStyles from '@mui/material/GlobalStyles';
-
-import { AuthGuard } from '@/components/auth/auth-guard';
-import { MainNav } from '@/components/dashboard/layout/main-nav';
-import { SideNav } from '@/components/dashboard/layout/side-nav';
+import * as React from 'react';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps): React.JSX.Element {
+export default function Layout({children}: LayoutProps): React.JSX.Element {
   return (
-    <AuthGuard>
+    <>
       <GlobalStyles
         styles={{
           body: {
@@ -36,15 +33,21 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
         }}
       >
         <SideNav />
-        <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pl: { lg: 'var(--SideNav-width)' } }}>
-          <MainNav />
+        <Box
+          sx={{
+            display: 'flex',
+            flex: '1 1 auto',
+            flexDirection: 'column',
+            pl: {lg: 'var(--SideNav-width)'},
+          }}
+        >
           <main>
-            <Container maxWidth="xl" sx={{ py: '64px' }}>
+            <Container maxWidth="xl" sx={{py: '64px'}}>
               {children}
             </Container>
           </main>
         </Box>
       </Box>
-    </AuthGuard>
+    </>
   );
 }
