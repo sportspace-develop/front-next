@@ -177,13 +177,13 @@ function NavItem({ disabled, external, href, icon, matcher, pathname, title }: N
         }}
       >
         <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', flex: '0 0 auto' }}>
-          {Icon ? (
+          {Icon && (
             <Icon
               fill={active ? 'var(--NavItem-icon-active-color)' : 'var(--NavItem-icon-color)'}
               fontSize="var(--icon-fontSize-md)"
               weight={active ? 'fill' : undefined}
             />
-          ) : null}
+          )}
         </Box>
         <Box sx={{ flex: '1 1 auto' }}>
           <Typography
