@@ -1,20 +1,33 @@
 'use client';
 
-import * as React from 'react';
 import {useRouter} from 'next/navigation';
+
+import * as React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+
 import {zodResolver} from '@hookform/resolvers/zod';
-import {FormControl, Button, FormHelperText, Stack, Box, Avatar, InputLabel, OutlinedInput, CardMedia, Unstable_Grid2 as Grid} from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  FormControl,
+  FormHelperText,
+  Unstable_Grid2 as Grid,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+} from '@mui/material';
 import {z as zod} from 'zod';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-
-import {teamCreateFormSchema, ACCEPTED_IMAGE_TYPES} from './team-create-form-schema';
+import FileInput from '@/components/ui/fileInput';
 import useObjectURL from '@/hooks/use-object-url';
 import {paths} from '@/paths';
-import FileInput from '@/components/ui/fileInput';
+
+import {ACCEPTED_IMAGE_TYPES, teamCreateFormSchema} from './team-create-form-schema';
 
 const defaultValues = {name: '', logoFile: null, pictureFile: null} satisfies Values;
 
@@ -22,7 +35,6 @@ type Values = zod.input<typeof teamCreateFormSchema>;
 
 export const TeamCreateForm = () => {
   const router = useRouter();
-  const [isPending, setIsPending] = React.useState(false);
 
   const {
     watch,
@@ -32,13 +44,11 @@ export const TeamCreateForm = () => {
     formState: {errors},
   } = useForm<Values>({defaultValues, resolver: zodResolver(teamCreateFormSchema)});
 
-
-  const logoUrl = useObjectURL(watch("logoFile"))
-  const pictureUrl = useObjectURL(watch("pictureFile"))
-
+  const logoUrl = useObjectURL(watch('logoFile'));
+  const pictureUrl = useObjectURL(watch('pictureFile'));
 
   const onSubmit = React.useCallback(
-    async (values: Values): Promise<void> => {
+    async (_: Values): Promise<void> => {
       // setIsPending(true);
       // HARDCODE
       router.replace(paths.dashboard.teams);
@@ -60,7 +70,7 @@ export const TeamCreateForm = () => {
                   <InputLabel>Название команды</InputLabel>
                   <OutlinedInput
                     {...field}
-                    onBlur={(event) => setValue("name", event.target.value.trim())}
+                    onBlur={(event) => setValue('name', event.target.value.trim())}
                     label="Название команды"
                   />
                   {fieldState.error && <FormHelperText>{fieldState.error.message}</FormHelperText>}
@@ -70,7 +80,7 @@ export const TeamCreateForm = () => {
             <Controller
               control={control}
               name="pictureFile"
-              render={({field, fieldState}) =>
+              render={({field, fieldState}) => (
                 <FileInput
                   {...field}
                   label="Фото Команды"
@@ -78,19 +88,19 @@ export const TeamCreateForm = () => {
                   helperText={fieldState.error?.message}
                   error={fieldState.invalid}
                 />
-              }
+              )}
             />
             {pictureUrl && !errors.pictureFile && (
               <Box sx={{display: 'flex', justifyContent: 'center'}}>
                 <CardMedia sx={{height: 150, width: '100%', maxWidth: 500}} image={pictureUrl} />
               </Box>
             )}
-            <Grid container spacing={2} sx={{justifyContent: "space-between"}}>
+            <Grid container spacing={2} sx={{justifyContent: 'space-between'}}>
               <Grid md={10} xs={12} display="grid">
                 <Controller
                   control={control}
                   name="logoFile"
-                  render={({field, fieldState}) =>
+                  render={({field, fieldState}) => (
                     <FileInput
                       {...field}
                       label="Логотип"
@@ -98,7 +108,7 @@ export const TeamCreateForm = () => {
                       helperText={fieldState.error?.message}
                       error={fieldState.invalid}
                     />
-                  }
+                  )}
                 />
               </Grid>
               <Grid>
@@ -109,12 +119,12 @@ export const TeamCreateForm = () => {
             </Grid>
           </Stack>
         </CardContent>
-        <CardActions sx={{justifyContent: "flex-end"}}>
-          <Button disabled={isPending} type="submit" variant="contained">
+        <CardActions sx={{justifyContent: 'flex-end'}}>
+          <Button type="submit" variant="contained">
             Создать команду
           </Button>
         </CardActions>
       </Card>
-    </form >
+    </form>
   );
 };

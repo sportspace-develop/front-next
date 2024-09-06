@@ -1,9 +1,15 @@
-import {CheckboxCheckedIcon} from '@/components/checkbox-checked-icon';
-import {CheckboxIcon} from '@/components/checkbox-icon';
-import {CheckboxIntermediateIcon} from '@/components/checkbox-intermediate-icon';
 import {createTheme, inputLabelClasses, tableCellClasses} from '@mui/material';
 
-// Used only to create transitions
+//TODO исправить!!! этих файлов в системе нет
+
+/* eslint-disable import/extensions */
+import {CheckboxCheckedIcon} from './src/components/checkbox-checked-icon';
+import {CheckboxIcon} from './src/components/checkbox-icon';
+import {CheckboxIntermediateIcon} from './src/components/checkbox-intermediate-icon';
+
+/* eslint-enable import/extensions */
+
+// Used only to create transitio
 const muiTheme = createTheme();
 
 export const createComponents = () => {

@@ -6,15 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "eslint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix src",
+    "prettier:fix": "prettier --write",
+    "prepare": "husky",
+    "mui-top-level-import": "npx @mui/codemod v5.0.0/top-level-imports ./src/**/*.([t|j]s)x"
   },
   "dependencies": {
+    "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@fontsource/inter": "^5.0.20",
     "@fontsource/plus-jakarta-sans": "^5.0.21",
     "@hookform/resolvers": "^3.9.0",
     "@mui/material": "^5.16.7",
+    "@mui/utils": "^6.0.2",
     "@phosphor-icons/react": "^2.1.7",
     "date-fns": "^3.6.0",
     "deepmerge": "^4.3.1",
@@ -22,6 +28,7 @@
     "pretty-bytes": "^6.1.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -29,8 +36,18 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-next": "14.2.5",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-eslint-comments": "3.2.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "7.35.2",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "typescript": "^5"
   }

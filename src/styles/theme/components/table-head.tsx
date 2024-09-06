@@ -1,7 +1,7 @@
-import type { Components } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
+import {tableCellClasses} from '@mui/material';
+import type {Components} from '@mui/material/styles';
 
-import type { Theme } from '../types';
+import type {Theme} from '../types';
 
 export const MuiTableHead = {
   styleOverrides: {

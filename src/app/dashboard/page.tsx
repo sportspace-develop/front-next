@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 
-import Grid from '@mui/material/Unstable_Grid2';
 import * as React from 'react';
+
+import {Unstable_Grid2 as Grid} from '@mui/material';
 
 export const metadata = {title: `Overview | Dashboard`} satisfies Metadata;
 
