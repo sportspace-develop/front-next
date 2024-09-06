@@ -92,7 +92,10 @@ export const TeamCreateForm = () => {
             />
             {pictureUrl && !errors.pictureFile && (
               <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <CardMedia sx={{height: 150, width: '100%', maxWidth: 500}} image={pictureUrl} />
+                <CardMedia
+                  sx={{height: 150, width: '100%', maxWidth: 500, backgroundSize: 'contain'}}
+                  image={pictureUrl}
+                />
               </Box>
             )}
             <Grid container spacing={2} sx={{justifyContent: 'space-between'}}>
