@@ -1,9 +1,10 @@
 'use client';
 
-import {createTheme} from '@/styles/theme/create-theme';
-import CssBaseline from '@mui/material/CssBaseline';
-import {Experimental_CssVarsProvider as CssVarsProvider} from '@mui/material/styles';
 import * as React from 'react';
+
+import {CssBaseline, Experimental_CssVarsProvider as CssVarsProvider} from '@mui/material';
+
+import {createTheme} from '@/styles/theme/create-theme';
 
 import EmotionCache from './emotion-cache';
 
@@ -16,7 +17,6 @@ export function ThemeProvider({children}: ThemeProviderProps): React.JSX.Element
 
   return (
     <EmotionCache options={{key: 'mui'}}>
-      {/*// @ts-ignore*/}
       <CssVarsProvider theme={theme}>
         <CssBaseline />
         {children}

@@ -1,10 +1,16 @@
-/* eslint-disable no-console -- Allow */
+//  eslint-disable no-console -- Allow
 
 // NOTE: A tracking system such as Sentry should replace the console
 
-export const LogLevel = { NONE: 'NONE', ERROR: 'ERROR', WARN: 'WARN', DEBUG: 'DEBUG', ALL: 'ALL' } as const;
+export const LogLevel = {
+  NONE: 'NONE',
+  ERROR: 'ERROR',
+  WARN: 'WARN',
+  DEBUG: 'DEBUG',
+  ALL: 'ALL',
+} as const;
 
-const LogLevelNumber = { NONE: 0, ERROR: 1, WARN: 2, DEBUG: 3, ALL: 4 } as const;
+const LogLevelNumber = {NONE: 0, ERROR: 1, WARN: 2, DEBUG: 3, ALL: 4} as const;
 
 export interface LoggerOptions {
   prefix?: string;
@@ -14,12 +20,14 @@ export interface LoggerOptions {
 
 export class Logger {
   protected prefix: string;
+
   protected level: keyof typeof LogLevel;
+
   protected showLevel: boolean;
 
   private levelNumber: number;
 
-  constructor({ prefix = '', level = LogLevel.ALL, showLevel = true }: LoggerOptions) {
+  constructor({prefix = '', level = LogLevel.ALL, showLevel = true}: LoggerOptions) {
     this.prefix = prefix;
     this.level = level;
     this.levelNumber = LogLevelNumber[this.level];
@@ -66,6 +74,6 @@ export class Logger {
 // This can be extended to create context specific logger (Server Action, Router Handler, etc.)
 // to add context information (IP, User-Agent, timestamp, etc.)
 
-export function createLogger({ prefix, level }: LoggerOptions = {}): Logger {
-  return new Logger({ prefix, level });
+export function createLogger({prefix, level}: LoggerOptions = {}): Logger {
+  return new Logger({prefix, level});
 }

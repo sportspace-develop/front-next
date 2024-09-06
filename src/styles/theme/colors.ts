@@ -1,4 +1,6 @@
-import type { PaletteRange } from '@mui/material/styles/createPalette';
+import {alpha} from '@mui/material/styles';
+// eslint-disable-next-line no-restricted-imports
+import type {PaletteRange} from '@mui/material/styles/createPalette';
 
 export const california = {
   50: '#fffaea',
@@ -98,16 +100,21 @@ export const stormGrey = {
   950: '#121621',
 } satisfies PaletteRange;
 
-import { alpha } from '@mui/material/styles';
-
-const withAlphas = (color: { lightest?: string; light?: string; main: any; dark?: string; darkest?: string; contrastText?: string; }) => {
+const withAlphas = (color: {
+  lightest?: string;
+  light?: string;
+  main: string;
+  dark?: string;
+  darkest?: string;
+  contrastText?: string;
+}) => {
   return {
     ...color,
     alpha4: alpha(color.main, 0.04),
     alpha8: alpha(color.main, 0.08),
     alpha12: alpha(color.main, 0.12),
-    alpha30: alpha(color.main, 0.30),
-    alpha50: alpha(color.main, 0.50)
+    alpha30: alpha(color.main, 0.3),
+    alpha50: alpha(color.main, 0.5),
   };
 };
 
@@ -121,7 +128,7 @@ export const neutral = {
   600: '#4D5761',
   700: '#2F3746',
   800: '#1C2536',
-  900: '#111927'
+  900: '#111927',
 };
 
 export const blue = withAlphas({
@@ -130,7 +137,7 @@ export const blue = withAlphas({
   main: '#2970FF',
   dark: '#004EEB',
   darkest: '#00359E',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const green = withAlphas({
@@ -139,7 +146,7 @@ export const green = withAlphas({
   main: '#16B364',
   dark: '#087443',
   darkest: '#084C2E',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const indigo = withAlphas({
@@ -148,7 +155,7 @@ export const indigo = withAlphas({
   main: '#6366F1',
   dark: '#4338CA',
   darkest: '#312E81',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const purple = withAlphas({
@@ -157,7 +164,7 @@ export const purple = withAlphas({
   main: '#9E77ED',
   dark: '#6941C6',
   darkest: '#42307D',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const success = withAlphas({
@@ -166,7 +173,7 @@ export const success = withAlphas({
   main: '#10B981',
   dark: '#0B815A',
   darkest: '#134E48',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const info = withAlphas({
@@ -175,7 +182,7 @@ export const info = withAlphas({
   main: '#06AED4',
   dark: '#0E7090',
   darkest: '#164C63',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const warning = withAlphas({
@@ -184,7 +191,7 @@ export const warning = withAlphas({
   main: '#F79009',
   dark: '#B54708',
   darkest: '#7A2E0E',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });
 
 export const error = withAlphas({
@@ -193,5 +200,5 @@ export const error = withAlphas({
   main: '#F04438',
   dark: '#B42318',
   darkest: '#7A271A',
-  contrastText: '#FFFFFF'
+  contrastText: '#FFFFFF',
 });

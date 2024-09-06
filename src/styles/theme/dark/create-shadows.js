@@ -24,6 +24,6 @@ export const createShadows = () => {
     '0px 25px 50px rgba(0, 0, 0, 0.24)',
     '0px 25px 50px rgba(0, 0, 0, 0.24)',
     '0px 25px 50px rgba(0, 0, 0, 0.24)',
-    '0px 25px 50px rgba(0, 0, 0, 0.24)'
+    '0px 25px 50px rgba(0, 0, 0, 0.24)',
   ];
 };

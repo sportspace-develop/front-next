@@ -1,8 +1,8 @@
-import {SideNav} from '@/components/dashboard/layout/side-nav';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import GlobalStyles from '@mui/material/GlobalStyles';
 import * as React from 'react';
+
+import {Box, Container, GlobalStyles} from '@mui/material';
+
+import {SideNav} from '@/components/dashboard/layout/side-nav';
 
 interface LayoutProps {
   children: React.ReactNode;

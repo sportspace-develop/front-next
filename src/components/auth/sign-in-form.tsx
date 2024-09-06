@@ -2,20 +2,24 @@
 
 import {useRouter} from 'next/navigation';
 
-import {useUser} from '@/hooks/use-user';
-import {authClient} from '@/lib/auth/client';
-import {zodResolver} from '@hookform/resolvers/zod';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+
+import {zodResolver} from '@hookform/resolvers/zod';
+import {
+  Alert,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {z as zod} from 'zod';
+
+import {useUser} from '@/hooks/use-user';
+import {authClient} from '@/lib/auth/client';
 
 const schema = zod.object({
   email: zod.string().min(1, {message: 'Обязательно к заполнению'}).email(),
@@ -48,6 +52,7 @@ export const SignInForm = (): React.JSX.Element => {
       if (error) {
         setError('root', {type: 'server', message: error});
         setIsPending(false);
+
         return;
       }
 

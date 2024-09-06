@@ -1,5 +1,6 @@
-import Box from '@mui/material/Box';
 import * as React from 'react';
+
+import {Box} from '@mui/material';
 
 export interface LayoutProps {
   children: React.ReactNode;

@@ -1,12 +1,15 @@
+import type {Metadata} from 'next';
+
 import * as React from 'react';
+
+import {Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
 
 import {Tournament, TournamentCard} from '@/components/dashboard/tournament/tournament-card';
 import {config} from '@/config';
-import {Stack, Typography} from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
-import type {Metadata} from 'next';
 
-export const metadata = {title: `Tournaments | Dashboard | ${config.site.name}`} satisfies Metadata;
+export const metadata = {
+  title: `Tournaments | Dashboard | ${config.site.name}`,
+} satisfies Metadata;
 
 const tournaments: Tournament[] = [
   {

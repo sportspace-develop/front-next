@@ -1,4 +1,4 @@
-import { blue, green, indigo, purple } from './colors';
+import {blue, green, indigo, purple} from './colors';
 
 export const getPrimary = (preset) => {
   switch (preset) {
@@ -11,7 +11,10 @@ export const getPrimary = (preset) => {
     case 'purple':
       return purple;
     default:
-      console.error('Invalid color preset, accepted values: "blue", "green", "indigo" or "purple"".');
+      console.error(
+        'Invalid color preset, accepted values: "blue", "green", "indigo" or "purple"".',
+      );
+
       return blue;
   }
 };
