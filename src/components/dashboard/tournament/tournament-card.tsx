@@ -14,7 +14,7 @@ interface TournamentCardProps {
   tournament: Tournament;
 }
 
-export const TournamentCard: React.FC<TournamentCardProps> = ({tournament}): React.JSX.Element => {
+export const TournamentCard = ({tournament}: TournamentCardProps): React.JSX.Element => {
   return (
     <Card>
       <CardActionArea>

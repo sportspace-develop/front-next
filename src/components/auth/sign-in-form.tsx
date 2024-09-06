@@ -18,7 +18,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {z as zod} from 'zod';
 
 const schema = zod.object({
-  email: zod.string().min(1, {message: 'Email is required'}).email(),
+  email: zod.string().min(1, {message: 'Обязательно к заполнению'}).email(),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -71,15 +71,15 @@ export const SignInForm = (): React.JSX.Element => {
           <Controller
             control={control}
             name="email"
-            render={({field}) => (
+            render={({field, fieldState}) => (
               <FormControl error={Boolean(errors.email)}>
-                <InputLabel>Email address</InputLabel>
+                <InputLabel>Email</InputLabel>
                 <OutlinedInput {...field} label="Email" type="email" />
-                {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
+                {fieldState.error && <FormHelperText>{fieldState.error.message}</FormHelperText>}
               </FormControl>
             )}
           />
-          {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
+          {errors.root && <Alert color="error">{errors.root.message}</Alert>}
           <Button disabled={isPending} type="submit" variant="contained">
             Войти
           </Button>
