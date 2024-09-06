@@ -17,8 +17,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className={inter.className}>
         <UserProvider>
           <ThemeProvider>{children}</ThemeProvider>

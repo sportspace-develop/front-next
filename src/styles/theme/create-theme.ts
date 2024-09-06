@@ -1,4 +1,5 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import { ruRU } from '@mui/material/locale';
 
 import { colorSchemes } from './color-schemes';
 import { components } from './components/components';
@@ -44,7 +45,7 @@ export function createTheme(): Theme {
     shadows,
     shape: { borderRadius: 8 },
     typography,
-  });
+  }, ruRU);
 
   return theme;
 }

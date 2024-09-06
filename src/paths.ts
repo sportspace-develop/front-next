@@ -5,6 +5,7 @@ export const paths = {
     overview: '/dashboard',
     account: '/dashboard/account',
     teams: '/dashboard/teams',
+    teamsCreate: '/dashboard/teams/create',
     tournaments: '/dashboard/tournaments',
   },
 } as const;
