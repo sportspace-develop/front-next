@@ -15,7 +15,36 @@ interface NavItemProps extends Omit<NavItemConfig, 'items'> {
   pathname: string;
 }
 
-// eslint-disable-next-line complexity
+const getWrapperProps = ({href, external}: {href?: string; external?: boolean}) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let wrapperProps: Record<string, any> = {};
+
+  if (href) {
+    wrapperProps.href = href;
+
+    if (external) {
+      wrapperProps = {
+        ...wrapperProps,
+        component: 'a',
+        target: '_blank',
+        rel: 'noreferrer',
+      };
+    } else {
+      wrapperProps = {
+        ...wrapperProps,
+        component: RouterLink,
+      };
+    }
+  } else {
+    wrapperProps = {
+      ...wrapperProps,
+      role: 'button',
+    };
+  }
+
+  return wrapperProps;
+};
+
 export function NavItem({
   disabled,
   external,
@@ -30,14 +59,7 @@ export function NavItem({
 
   return (
     <Box
-      {...(href
-        ? {
-            component: external ? 'a' : RouterLink,
-            href,
-            target: external ? '_blank' : undefined,
-            rel: external ? 'noreferrer' : undefined,
-          }
-        : {role: 'button'})}
+      {...getWrapperProps({external, href})}
       sx={{
         alignItems: 'center',
         borderRadius: 1,
