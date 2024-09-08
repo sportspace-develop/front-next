@@ -46,7 +46,7 @@ export function NavItem({
         display: 'flex',
         flex: '0 0 auto',
         gap: 1,
-        p: '6px 16px',
+        p: '10px 16px',
         mb: 2,
         position: 'relative',
         textDecoration: 'none',
@@ -75,12 +75,7 @@ export function NavItem({
         )}
       </Box>
       <Box sx={{flex: '1 1 auto'}}>
-        <Typography
-          component="span"
-          sx={{color: 'inherit', fontSize: '1rem', fontWeight: 500, lineHeight: '28px'}}
-        >
-          {title}
-        </Typography>
+        <Typography variant="h6">{title}</Typography>
       </Box>
     </Box>
   );

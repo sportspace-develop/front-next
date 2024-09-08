@@ -37,10 +37,7 @@ const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
         <ListIcon color={open ? 'var(--mui-palette-common-white)' : 'currentColor'} size={30} />
       </ToggleButton>
       <Stack sx={{justifyContent: 'center', alignItems: 'center', ml: {lg: 4, xs: 1}}}>
-        <Typography
-          component="span"
-          sx={{color: 'inherit', fontSize: '1.5rem', fontWeight: 600, lineHeight: '28px'}}
-        >
+        <Typography variant="h5" sx={{fontWeight: 600}}>
           Sport space
         </Typography>
       </Stack>
