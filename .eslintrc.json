@@ -32,14 +32,8 @@
     "react/destructuring-assignment": "off",
     "react/display-name": "off",
     "import/prefer-default-export": "off",
-    "complexity": [
-      "error",
-      10
-    ],
-    "curly": [
-      "error",
-      "all"
-    ],
+    "complexity": ["error", 10],
+    "curly": ["error", "all"],
     "brace-style": [
       "error",
       "1tbs",
@@ -47,14 +41,8 @@
         "allowSingleLine": false
       }
     ],
-    "eqeqeq": [
-      "error",
-      "always"
-    ],
-    "yoda": [
-      "error",
-      "never"
-    ],
+    "eqeqeq": ["error", "always"],
+    "yoda": ["error", "never"],
     "@typescript-eslint/padding-line-between-statements": [
       "error",
       {
@@ -69,31 +57,19 @@
       },
       {
         "blankLine": "always",
-        "prev": [
-          "const",
-          "let"
-        ],
+        "prev": ["const", "let"],
         "next": "*"
       },
       {
         "blankLine": "any",
-        "prev": [
-          "const",
-          "let"
-        ],
-        "next": [
-          "const",
-          "let"
-        ]
+        "prev": ["const", "let"],
+        "next": ["const", "let"]
       }
     ],
     "no-restricted-imports": [
       "error",
       {
-        "patterns": [
-          "../../*",
-          "@mui/*/*/*"
-        ]
+        "patterns": ["../../*", "@mui/*/*/*"]
       }
     ],
     "@typescript-eslint/no-unused-vars": [

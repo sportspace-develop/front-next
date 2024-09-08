@@ -1,4 +1,4 @@
-import {alpha} from '@mui/material/styles';
+import {alpha} from '@mui/material';
 // eslint-disable-next-line no-restricted-imports
 import type {PaletteRange} from '@mui/material/styles/createPalette';
 

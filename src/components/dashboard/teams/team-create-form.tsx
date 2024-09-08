@@ -59,7 +59,7 @@ export const TeamCreateForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card sx={{maxWidth: 1200}}>
+      <Card>
         <CardContent>
           <Stack spacing={3}>
             <Controller

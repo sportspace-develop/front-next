@@ -308,5 +308,12 @@ export const createComponents = () => {
         variant: 'filled',
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: 'red',
+        },
+      },
+    },
   };
 };

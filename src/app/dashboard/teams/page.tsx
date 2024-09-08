@@ -1,18 +1,19 @@
-import * as React from 'react';
 import type {Metadata} from 'next';
-import {subDays} from "date-fns";
-import {Stack, Typography, Unstable_Grid2 as Grid, Button} from '@mui/material';
 
+import * as React from 'react';
+
+import {Button, Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
 import {Plus as PlusIcon} from '@phosphor-icons/react/dist/ssr/Plus';
+import {subDays} from 'date-fns';
 
+import {Team, TeamCard} from '@/components/dashboard/teams/team-card';
 import {config} from '@/config';
-import {TeamCard, Team} from '@/components/dashboard/teams/team-card';
 import {paths} from '@/paths';
 
 export const metadata = {title: `Teams | Dashboard | ${config.site.name}`} satisfies Metadata;
 
-const PICTURE1 = 'https://st.joinsport.io/team/1305877/cover/65d8d6b757d14_385x257.jpg'
-const PICTURE2 = 'https://st.joinsport.io/team/1305818/cover/667167d7b347e_385x257.png'
+const PICTURE1 = 'https://st.joinsport.io/team/1305877/cover/65d8d6b757d14_385x257.jpg';
+const PICTURE2 = 'https://st.joinsport.io/team/1305818/cover/667167d7b347e_385x257.png';
 const IMG1 = 'https://st.joinsport.io/team/1305877/logo/6469e3d0468e8_173x173.jpg';
 const IMG2 = 'https://st.joinsport.io/team/1305818/logo/646886d35da1a_173x173.jpg';
 
@@ -53,11 +54,14 @@ export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
-        <Typography variant="h4" sx={{flex: '1 1 auto'}}>Команды</Typography>
+        <Typography variant="h4" sx={{flex: '1 1 auto'}}>
+          Команды
+        </Typography>
         <Button
           href={paths.dashboard.teamsCreate}
           startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-          variant="contained">
+          variant="contained"
+        >
           {isEmptyList ? 'Создать' : 'Добавить'}
         </Button>
       </Stack>

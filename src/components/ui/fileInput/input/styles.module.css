@@ -1,40 +1,40 @@
 .label {
-    position: relative;
-    flex-grow: 1;
+  position: relative;
+  flex-grow: 1;
 
-    .labelText {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+  .labelText {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-        .placeholder {
-            color: var(--mui-palette-text-secondary);
-        }
-
-        .error {
-            color: var(--mui-palette-error-main);
-        }
+    .placeholder {
+      color: var(--mui-palette-text-secondary);
     }
+
+    .error {
+      color: var(--mui-palette-error-main);
+    }
+  }
 }
 
 .fileName {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .fileText {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .fileExtension {
-    flex-shrink: 0;
-    display: block;
+  flex-shrink: 0;
+  display: block;
 }

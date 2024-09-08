@@ -1,4 +1,4 @@
-import {alpha} from '@mui/material/styles';
+import {alpha} from '@mui/material';
 
 import {error, info, neutral, success, warning} from '../colors';
 import {getPrimary} from '../utils';

@@ -10,7 +10,7 @@
     "eslint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix src",
     "prettier:fix": "prettier --write",
     "prepare": "husky",
-    "mui-top-level-import": "npx @mui/codemod v5.0.0/top-level-imports ./src/**/*.([t|j]s)x"
+    "mui-top-level-import": "npx @mui/codemod v5.0.0/top-level-imports ./src"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {Box, Container, GlobalStyles} from '@mui/material';
 
-import {SideNav} from '@/components/dashboard/layout/side-nav';
+import Header from '@/components/dashboard/layout/header';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,12 +14,9 @@ export default function Layout({children}: LayoutProps): React.JSX.Element {
       <GlobalStyles
         styles={{
           body: {
-            '--MainNav-height': '56px',
-            '--MainNav-zIndex': 1000,
-            '--SideNav-width': '280px',
-            '--SideNav-zIndex': 1100,
-            '--MobileNav-width': '320px',
-            '--MobileNav-zIndex': 1100,
+            '--NavBar-zIndex': 1100,
+            '--MenuBar-width': '320px',
+            '--MenuHeader-height': '52px',
           },
         }}
       />
@@ -32,17 +29,18 @@ export default function Layout({children}: LayoutProps): React.JSX.Element {
           minHeight: '100%',
         }}
       >
-        <SideNav />
+        <Header />
         <Box
           sx={{
             display: 'flex',
             flex: '1 1 auto',
             flexDirection: 'column',
-            pl: {lg: 'var(--SideNav-width)'},
+            mt: 'var(--MenuHeader-height)',
+            pl: {lg: 'var(--MenuBar-width)'},
           }}
         >
           <main>
-            <Container maxWidth="xl" sx={{py: '64px'}}>
+            <Container maxWidth="xl" sx={{py: 3}}>
               {children}
             </Container>
           </main>

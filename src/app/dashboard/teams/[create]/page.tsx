@@ -1,6 +1,6 @@
 import NextLink from 'next/link';
 
-import {Link, Stack, Typography, Breadcrumbs} from '@mui/material';
+import {Breadcrumbs, Link, Stack, Typography} from '@mui/material';
 
 import {TeamCreateForm} from '@/components/dashboard/teams/team-create-form';
 import {config} from '@/config';
@@ -31,10 +31,7 @@ export default function Page(): React.JSX.Element {
             >
               Список команд
             </Link>
-            <Typography
-              color="text.secondary"
-              variant="subtitle2"
-            >
+            <Typography color="text.secondary" variant="subtitle2">
               Создание команды
             </Typography>
           </Breadcrumbs>
@@ -43,4 +40,4 @@ export default function Page(): React.JSX.Element {
       </Stack>
     </Stack>
   );
-};
+}
