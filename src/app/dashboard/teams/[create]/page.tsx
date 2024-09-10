@@ -1,4 +1,7 @@
+import {Metadata} from 'next';
 import NextLink from 'next/link';
+
+import * as React from 'react';
 
 import {Breadcrumbs, Link, Stack, Typography} from '@mui/material';
 
@@ -6,7 +9,7 @@ import {TeamCreateForm} from '@/components/dashboard/teams/team-create-form';
 import {config} from '@/config';
 import {paths} from '@/paths';
 
-export const metadata = {title: `Create team | Dashboard | ${config.site.name}`} satisfies Metadata;
+export const metadata = {title: `Создать команду | ${config.site.name}`} satisfies Metadata;
 
 export default function Page(): React.JSX.Element {
   return (

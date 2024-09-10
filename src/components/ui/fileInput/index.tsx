@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import {IconButton, InputAdornment, TextField, Typography} from '@mui/material';
 import {X as CloseIcon} from '@phosphor-icons/react/dist/ssr/X';
 import prettyBytes from 'pretty-bytes';
+
+import {IconButton, InputAdornment, TextField, Typography} from '@mui/material';
 
 import Input from './input';
 import type {FileInputProps} from './types';
