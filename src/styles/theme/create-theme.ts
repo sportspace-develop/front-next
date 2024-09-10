@@ -1,4 +1,5 @@
-import {experimental_extendTheme as extendTheme, ruRU} from '@mui/material';
+import {experimental_extendTheme as extendTheme} from '@mui/material';
+import {ruRU} from '@mui/material/locale';
 
 import {colorSchemes} from './color-schemes';
 import {components} from './components/components';
@@ -37,7 +38,7 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 export function createTheme(): Theme {
-  const theme = extendTheme(
+  return extendTheme(
     {
       breakpoints: {values: {xs: 0, sm: 600, md: 900, lg: 1200, xl: 1440}},
       components,
@@ -48,6 +49,4 @@ export function createTheme(): Theme {
     },
     ruRU,
   );
-
-  return theme;
 }
