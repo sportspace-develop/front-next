@@ -9,10 +9,12 @@ const useObjectURL = (initialObject: null | File | Blob | MediaSource) => {
       return;
     }
 
-    const objectURL = URL.createObjectURL(initialObject);
-    setObjectURL(objectURL);
+    const newObjectURL = URL.createObjectURL(initialObject);
+
+    setObjectURL(newObjectURL);
+
     return () => {
-      URL.revokeObjectURL(objectURL);
+      URL.revokeObjectURL(newObjectURL);
       setObjectURL(null);
     };
   }, [initialObject]);

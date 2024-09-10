@@ -34,7 +34,7 @@ export const SignInForm = (): React.JSX.Element => {
 
   const {checkSession} = useUser();
 
-  const [isPending, setIsPending] = React.useState<boolean>(false);
+  const [isPending, setIsPending] = React.useState(false);
 
   const {
     control,
