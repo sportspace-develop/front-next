@@ -2,15 +2,16 @@ import type {Metadata} from 'next';
 
 import * as React from 'react';
 
-import {Button, Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
 import {Plus as PlusIcon} from '@phosphor-icons/react/dist/ssr/Plus';
 import {subDays} from 'date-fns';
+
+import {Button, Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
 
 import {Team, TeamCard} from '@/components/dashboard/teams/team-card';
 import {config} from '@/config';
 import {paths} from '@/paths';
 
-export const metadata = {title: `Teams | Dashboard | ${config.site.name}`} satisfies Metadata;
+export const metadata = {title: `Команды | ${config.site.name}`} satisfies Metadata;
 
 const PICTURE1 = 'https://st.joinsport.io/team/1305877/cover/65d8d6b757d14_385x257.jpg';
 const PICTURE2 = 'https://st.joinsport.io/team/1305818/cover/667167d7b347e_385x257.png';

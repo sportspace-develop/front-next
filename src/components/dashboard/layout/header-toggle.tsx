@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 
-import {Avatar, Stack, ToggleButton, Typography} from '@mui/material';
 import {List as ListIcon} from '@phosphor-icons/react/dist/ssr/List';
+
+import {Avatar, Stack, ToggleButton, Typography} from '@mui/material';
 
 type HeaderToggleProps = {
   open: boolean;
