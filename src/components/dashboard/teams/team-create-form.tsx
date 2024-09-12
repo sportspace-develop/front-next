@@ -6,6 +6,8 @@ import * as React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 
 import {zodResolver} from '@hookform/resolvers/zod';
+import {z as zod} from 'zod';
+
 import {
   Avatar,
   Box,
@@ -21,7 +23,6 @@ import {
   OutlinedInput,
   Stack,
 } from '@mui/material';
-import {z as zod} from 'zod';
 
 import FileInput from '@/components/ui/fileInput';
 import useObjectURL from '@/hooks/use-object-url';

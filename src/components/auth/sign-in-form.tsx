@@ -6,6 +6,8 @@ import * as React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 
 import {zodResolver} from '@hookform/resolvers/zod';
+import {z as zod} from 'zod';
+
 import {
   Alert,
   Button,
@@ -16,7 +18,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {z as zod} from 'zod';
 
 import {useUser} from '@/hooks/use-user';
 import {authClient} from '@/lib/auth/client';
