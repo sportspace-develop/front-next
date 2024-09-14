@@ -5,7 +5,6 @@ import * as React from 'react';
 
 import StoreProvider from '@/app/StoreProvider';
 import {ThemeProvider} from '@/components/core/theme-provider/theme-provider';
-import {UserProvider} from '@/contexts/user-context';
 
 const inter = Inter({subsets: ['latin']});
 
@@ -23,9 +22,7 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="ru">
         <body className={inter.className}>
-          <UserProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </UserProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </body>
       </html>
     </StoreProvider>

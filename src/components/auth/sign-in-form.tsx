@@ -19,8 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import {useUser} from '@/hooks/use-user';
-import {authClient} from '@/lib/auth/client';
+import {useOtpMutation} from '@/lib/store/features/authApi';
 
 const schema = zod.object({
   email: zod.string().min(1, {message: 'Обязательно к заполнению'}).email(),
@@ -33,9 +32,7 @@ const defaultValues = {email: 'help@sportspace.com'} satisfies Values;
 export const SignInForm = (): React.JSX.Element => {
   const router = useRouter();
 
-  const {checkSession} = useUser();
-
-  const [isPending, setIsPending] = React.useState(false);
+  const [sendOtp, {isError, isLoading, isSuccess}] = useOtpMutation();
 
   const {
     control,
@@ -46,25 +43,9 @@ export const SignInForm = (): React.JSX.Element => {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
-
-      const {error} = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError('root', {type: 'server', message: error});
-        setIsPending(false);
-
-        return;
-      }
-
-      // Refresh the auth state
-      await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
+      await sendOtp(values);
     },
-    [checkSession, router, setError],
+    [sendOtp],
   );
 
   return (
@@ -86,7 +67,7 @@ export const SignInForm = (): React.JSX.Element => {
             )}
           />
           {errors.root && <Alert color="error">{errors.root.message}</Alert>}
-          <Button disabled={isPending} type="submit" variant="contained">
+          <Button disabled={isLoading} type="submit" variant="contained">
             Войти
           </Button>
         </Stack>
