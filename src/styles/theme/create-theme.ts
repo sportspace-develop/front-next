@@ -1,5 +1,4 @@
-import {experimental_extendTheme as extendTheme} from '@mui/material';
-import {ruRU} from '@mui/material/locale';
+import {experimental_extendTheme as extendTheme, ruRU} from '@mui/material';
 
 import {colorSchemes} from './color-schemes';
 import {components} from './components/components';
