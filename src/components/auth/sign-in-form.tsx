@@ -30,13 +30,16 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = {email: 'help@sportspace.com'} satisfies Values;
 
 export const SignInForm = (): React.JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
   const router = useRouter();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
   const [sendOtp, {isError, isLoading, isSuccess}] = useOtpMutation();
 
   const {
     control,
     handleSubmit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
     setError,
     formState: {errors},
   } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
