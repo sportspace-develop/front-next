@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import NextLink from 'next/link';
 
 import * as React from 'react';
 
@@ -59,6 +60,7 @@ export default function Page(): React.JSX.Element {
           Команды
         </Typography>
         <Button
+          component={NextLink}
           href={paths.dashboard.teamsCreate}
           startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
           variant="contained"
