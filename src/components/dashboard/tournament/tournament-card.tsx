@@ -11,28 +11,24 @@ export type Tournament = {
 };
 
 interface TournamentCardProps {
-  tournament: Tournament;
+  item: Tournament;
 }
 
-export const TournamentCard = ({tournament}: TournamentCardProps): React.JSX.Element => {
+export const TournamentCard = ({item}: TournamentCardProps): React.JSX.Element => {
   return (
     <Card>
       <CardActionArea>
         <CardContent>
           <Stack spacing={4} sx={{alignItems: 'center'}}>
-            <CardMedia
-              sx={{height: 172, width: 172}}
-              image={tournament.logo}
-              title={tournament.name}
-            />
+            <CardMedia sx={{height: 172, width: 172}} image={item.logo} title={item.name} />
           </Stack>
           <Stack spacing={1} sx={{textAlign: 'center'}}>
-            <Typography variant="h5">{tournament.name}</Typography>
+            <Typography variant="h5">{item.name}</Typography>
             <Typography color="text.secondary" variant="body2">
-              {tournament.organisation}
+              {item.organisation}
             </Typography>
             <Typography color="text.secondary" variant="body2">
-              {tournament.description}
+              {item.description}
             </Typography>
           </Stack>
         </CardContent>

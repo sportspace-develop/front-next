@@ -6,9 +6,10 @@ import * as React from 'react';
 import {Plus as PlusIcon} from '@phosphor-icons/react/dist/ssr/Plus';
 import {subDays} from 'date-fns';
 
-import {Button, Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
+import {Button, Unstable_Grid2 as Grid} from '@mui/material';
 
 import {Team, TeamCard} from '@/components/dashboard/teams/team-card';
+import List from '@/components/ui/list';
 import {config} from '@/config';
 import {paths} from '@/paths';
 
@@ -50,15 +51,20 @@ const teams: Team[] = [
   },
 ];
 
+const ItemComponent = React.memo(({item}: {item: Team}) => (
+  <Grid md={4} xs={12} display="grid">
+    <TeamCard item={item} />
+  </Grid>
+));
+
 export default function Page(): React.JSX.Element {
   const isEmptyList = teams.length === 0;
 
   return (
-    <Stack spacing={3}>
-      <Stack direction="row" spacing={3}>
-        <Typography variant="h4" sx={{flex: '1 1 auto'}}>
-          Команды
-        </Typography>
+    <List
+      content={teams}
+      headText="Команды"
+      headActionComponent={
         <Button
           component={NextLink}
           href={paths.dashboard.teamsCreate}
@@ -67,15 +73,8 @@ export default function Page(): React.JSX.Element {
         >
           {isEmptyList ? 'Создать' : 'Добавить'}
         </Button>
-      </Stack>
-      {isEmptyList && 'Список пуст'}
-      <Grid container spacing={3}>
-        {teams.map((team) => (
-          <Grid key={team.id} md={4} xs={12} display="grid">
-            <TeamCard team={team} />
-          </Grid>
-        ))}
-      </Grid>
-    </Stack>
+      }
+      itemComponent={ItemComponent}
+    />
   );
 }

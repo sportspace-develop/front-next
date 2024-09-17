@@ -21,22 +21,22 @@ export type Team = {
 };
 
 interface TeamCardProps {
-  team: Team;
+  item: Team;
 }
 
-export const TeamCard = ({team}: TeamCardProps): React.JSX.Element => {
+export const TeamCard = ({item}: TeamCardProps): React.JSX.Element => {
   return (
     <Card sx={{display: 'flex'}}>
       <CardActionArea>
-        <CardMedia sx={{height: 200, display: 'flex'}} image={team.picture} title={team.name}>
-          {!team.picture && <Avatar sx={{height: 180, width: 180, m: 'auto'}} />}{' '}
+        <CardMedia sx={{height: 200, display: 'flex'}} image={item.picture} title={item.name}>
+          {!item.picture && <Avatar sx={{height: 180, width: 180, m: 'auto'}} />}
         </CardMedia>
         <CardContent>
           <Grid container spacing={1} sx={{alignItems: 'center', justifyContent: 'space-between'}}>
             <Grid md={4} xs={12}>
               <Avatar
-                src={team.logo}
-                title={team.name}
+                src={item.logo}
+                title={item.name}
                 sx={{
                   width: {lg: 70, md: 50, xs: 100},
                   height: {lg: 70, md: 50, xs: 100},
@@ -46,10 +46,10 @@ export const TeamCard = ({team}: TeamCardProps): React.JSX.Element => {
             </Grid>
             <Grid md={8} xs={12} spacing={1} sx={{flexBasis: 'content'}}>
               <Typography variant="h6" sx={{wordWrap: 'break-word'}}>
-                {team.name}
+                {item.name}
               </Typography>
               <Typography color="text.secondary" variant="body2">
-                {formatDate(team.createdAt, {format: 'd MMMM yyyy'})}
+                {formatDate(item.createdAt, {format: 'd MMMM yyyy'})}
               </Typography>
             </Grid>
           </Grid>
