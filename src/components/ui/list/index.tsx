@@ -1,18 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 
-import {Box, Unstable_Grid2 as Grid, Skeleton, Stack, Typography} from '@mui/material';
-
-import {ListState, ListStateTypes} from './types';
-
-type TProps = {
-  content?: Record<string, any>[];
-  state?: ListStateTypes;
-  headText: string;
-  uniqueProps?: string[];
-  itemComponent: React.ComponentType<any>;
-  headActionComponent?: React.ReactNode;
-};
+import {Box, Skeleton, Stack, Typography} from '@mui/material';
 
 const SkeletonList = React.memo(() =>
   Array(3)
@@ -32,7 +20,7 @@ const ListError = React.memo(() => {
       }}
     >
       <Box
-        alt="Ошибка"
+        alt="Ничего не найдено"
         component="img"
         src="/assets/empty-list.svg"
         sx={{
@@ -45,7 +33,6 @@ const ListError = React.memo(() => {
       <Typography textAlign="center" variant="h5">
         Ошибка! Мы не смогли найти то, что вы ищете
       </Typography>
-      {/* Попробуйте поискать по-другому */}
     </Stack>
   );
 });
@@ -72,72 +59,22 @@ const ListNoData = React.memo(() => {
           mx: {md: 4},
         }}
       />
-      <Typography textAlign="center" variant="h5">
-        Пока список пуст
-      </Typography>
+      <Stack spacing={1}>
+        <Typography textAlign="center" variant="h5">
+          Пока список пуст
+        </Typography>
+        <Typography textAlign="center" variant="subtitle2">
+          Но вы можете создать первый элемент
+        </Typography>
+      </Stack>
     </Stack>
   );
 });
 
-const joinItemProps = (props: string[], item: any) => {
-  const values = props.map((name) => item[name] ?? '');
+const ListHeader = React.memo(({text}: {text: string}) => (
+  <Typography variant="h4" sx={{flex: '1 1 auto'}}>
+    {text}
+  </Typography>
+));
 
-  return values.join('');
-};
-
-const List = React.memo<TProps>(
-  ({
-    state = ListState.SUCCESS,
-    content = [],
-    uniqueProps = ['id'],
-    headText,
-    itemComponent: ItemComponent,
-    headActionComponent,
-  }) => {
-    const hasContent = content?.length > 0;
-
-    const renderContent = () =>
-      content?.map((item) => {
-        const key = joinItemProps(uniqueProps, item);
-
-        return <ItemComponent item={item} key={key} />;
-      });
-
-    const renderList = () => {
-      if (state === ListState.ERROR) {
-        return <ListError />;
-      }
-
-      if (!hasContent && state === ListState.SUCCESS) {
-        return <ListNoData />;
-      }
-
-      if (hasContent) {
-        return (
-          <Grid container spacing={3}>
-            {renderContent()}
-          </Grid>
-        );
-      }
-
-      return null;
-    };
-
-    return (
-      <Stack spacing={3}>
-        <Stack direction="row" spacing={3}>
-          <Typography variant="h4" sx={{flex: '1 1 auto'}}>
-            {headText}
-          </Typography>
-          {state === ListState.SUCCESS && headActionComponent}
-        </Stack>
-        {renderList()}
-        {state === ListState.PENDING && <SkeletonList />}
-      </Stack>
-    );
-  },
-);
-
-export default List;
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
+export {ListError, ListNoData, SkeletonList, ListHeader};
