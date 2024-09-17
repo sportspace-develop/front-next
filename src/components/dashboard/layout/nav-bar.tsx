@@ -4,8 +4,7 @@ import {usePathname} from 'next/navigation';
 
 import * as React from 'react';
 
-import {Box, Drawer, useMediaQuery} from '@mui/material';
-import {useTheme} from '@mui/material/styles';
+import {Box, Drawer, useMediaQuery, useTheme} from '@mui/material';
 
 import {navItems} from './config';
 import HeaderToggle from './header-toggle';
