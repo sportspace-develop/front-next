@@ -18,7 +18,7 @@ export default function Page(): React.JSX.Element {
           }}
         >
           <Box
-            alt="Not found"
+            alt="Ничего не найдено"
             component="img"
             src="/assets/404.svg"
             sx={{
