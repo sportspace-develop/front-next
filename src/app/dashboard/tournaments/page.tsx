@@ -2,9 +2,10 @@ import type {Metadata} from 'next';
 
 import * as React from 'react';
 
-import {Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
+import {Unstable_Grid2 as Grid, Stack} from '@mui/material';
 
 import {Tournament, TournamentCard} from '@/components/dashboard/tournament/tournament-card';
+import {ListHeader, ListNoData} from '@/components/ui/list';
 import {config} from '@/config';
 
 export const metadata = {
@@ -101,13 +102,12 @@ const tournaments: Tournament[] = [
 export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
-      <div>
-        <Typography variant="h4">Турниры</Typography>
-      </div>
+      <ListHeader text="Турниры" />
+      {!tournaments.length && <ListNoData />}
       <Grid container spacing={3}>
-        {tournaments.map((tournament) => (
-          <Grid key={tournament.id} lg={4} md={6} xs={12}>
-            <TournamentCard tournament={tournament} />
+        {tournaments.map((item) => (
+          <Grid key={item.id} lg={4} md={6} xs={12}>
+            <TournamentCard item={item} />
           </Grid>
         ))}
       </Grid>

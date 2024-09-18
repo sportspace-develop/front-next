@@ -6,9 +6,10 @@ import * as React from 'react';
 import {Plus as PlusIcon} from '@phosphor-icons/react/dist/ssr/Plus';
 import {subDays} from 'date-fns';
 
-import {Button, Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
+import {Button, Unstable_Grid2 as Grid, Stack} from '@mui/material';
 
 import {Team, TeamCard} from '@/components/dashboard/teams/team-card';
+import {ListHeader, ListNoData} from '@/components/ui/list';
 import {config} from '@/config';
 import {paths} from '@/paths';
 
@@ -56,9 +57,7 @@ export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
-        <Typography variant="h4" sx={{flex: '1 1 auto'}}>
-          Команды
-        </Typography>
+        <ListHeader text="Команды" />
         <Button
           component={NextLink}
           href={paths.dashboard.teamsCreate}
@@ -68,11 +67,11 @@ export default function Page(): React.JSX.Element {
           {isEmptyList ? 'Создать' : 'Добавить'}
         </Button>
       </Stack>
-      {isEmptyList && 'Список пуст'}
+      {isEmptyList && <ListNoData />}
       <Grid container spacing={3}>
-        {teams.map((team) => (
-          <Grid key={team.id} md={4} xs={12} display="grid">
-            <TeamCard team={team} />
+        {teams.map((item) => (
+          <Grid key={item.id} md={4} xs={12} display="grid">
+            <TeamCard item={item} />
           </Grid>
         ))}
       </Grid>
