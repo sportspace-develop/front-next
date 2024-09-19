@@ -18,7 +18,7 @@ export const Layout = ({children}: LayoutProps): React.JSX.Element => {
           p: 3,
         }}
       >
-        <Box sx={{maxWidth: '450px', width: '100%'}}>{children}</Box>
+        {children}
       </Box>
     </Box>
   );
