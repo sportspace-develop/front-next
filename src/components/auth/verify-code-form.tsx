@@ -60,7 +60,7 @@ export const VerifyCodeForm = (): React.JSX.Element => {
       } catch (err) {
         // https://redux-toolkit.js.org/rtk-query/usage-with-typescript#inline-error-handling-example
         if (isFetchBaseQueryError(err)) {
-          const errMsg = 'error' in err ? err.error : JSON.stringify(err.data);
+          const errMsg = 'error' in err ? err.error : JSON.stringify(err.status);
 
           setError('root', {type: 'server', message: errMsg});
         } else if (isErrorWithMessage(err)) {
@@ -98,29 +98,16 @@ export const VerifyCodeForm = (): React.JSX.Element => {
               <Controller
                 control={control}
                 name="otp"
-                render={({field, fieldState}) => {
-                  console.log(`### field`, field);
-                  console.log(`### fieldState`, fieldState);
-
-                  return (
-                    <FormControl error={Boolean(errors.otp)}>
-                      <MuiOtpInput
-                        {...field}
-                        sx={{
-                          '& .MuiFilledInput-input': {
-                            p: '18px',
-                          },
-                        }}
-                        length={8}
-                      />
-                      {fieldState.error && (
-                        <FormHelperText>{fieldState.error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  );
-                }}
+                render={({field, fieldState}) => (
+                  <FormControl error={Boolean(errors.otp)}>
+                    <MuiOtpInput {...field} length={8} />
+                    {fieldState.error && (
+                      <FormHelperText>{fieldState.error.message}</FormHelperText>
+                    )}
+                  </FormControl>
+                )}
               />
-              {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
+              {errors.root && <Alert color="error">{errors.root.message}</Alert>}
               <Button disabled={isLoading} type="submit" variant="contained">
                 Отправить
               </Button>
