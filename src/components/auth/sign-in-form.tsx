@@ -9,20 +9,26 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z as zod} from 'zod';
 
 import {
-  Alert,
+  Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   FormControl,
   FormHelperText,
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography,
 } from '@mui/material';
 
-import {useOtpMutation} from '@/lib/store/features/authApi';
+import {useRequestOtpMutation} from '@/lib/store/features/authApi';
+import {paths} from '@/paths';
 
 const schema = zod.object({
-  email: zod.string().min(1, {message: 'Обязательно к заполнению'}).email(),
+  email: zod
+    .string()
+    .min(1, {message: 'Обязательно к заполнению'})
+    .email({message: 'Невалидный email'}),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -30,51 +36,57 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = {email: 'help@sportspace.com'} satisfies Values;
 
 export const SignInForm = (): React.JSX.Element => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
   const router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
-  const [sendOtp, {isError, isLoading, isSuccess}] = useOtpMutation();
+  const [requestOtp, {isLoading}] = useRequestOtpMutation();
 
   const {
     control,
     handleSubmit,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Expected
-    setError,
     formState: {errors},
   } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      await sendOtp(values);
+      try {
+        await requestOtp(values).unwrap();
+        const params = new URLSearchParams({
+          email: values.email,
+        });
+
+        router.push(`${paths.auth.verifyCode}?${params.toString()}`);
+      } catch {}
     },
-    [sendOtp],
+    [requestOtp, router],
   );
 
   return (
-    <Stack spacing={4}>
-      <Stack spacing={1}>
-        <Typography variant="h4">Войти</Typography>
-      </Stack>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={2}>
-          <Controller
-            control={control}
-            name="email"
-            render={({field, fieldState}) => (
-              <FormControl error={Boolean(errors.email)}>
-                <InputLabel>Email</InputLabel>
-                <OutlinedInput {...field} label="Email" type="email" />
-                {fieldState.error && <FormHelperText>{fieldState.error.message}</FormHelperText>}
-              </FormControl>
-            )}
-          />
-          {errors.root && <Alert color="error">{errors.root.message}</Alert>}
-          <Button disabled={isLoading} type="submit" variant="contained">
-            Войти
-          </Button>
-        </Stack>
-      </form>
-    </Stack>
+    <Box sx={{maxWidth: '450px', width: '100%'}}>
+      <Card elevation={16}>
+        <CardHeader sx={{pb: 0}} title="Войти" />
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={2}>
+              <Controller
+                control={control}
+                name="email"
+                render={({field, fieldState}) => (
+                  <FormControl error={Boolean(errors.email)}>
+                    <InputLabel>Email</InputLabel>
+                    <OutlinedInput {...field} label="Email" type="email" />
+                    {fieldState.error && (
+                      <FormHelperText>{fieldState.error.message}</FormHelperText>
+                    )}
+                  </FormControl>
+                )}
+              />
+              <Button disabled={isLoading} type="submit" variant="contained">
+                Войти
+              </Button>
+            </Stack>
+          </form>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };

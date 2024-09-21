@@ -1,5 +1,4 @@
-// Need to use the React-specific entry point to import `createApi`
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {rootApi} from '@/lib/store/api';
 
 type PayloadOtp = {
   email: string;
@@ -7,18 +6,16 @@ type PayloadOtp = {
 
 type PayloadLogin = PayloadOtp & {otp: string};
 
-// Define a service using a base URL and expected endpoints
-export const authApi = createApi({
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:8080/api/v1'}),
-  reducerPath: 'authApi',
+export const authApi = rootApi.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<void, PayloadLogin>({
-      query: () => ({
+      query: (data) => ({
         method: 'POST',
         url: 'auth/login',
+        body: data,
       }),
     }),
-    otp: build.mutation<void, PayloadOtp>({
+    requestOtp: build.mutation<void, PayloadOtp>({
       query: (data) => ({
         method: 'POST',
         url: 'auth/otp',
@@ -28,4 +25,4 @@ export const authApi = createApi({
   }),
 });
 
-export const {useLoginMutation, useOtpMutation} = authApi;
+export const {useLoginMutation, useRequestOtpMutation} = authApi;

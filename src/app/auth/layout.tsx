@@ -6,7 +6,7 @@ export interface LayoutProps {
   children: React.ReactNode;
 }
 
-export const Layout = ({children}: LayoutProps): React.JSX.Element => {
+export default function Layout({children}: LayoutProps): React.JSX.Element {
   return (
     <Box sx={{display: 'flex', flex: '1 1 auto', flexDirection: 'column', pt: 30}}>
       <Box
@@ -18,8 +18,8 @@ export const Layout = ({children}: LayoutProps): React.JSX.Element => {
           p: 3,
         }}
       >
-        <Box sx={{maxWidth: '450px', width: '100%'}}>{children}</Box>
+        {children}
       </Box>
     </Box>
   );
-};
+}
