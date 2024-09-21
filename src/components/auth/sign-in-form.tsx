@@ -9,7 +9,6 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z as zod} from 'zod';
 
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -23,7 +22,6 @@ import {
 } from '@mui/material';
 
 import {useRequestOtpMutation} from '@/lib/store/features/authApi';
-import {isErrorWithMessage, isFetchBaseQueryError} from '@/lib/store/helpers';
 import {paths} from '@/paths';
 
 const schema = zod.object({
@@ -45,7 +43,6 @@ export const SignInForm = (): React.JSX.Element => {
   const {
     control,
     handleSubmit,
-    setError,
     formState: {errors},
   } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
 
@@ -58,18 +55,9 @@ export const SignInForm = (): React.JSX.Element => {
         });
 
         router.push(`${paths.auth.verifyCode}?${params.toString()}`);
-      } catch (err) {
-        // https://redux-toolkit.js.org/rtk-query/usage-with-typescript#inline-error-handling-example
-        if (isFetchBaseQueryError(err)) {
-          const errMsg = 'error' in err ? err.error : JSON.stringify(err.data);
-
-          setError('root', {type: 'server', message: errMsg});
-        } else if (isErrorWithMessage(err)) {
-          setError('root', {type: 'server', message: err.message});
-        }
-      }
+      } catch {}
     },
-    [requestOtp, setError, router],
+    [requestOtp, router],
   );
 
   return (
@@ -92,7 +80,6 @@ export const SignInForm = (): React.JSX.Element => {
                   </FormControl>
                 )}
               />
-              {errors.root && <Alert color="error">{errors.root.message}</Alert>}
               <Button disabled={isLoading} type="submit" variant="contained">
                 Войти
               </Button>

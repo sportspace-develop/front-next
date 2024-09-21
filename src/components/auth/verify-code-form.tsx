@@ -12,7 +12,6 @@ import {MuiOtpInput} from 'mui-one-time-password-input';
 import {z as zod} from 'zod';
 
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -27,7 +26,6 @@ import {
 } from '@mui/material';
 
 import {useLoginMutation} from '@/lib/store/features/authApi';
-import {isErrorWithMessage, isFetchBaseQueryError} from '@/lib/store/helpers';
 import {paths} from '@/paths';
 
 const schema = zod.object({
@@ -48,7 +46,6 @@ export const VerifyCodeForm = (): React.JSX.Element => {
   const {
     control,
     handleSubmit,
-    setError,
     formState: {errors},
   } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
 
@@ -57,18 +54,9 @@ export const VerifyCodeForm = (): React.JSX.Element => {
       try {
         await login({...values, email: email ?? ''}).unwrap();
         router.replace(paths.dashboard.teams);
-      } catch (err) {
-        // https://redux-toolkit.js.org/rtk-query/usage-with-typescript#inline-error-handling-example
-        if (isFetchBaseQueryError(err)) {
-          const errMsg = 'error' in err ? err.error : JSON.stringify(err.status);
-
-          setError('root', {type: 'server', message: errMsg});
-        } else if (isErrorWithMessage(err)) {
-          setError('root', {type: 'server', message: err.message});
-        }
-      }
+      } catch {}
     },
-    [login, email, setError, router],
+    [login, email, router],
   );
 
   return (
@@ -107,7 +95,6 @@ export const VerifyCodeForm = (): React.JSX.Element => {
                   </FormControl>
                 )}
               />
-              {errors.root && <Alert color="error">{errors.root.message}</Alert>}
               <Button disabled={isLoading} type="submit" variant="contained">
                 Отправить
               </Button>

@@ -2,6 +2,8 @@ import type {Metadata} from 'next';
 import {Inter} from 'next/font/google';
 
 import * as React from 'react';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import StoreProvider from '@/app/StoreProvider';
 import {ThemeProvider} from '@/components/core/theme-provider/theme-provider';
@@ -22,7 +24,10 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="ru">
         <body className={inter.className}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <ToastContainer autoClose={2000} />
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </StoreProvider>
