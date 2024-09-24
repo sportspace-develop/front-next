@@ -46,7 +46,7 @@ function NavBar({open, onClose}: NavBarProps): React.JSX.Element {
       }}
     >
       <HeaderToggle open={open} onToggle={onClose} isDrawer />
-      <Box component="nav" sx={{flex: '1 1 auto', p: '12px'}}>
+      <Box component="nav" sx={{flex: '1 1 auto', px: '12px'}}>
         {navItems.map(({key, ...item}) => (
           <NavItem key={key} pathname={pathname} {...item} />
         ))}

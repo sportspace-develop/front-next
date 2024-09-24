@@ -16,7 +16,7 @@ export default function Layout({children}: LayoutProps): React.JSX.Element {
           body: {
             '--NavBar-zIndex': 1100,
             '--MenuBar-width': '320px',
-            '--MenuHeader-height': '52px',
+            '--MenuHeader-height': '54px',
           },
         }}
       />
