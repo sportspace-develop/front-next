@@ -1,10 +1,8 @@
 'use client';
 
-import * as React from 'react';
-
 import {List as ListIcon} from '@phosphor-icons/react/dist/ssr/List';
 
-import {Avatar, Stack, ToggleButton, Typography} from '@mui/material';
+import {Avatar, Box, Stack, ToggleButton, Typography} from '@mui/material';
 
 type HeaderToggleProps = {
   open: boolean;
@@ -37,9 +35,25 @@ const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
       >
         <ListIcon color={open ? 'var(--mui-palette-common-white)' : 'currentColor'} size={30} />
       </ToggleButton>
-      <Stack sx={{justifyContent: 'center', alignItems: 'center', ml: {lg: 4, xs: 1}}}>
-        <Typography variant="h5" sx={{fontWeight: 600}}>
-          Sport space
+      <Stack
+        sx={{
+          display: isDrawer ? 'flex' : 'none',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          ml: {lg: 2, xs: 1},
+        }}
+      >
+        <Box alt="logo" component="img" src="/assets/logo.svg" width={45} height={45} />
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 600,
+            ml: 1,
+            color: open ? 'var(--mui-palette-primary-contrastText)' : 'currentColor',
+          }}
+        >
+          Sportspace
         </Typography>
       </Stack>
       {!isDrawer && <Avatar sx={{ml: 'auto', mr: 3, width: 30, height: 30}} />}
