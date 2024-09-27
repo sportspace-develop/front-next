@@ -4,18 +4,18 @@ import RouterLink from 'next/link';
 
 import * as React from 'react';
 
-import {Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-import {isNavItemActive} from '@/lib/is-nav-item-active';
-import type {NavItemConfig} from '@/types/nav';
+import { isNavItemActive } from '@/lib/is-nav-item-active';
+import type { NavItemConfig } from '@/types/nav';
 
-import {navIcons} from './nav-icons';
+import { navIcons } from './nav-icons';
 
 interface NavItemProps extends Omit<NavItemConfig, 'items'> {
   pathname: string;
 }
 
-const getWrapperProps = ({href, external}: {href?: string; external?: boolean}) => {
+const getWrapperProps = ({ href, external }: { href?: string; external?: boolean }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let wrapperProps: Record<string, any> = {};
 
@@ -54,12 +54,12 @@ export function NavItem({
   pathname,
   title,
 }: NavItemProps): React.JSX.Element {
-  const active = isNavItemActive({disabled, external, href, matcher, pathname});
+  const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const Icon = icon ? navIcons[icon] : null;
 
   return (
     <Box
-      {...getWrapperProps({external, href})}
+      {...getWrapperProps({ external, href })}
       sx={{
         alignItems: 'center',
         borderRadius: 1,
@@ -85,7 +85,9 @@ export function NavItem({
         border: 'none',
       }}
     >
-      <Box sx={{alignItems: 'center', display: 'flex', justifyContent: 'center', flex: '0 0 auto'}}>
+      <Box
+        sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', flex: '0 0 auto' }}
+      >
         {Icon && (
           <Icon
             fill={
@@ -96,7 +98,7 @@ export function NavItem({
           />
         )}
       </Box>
-      <Box sx={{flex: '1 1 auto'}}>
+      <Box sx={{ flex: '1 1 auto' }}>
         <Typography variant="h6">{title}</Typography>
       </Box>
     </Box>

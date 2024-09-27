@@ -1,11 +1,11 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 
-import {Box, Button, Container, Stack, Typography} from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 
-import {config} from '@/config';
-import {paths} from '@/paths';
+import { config } from '@/config';
+import { paths } from '@/paths';
 
-export const metadata = {title: `404 | ${config.site.name}`} satisfies Metadata;
+export const metadata = { title: `404 | ${config.site.name}` } satisfies Metadata;
 
 export default function Page(): React.JSX.Element {
   return (
@@ -34,7 +34,7 @@ export default function Page(): React.JSX.Element {
           <Button
             href={paths.dashboard.teams}
             variant="contained"
-            sx={{maxWidth: 'max-content', margin: 'auto'}}
+            sx={{ maxWidth: 'max-content', margin: 'auto' }}
           >
             Вернуться на главную
           </Button>

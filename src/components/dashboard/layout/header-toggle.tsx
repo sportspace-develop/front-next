@@ -1,8 +1,8 @@
 'use client';
 
-import {List as ListIcon} from '@phosphor-icons/react/dist/ssr/List';
+import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 
-import {Avatar, Box, Stack, ToggleButton, Typography} from '@mui/material';
+import { Avatar, Box, Stack, ToggleButton, Typography } from '@mui/material';
 
 type HeaderToggleProps = {
   open: boolean;
@@ -10,7 +10,7 @@ type HeaderToggleProps = {
   isDrawer?: boolean;
 };
 
-const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
+const HeaderToggle = ({ onToggle, open, isDrawer }: HeaderToggleProps) => {
   return (
     <Stack
       sx={{
@@ -29,7 +29,7 @@ const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
           border: 'none',
           ml: 2,
           p: 1,
-          display: {lg: 'none'},
+          display: { lg: 'none' },
         }}
         aria-label="toggle menu"
       >
@@ -41,7 +41,7 @@ const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          ml: {lg: 2, xs: 1},
+          ml: { lg: 2, xs: 1 },
         }}
       >
         <Box alt="logo" component="img" src="/assets/logo.svg" width={45} height={45} />
@@ -56,7 +56,7 @@ const HeaderToggle = ({onToggle, open, isDrawer}: HeaderToggleProps) => {
           Sportspace
         </Typography>
       </Stack>
-      {!isDrawer && <Avatar sx={{ml: 'auto', mr: 3, width: 30, height: 30}} />}
+      {!isDrawer && <Avatar sx={{ ml: 'auto', mr: 3, width: 30, height: 30 }} />}
     </Stack>
   );
 };

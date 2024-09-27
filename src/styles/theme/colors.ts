@@ -1,6 +1,6 @@
-import {alpha} from '@mui/material';
+import { alpha } from '@mui/material';
 // eslint-disable-next-line no-restricted-imports
-import type {PaletteRange} from '@mui/material/styles/createPalette';
+import type { PaletteRange } from '@mui/material/styles/createPalette';
 
 export const california = {
   50: '#fffaea',

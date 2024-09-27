@@ -1,21 +1,21 @@
 'use client';
 
-import {usePathname} from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import * as React from 'react';
 
-import {Box, Drawer, useMediaQuery, useTheme} from '@mui/material';
+import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
 
-import {navItems} from './config';
+import { navItems } from './config';
 import HeaderToggle from './header-toggle';
-import {NavItem} from './nav-item';
+import { NavItem } from './nav-item';
 
 interface NavBarProps {
   open: boolean;
   onClose: () => void;
 }
 
-function NavBar({open, onClose}: NavBarProps): React.JSX.Element {
+function NavBar({ open, onClose }: NavBarProps): React.JSX.Element {
   const pathname = usePathname();
   const theme = useTheme();
   const isLargeBreakpoint = useMediaQuery(theme.breakpoints.up('lg'));
@@ -38,16 +38,16 @@ function NavBar({open, onClose}: NavBarProps): React.JSX.Element {
           flexDirection: 'column',
           maxWidth: '100%',
           scrollbarWidth: 'none',
-          width: {md: 320, xs: '100%'},
+          width: { md: 320, xs: '100%' },
           zIndex: 'var(--NavBar-zIndex)',
           display: 'flex',
-          '&::-webkit-scrollbar': {display: 'none'},
+          '&::-webkit-scrollbar': { display: 'none' },
         },
       }}
     >
       <HeaderToggle open={open} onToggle={onClose} isDrawer />
-      <Box component="nav" sx={{flex: '1 1 auto', px: '12px'}}>
-        {navItems.map(({key, ...item}) => (
+      <Box component="nav" sx={{ flex: '1 1 auto', px: '12px' }}>
+        {navItems.map(({ key, ...item }) => (
           <NavItem key={key} pathname={pathname} {...item} />
         ))}
       </Box>

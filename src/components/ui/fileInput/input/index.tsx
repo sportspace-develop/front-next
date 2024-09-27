@@ -11,14 +11,14 @@ type InputProps = React.ComponentProps<'input'> & {
 
 const Input = React.forwardRef(
   (
-    {fileName, fileExtension, placeholder, error, ...restInputProps}: InputProps,
+    { fileName, fileExtension, placeholder, error, ...restInputProps }: InputProps,
     ref: React.ForwardedRef<HTMLInputElement>,
   ) => {
     const errorClassName = error ? styles.error : '';
 
     return (
       <label className={styles.label}>
-        <input style={{opacity: 0}} {...restInputProps} ref={ref} />
+        <input style={{ opacity: 0 }} {...restInputProps} ref={ref} />
         <span aria-placeholder={placeholder} className={styles.labelText}>
           {fileName && (
             <div className={`${styles.fileName} ${errorClassName}`}>

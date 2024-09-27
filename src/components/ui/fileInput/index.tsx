@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import {X as CloseIcon} from '@phosphor-icons/react/dist/ssr/X';
+import { X as CloseIcon } from '@phosphor-icons/react/dist/ssr/X';
 import prettyBytes from 'pretty-bytes';
 
-import {IconButton, InputAdornment, TextField, Typography} from '@mui/material';
+import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 
 import Input from './input';
-import type {FileInputProps} from './types';
+import type { FileInputProps } from './types';
 
 function matchIsFile(value: unknown): value is File {
   // Secure SSR
@@ -40,7 +40,7 @@ const FileInput = React.forwardRef(
     } = props;
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const {startAdornment, ...restInputProps} = InputProps || {};
+    const { startAdornment, ...restInputProps } = InputProps || {};
     const isMultiple =
       multiple || !!inputProps?.multiple || !!InputProps?.inputProps?.multiple || false;
 
@@ -95,12 +95,12 @@ const FileInput = React.forwardRef(
 
     const getTheInputText = () => {
       if (value === null || (Array.isArray(value) && value.length === 0)) {
-        return {placeholder: placeholder || ''};
+        return { placeholder: placeholder || '' };
       }
 
       if (value && hasAtLeastOneFile) {
         if (Array.isArray(value) && value.length > 1) {
-          return {fileName: `${value.length} files`};
+          return { fileName: `${value.length} files` };
         }
 
         return getFileDetails(value);
@@ -177,4 +177,4 @@ FileInput.displayName = 'FileInput';
 
 export default FileInput;
 
-export {FileInputProps};
+export { FileInputProps };

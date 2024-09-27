@@ -24,5 +24,5 @@ export function usePopover<T = HTMLElement>(): PopoverController<T> {
     setOpen((prevState) => !prevState);
   }, []);
 
-  return {anchorRef, handleClose, handleOpen, handleToggle, open};
+  return { anchorRef, handleClose, handleOpen, handleToggle, open };
 }

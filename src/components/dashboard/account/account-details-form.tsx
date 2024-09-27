@@ -18,10 +18,10 @@ import {
 } from '@mui/material';
 
 const states = [
-  {value: 'alabama', label: 'Alabama'},
-  {value: 'new-york', label: 'New York'},
-  {value: 'san-francisco', label: 'San Francisco'},
-  {value: 'los-angeles', label: 'Los Angeles'},
+  { value: 'alabama', label: 'Alabama' },
+  { value: 'new-york', label: 'New York' },
+  { value: 'san-francisco', label: 'San Francisco' },
+  { value: 'los-angeles', label: 'Los Angeles' },
 ] as const;
 
 export function AccountDetailsForm(): React.JSX.Element {
@@ -81,7 +81,7 @@ export function AccountDetailsForm(): React.JSX.Element {
           </Grid>
         </CardContent>
         <Divider />
-        <CardActions sx={{justifyContent: 'flex-end'}}>
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained">Save details</Button>
         </CardActions>
       </Card>

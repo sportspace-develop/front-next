@@ -1,10 +1,10 @@
-import {rootApi} from '@/lib/store/api';
+import { rootApi } from '@/lib/store/api';
 
 type PayloadOtp = {
   email: string;
 };
 
-type PayloadLogin = PayloadOtp & {otp: string};
+type PayloadLogin = PayloadOtp & { otp: string };
 
 export const authApi = rootApi.injectEndpoints({
   endpoints: (build) => ({
@@ -25,4 +25,4 @@ export const authApi = rootApi.injectEndpoints({
   }),
 });
 
-export const {useLoginMutation, useRequestOtpMutation} = authApi;
+export const { useLoginMutation, useRequestOtpMutation } = authApi;

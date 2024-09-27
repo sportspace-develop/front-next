@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Skeleton, Stack, Typography} from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
 const SkeletonList = React.memo(() =>
   Array(3)
@@ -14,9 +14,9 @@ const ListError = React.memo(() => {
       display="flex"
       spacing={3}
       sx={{
-        flexDirection: {md: 'row'},
+        flexDirection: { md: 'row' },
         alignItems: 'center',
-        justifyContent: {lg: 'space-around', xs: 'center'},
+        justifyContent: { lg: 'space-around', xs: 'center' },
       }}
     >
       <Box
@@ -26,8 +26,8 @@ const ListError = React.memo(() => {
         sx={{
           height: 'auto',
           maxWidth: '100%',
-          width: {xs: 300, lg: 400},
-          mx: {md: 4},
+          width: { xs: 300, lg: 400 },
+          mx: { md: 4 },
         }}
       />
       <Typography textAlign="center" variant="h5">
@@ -43,9 +43,9 @@ const ListNoData = React.memo(() => {
       display="flex"
       spacing={3}
       sx={{
-        flexDirection: {md: 'row'},
+        flexDirection: { md: 'row' },
         alignItems: 'center',
-        justifyContent: {lg: 'space-around', xs: 'center'},
+        justifyContent: { lg: 'space-around', xs: 'center' },
       }}
     >
       <Box
@@ -55,8 +55,8 @@ const ListNoData = React.memo(() => {
         sx={{
           height: 'auto',
           maxWidth: '100%',
-          width: {xs: 300, lg: 400},
-          mx: {md: 4},
+          width: { xs: 300, lg: 400 },
+          mx: { md: 4 },
         }}
       />
       <Stack spacing={1}>
@@ -71,10 +71,10 @@ const ListNoData = React.memo(() => {
   );
 });
 
-const ListHeader = React.memo(({text}: {text: string}) => (
-  <Typography variant="h4" sx={{flex: '1 1 auto'}}>
+const ListHeader = React.memo(({ text }: { text: string }) => (
+  <Typography variant="h4" sx={{ flex: '1 1 auto' }}>
     {text}
   </Typography>
 ));
 
-export {ListError, ListNoData, SkeletonList, ListHeader};
+export { ListError, ListNoData, SkeletonList, ListHeader };

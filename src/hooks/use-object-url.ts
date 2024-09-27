@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 //TODO: добавить получение width и height, может переделать в промис
 const useObjectURL = (initialObject: null | File | Blob | MediaSource) => {

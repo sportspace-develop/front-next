@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 module.exports = {
   printWidth: 100,
-  bracketSpacing: false,
+  bracketSpacing: true,
   singleQuote: true,
   semi: true,
   bracketSameLine: false,

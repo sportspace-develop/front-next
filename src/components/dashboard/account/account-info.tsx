@@ -24,11 +24,11 @@ export function AccountInfo(): React.JSX.Element {
   return (
     <Card>
       <CardContent>
-        <Stack spacing={2} sx={{alignItems: 'center'}}>
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
           <div>
-            <Avatar src={user.avatar} sx={{height: '80px', width: '80px'}} />
+            <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
           </div>
-          <Stack spacing={1} sx={{textAlign: 'center'}}>
+          <Stack spacing={1} sx={{ textAlign: 'center' }}>
             <Typography variant="h5">{user.name}</Typography>
             <Typography color="text.secondary" variant="body2">
               {user.city} {user.country}

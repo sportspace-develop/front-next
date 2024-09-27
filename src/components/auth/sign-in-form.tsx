@@ -1,12 +1,12 @@
 'use client';
 
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import * as React from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
-import {zodResolver} from '@hookform/resolvers/zod';
-import {z as zod} from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z as zod } from 'zod';
 
 import {
   Box,
@@ -21,30 +21,30 @@ import {
   Stack,
 } from '@mui/material';
 
-import {useRequestOtpMutation} from '@/lib/store/features/authApi';
-import {paths} from '@/paths';
+import { useRequestOtpMutation } from '@/lib/store/features/authApi';
+import { paths } from '@/paths';
 
 const schema = zod.object({
   email: zod
     .string()
-    .min(1, {message: 'Обязательно к заполнению'})
-    .email({message: 'Невалидный email'}),
+    .min(1, { message: 'Обязательно к заполнению' })
+    .email({ message: 'Невалидный email' }),
 });
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = {email: 'help@sportspace.com'} satisfies Values;
+const defaultValues = { email: 'help@sportspace.com' } satisfies Values;
 
 export const SignInForm = (): React.JSX.Element => {
   const router = useRouter();
 
-  const [requestOtp, {isLoading}] = useRequestOtpMutation();
+  const [requestOtp, { isLoading }] = useRequestOtpMutation();
 
   const {
     control,
     handleSubmit,
-    formState: {errors},
-  } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
+    formState: { errors },
+  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
@@ -61,16 +61,16 @@ export const SignInForm = (): React.JSX.Element => {
   );
 
   return (
-    <Box sx={{maxWidth: '450px', width: '100%'}}>
+    <Box sx={{ maxWidth: '450px', width: '100%' }}>
       <Card elevation={16}>
-        <CardHeader sx={{pb: 0}} title="Войти" />
+        <CardHeader sx={{ pb: 0 }} title="Войти" />
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               <Controller
                 control={control}
                 name="email"
-                render={({field, fieldState}) => (
+                render={({ field, fieldState }) => (
                   <FormControl error={Boolean(errors.email)}>
                     <InputLabel>Email</InputLabel>
                     <OutlinedInput {...field} label="Email" type="email" />

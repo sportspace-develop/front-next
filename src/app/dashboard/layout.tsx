@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Box, Container, GlobalStyles} from '@mui/material';
+import { Box, Container, GlobalStyles } from '@mui/material';
 
 import Header from '@/components/dashboard/layout/header';
 
@@ -8,7 +8,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({children}: LayoutProps): React.JSX.Element {
+export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
     <>
       <GlobalStyles
@@ -36,11 +36,11 @@ export default function Layout({children}: LayoutProps): React.JSX.Element {
             flex: '1 1 auto',
             flexDirection: 'column',
             mt: 'var(--MenuHeader-height)',
-            pl: {lg: 'var(--MenuBar-width)'},
+            pl: { lg: 'var(--MenuBar-width)' },
           }}
         >
           <main>
-            <Container maxWidth="xl" sx={{py: 3}}>
+            <Container maxWidth="xl" sx={{ py: 3 }}>
               {children}
             </Container>
           </main>
