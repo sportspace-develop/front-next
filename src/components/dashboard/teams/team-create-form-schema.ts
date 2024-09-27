@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -8,9 +8,9 @@ export const teamCreateFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, {message: 'Обязательно к заполнению'})
-    .min(3, {message: 'Название слишком короткое - должно быть минимум 3 символа'})
-    .max(32, {message: 'Название слишком длинное - должно быть макисмум 32 символа'}),
+    .min(1, { message: 'Обязательно к заполнению' })
+    .min(3, { message: 'Название слишком короткое - должно быть минимум 3 символа' })
+    .max(32, { message: 'Название слишком длинное - должно быть макисмум 32 символа' }),
   logoFile: z
     .instanceof(File)
     .nullable()

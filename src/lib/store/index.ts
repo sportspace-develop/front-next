@@ -1,6 +1,6 @@
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-import {listenerMiddleware, rootApi} from '@/lib/store/api';
+import { listenerMiddleware, rootApi } from '@/lib/store/api';
 
 export const makeStore = () => {
   return configureStore({

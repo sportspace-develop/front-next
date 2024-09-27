@@ -1,12 +1,12 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 
 import * as React from 'react';
 
-import {Unstable_Grid2 as Grid, Stack, Typography} from '@mui/material';
+import { Unstable_Grid2 as Grid, Stack, Typography } from '@mui/material';
 
-import {AccountDetailsForm} from '@/components/dashboard/account/account-details-form';
-import {AccountInfo} from '@/components/dashboard/account/account-info';
-import {config} from '@/config';
+import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
+import { AccountInfo } from '@/components/dashboard/account/account-info';
+import { config } from '@/config';
 
 export const metadata = {
   title: `Аккаунт | ${config.site.name}`,

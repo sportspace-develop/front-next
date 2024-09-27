@@ -1,14 +1,14 @@
-import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
 import * as React from 'react';
-import {ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import StoreProvider from '@/app/StoreProvider';
-import {ThemeProvider} from '@/components/core/theme-provider/theme-provider';
+import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SportSpace',

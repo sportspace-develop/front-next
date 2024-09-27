@@ -1,4 +1,4 @@
-import type {TextFieldProps as MuiTextFieldProps} from '@mui/material/TextField';
+import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 
 type TextFieldProps = Omit<
   MuiTextFieldProps,

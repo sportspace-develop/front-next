@@ -1,12 +1,12 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 
 import * as React from 'react';
 
-import {Unstable_Grid2 as Grid, Stack} from '@mui/material';
+import { Unstable_Grid2 as Grid, Stack } from '@mui/material';
 
-import {Tournament, TournamentCard} from '@/components/dashboard/tournament/tournament-card';
-import {ListHeader, ListNoData} from '@/components/ui/list';
-import {config} from '@/config';
+import { Tournament, TournamentCard } from '@/components/dashboard/tournament/tournament-card';
+import { ListHeader, ListNoData } from '@/components/ui/list';
+import { config } from '@/config';
 
 export const metadata = {
   title: `Tournaments | Dashboard | ${config.site.name}`,

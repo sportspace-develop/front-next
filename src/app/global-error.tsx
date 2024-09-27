@@ -2,14 +2,14 @@
 
 import * as React from 'react';
 
-import {Box, Button, Container, Stack, Typography} from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 
 // https://nextjs.org/docs/app/api-reference/file-conventions/error#global-errorjs
 export default function GlobalError({
   error,
   reset,
 }: {
-  error: Error & {digest?: string};
+  error: Error & { digest?: string };
   reset: () => void;
 }) {
   React.useEffect(() => {
@@ -42,7 +42,7 @@ export default function GlobalError({
           <Button
             onClick={() => reset()}
             variant="contained"
-            sx={{maxWidth: 'max-content', margin: 'auto'}}
+            sx={{ maxWidth: 'max-content', margin: 'auto' }}
           >
             Попробовать еще раз
           </Button>

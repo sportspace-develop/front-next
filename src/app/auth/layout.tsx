@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({children}: LayoutProps): React.JSX.Element {
+export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
-    <Box sx={{display: 'flex', flex: '1 1 auto', flexDirection: 'column', pt: 30}}>
+    <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pt: 30 }}>
       <Box
         sx={{
           alignItems: 'center',

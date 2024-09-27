@@ -1,15 +1,15 @@
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
-import {createListenerMiddleware, isAllOf, isRejected} from '@reduxjs/toolkit';
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import { createListenerMiddleware, isAllOf, isRejected } from '@reduxjs/toolkit';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import {isErrorWithMessage, isFetchBaseQueryError} from '@/lib/store/helpers';
+import { isErrorWithMessage, isFetchBaseQueryError } from '@/lib/store/helpers';
 
 const listenerMiddleware = createListenerMiddleware();
 
 const rootApi = createApi({
   reducerPath: 'rootApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:8080/api/v1'}),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/v1' }),
   endpoints: () => ({}),
 });
 
@@ -24,4 +24,4 @@ listenerMiddleware.startListening({
   },
 });
 
-export {rootApi, listenerMiddleware};
+export { rootApi, listenerMiddleware };

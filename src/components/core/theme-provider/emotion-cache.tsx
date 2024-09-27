@@ -1,16 +1,16 @@
 'use client';
 
-import {useServerInsertedHTML} from 'next/navigation';
+import { useServerInsertedHTML } from 'next/navigation';
 
 import * as React from 'react';
 
 import createCache from '@emotion/cache';
-import type {EmotionCache, Options as OptionsOfCreateCache} from '@emotion/cache';
-import {CacheProvider as DefaultCacheProvider} from '@emotion/react';
+import type { EmotionCache, Options as OptionsOfCreateCache } from '@emotion/cache';
+import { CacheProvider as DefaultCacheProvider } from '@emotion/react';
 
 interface Registry {
   cache: EmotionCache;
-  flush: () => {name: string; isGlobal: boolean}[];
+  flush: () => { name: string; isGlobal: boolean }[];
 }
 
 export interface NextAppDirEmotionCacheProviderProps {
@@ -26,7 +26,7 @@ export interface NextAppDirEmotionCacheProviderProps {
 export default function NextAppDirEmotionCacheProvider(
   props: NextAppDirEmotionCacheProviderProps,
 ): React.JSX.Element {
-  const {options, CacheProvider = DefaultCacheProvider, children} = props;
+  const { options, CacheProvider = DefaultCacheProvider, children } = props;
 
   const [registry] = React.useState<Registry>(() => {
     const cache = createCache(options);
@@ -34,19 +34,19 @@ export default function NextAppDirEmotionCacheProvider(
     cache.compat = true;
     // eslint-disable-next-line @typescript-eslint/unbound-method -- Expected
     const prevInsert = cache.insert;
-    let inserted: {name: string; isGlobal: boolean}[] = [];
+    let inserted: { name: string; isGlobal: boolean }[] = [];
 
     cache.insert = (...args) => {
       const [selector, serialized] = args;
 
       if (cache.inserted[serialized.name] === undefined) {
-        inserted.push({name: serialized.name, isGlobal: !selector});
+        inserted.push({ name: serialized.name, isGlobal: !selector });
       }
 
       return prevInsert(...args);
     };
 
-    const flush = (): {name: string; isGlobal: boolean}[] => {
+    const flush = (): { name: string; isGlobal: boolean }[] => {
       const prevInserted = inserted;
 
       inserted = [];
@@ -54,7 +54,7 @@ export default function NextAppDirEmotionCacheProvider(
       return prevInserted;
     };
 
-    return {cache, flush};
+    return { cache, flush };
   });
 
   useServerInsertedHTML((): React.JSX.Element | null => {
@@ -67,14 +67,14 @@ export default function NextAppDirEmotionCacheProvider(
     let styles = '';
     let dataEmotionAttribute = registry.cache.key;
 
-    const globals: {name: string; style: string}[] = [];
+    const globals: { name: string; style: string }[] = [];
 
-    inserted.forEach(({name, isGlobal}) => {
+    inserted.forEach(({ name, isGlobal }) => {
       const style = registry.cache.inserted[name];
 
       if (typeof style !== 'boolean') {
         if (isGlobal) {
-          globals.push({name, style: style ?? ''});
+          globals.push({ name, style: style ?? '' });
         } else {
           styles += style;
           dataEmotionAttribute += ` ${name}`;
@@ -85,16 +85,16 @@ export default function NextAppDirEmotionCacheProvider(
     return (
       <React.Fragment>
         {globals.map(
-          ({name, style}): React.JSX.Element => (
+          ({ name, style }): React.JSX.Element => (
             <style
-              dangerouslySetInnerHTML={{__html: style}}
+              dangerouslySetInnerHTML={{ __html: style }}
               data-emotion={`${registry.cache.key}-global ${name}`}
               key={name}
             />
           ),
         )}
         {styles ? (
-          <style dangerouslySetInnerHTML={{__html: styles}} data-emotion={dataEmotionAttribute} />
+          <style dangerouslySetInnerHTML={{ __html: styles }} data-emotion={dataEmotionAttribute} />
         ) : null}
       </React.Fragment>
     );

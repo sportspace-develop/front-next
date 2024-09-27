@@ -1,11 +1,11 @@
-import {Locale, format, isValid} from 'date-fns';
+import { Locale, format, isValid } from 'date-fns';
 import localeRu from 'date-fns/locale/ru';
 import deepmerge from 'deepmerge';
 
 export type TSettings = {
   locale: Locale;
   format: string;
-  formatter: (date: Date, format: string, options: {locale: Locale}) => string;
+  formatter: (date: Date, format: string, options: { locale: Locale }) => string;
 };
 
 export const defaultSettings: TSettings = {
@@ -24,7 +24,7 @@ const formatDate = <S extends TSettings = TSettings>(date: Date, payloadSettings
   if (isValid(date)) {
     const settings = deepmerge(defaultSettings, payloadSettings || {});
 
-    return settings.formatter(date, settings.format, {locale: settings.locale});
+    return settings.formatter(date, settings.format, { locale: settings.locale });
   }
 
   return null;

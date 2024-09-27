@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import {AppBar} from '@mui/material';
+import { AppBar } from '@mui/material';
 
 import HeaderToggle from './header-toggle';
 import NavBar from './nav-bar';

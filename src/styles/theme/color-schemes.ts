@@ -1,12 +1,12 @@
-import type {ColorSystemOptions} from '@mui/material/styles';
+import type { ColorSystemOptions } from '@mui/material/styles';
 
-import {california, kepple, neonBlue, nevada, redOrange, shakespeare, stormGrey} from './colors';
-import type {ColorScheme} from './types';
+import { california, kepple, neonBlue, nevada, redOrange, shakespeare, stormGrey } from './colors';
+import type { ColorScheme } from './types';
 
 export const colorSchemes = {
   dark: {
     palette: {
-      action: {disabledBackground: 'rgba(0, 0, 0, 0.12)'},
+      action: { disabledBackground: 'rgba(0, 0, 0, 0.12)' },
       background: {
         default: 'var(--mui-palette-neutral-950)',
         defaultChannel: '9 10 11',
@@ -17,7 +17,7 @@ export const colorSchemes = {
         level2: 'var(--mui-palette-neutral-700)',
         level3: 'var(--mui-palette-neutral-600)',
       },
-      common: {black: '#000000', white: '#ffffff'},
+      common: { black: '#000000', white: '#ffffff' },
       divider: 'var(--mui-palette-neutral-700)',
       dividerChannel: '50 56 62',
       error: {
@@ -34,7 +34,7 @@ export const colorSchemes = {
         dark: shakespeare[500],
         contrastText: 'var(--mui-palette-common-black)',
       },
-      neutral: {...nevada},
+      neutral: { ...nevada },
       primary: {
         ...neonBlue,
         light: neonBlue[300],
@@ -74,7 +74,7 @@ export const colorSchemes = {
   },
   light: {
     palette: {
-      action: {disabledBackground: 'rgba(0, 0, 0, 0.06)'},
+      action: { disabledBackground: 'rgba(0, 0, 0, 0.06)' },
       background: {
         default: 'var(--mui-palette-common-white)',
         defaultChannel: '255 255 255',
@@ -85,7 +85,7 @@ export const colorSchemes = {
         level2: 'var(--mui-palette-neutral-100)',
         level3: 'var(--mui-palette-neutral-200)',
       },
-      common: {black: '#000000', white: '#ffffff'},
+      common: { black: '#000000', white: '#ffffff' },
       divider: 'var(--mui-palette-neutral-200)',
       dividerChannel: '220 223 228',
       error: {
@@ -102,7 +102,7 @@ export const colorSchemes = {
         dark: shakespeare[600],
         contrastText: 'var(--mui-palette-common-white)',
       },
-      neutral: {...stormGrey},
+      neutral: { ...stormGrey },
       primary: {
         ...neonBlue,
         light: neonBlue[400],

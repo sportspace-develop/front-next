@@ -1,6 +1,6 @@
 export const paths = {
   home: '/',
-  auth: {signIn: '/auth/sign-in', verifyCode: '/auth/verify-code'},
+  auth: { signIn: '/auth/sign-in', verifyCode: '/auth/verify-code' },
   dashboard: {
     overview: '/dashboard',
     account: '/dashboard/account',
