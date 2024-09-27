@@ -24,7 +24,7 @@ import {
   Stack,
 } from '@mui/material';
 
-import FileInput from '@/components/ui/fileInput';
+import FileInput from '@/components/ui/file-input';
 import useObjectURL from '@/hooks/use-object-url';
 import { paths } from '@/paths';
 

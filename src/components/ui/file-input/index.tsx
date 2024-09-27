@@ -158,7 +158,6 @@ const FileInput = React.forwardRef(
             ...getTheInputText(),
             multiple: isMultiple,
             ref: inputRef,
-            isPlaceholder: !hasAtLeastOneFile,
             placeholder,
             error: restTextFieldProps.error,
             ...inputProps,

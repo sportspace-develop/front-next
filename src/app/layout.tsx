@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import StoreProvider from '@/app/StoreProvider';
+import DatePickerProvider from '@/components/core/date-picker-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -45,7 +46,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <ThemeProvider>
             <ToastContainer autoClose={2000} />
-            {children}
+            <DatePickerProvider>{children}</DatePickerProvider>
           </ThemeProvider>
         </body>
       </html>

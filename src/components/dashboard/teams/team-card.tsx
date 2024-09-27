@@ -1,3 +1,5 @@
+import NextLink from 'next/link';
+
 import * as React from 'react';
 
 import {
@@ -11,6 +13,7 @@ import {
 } from '@mui/material';
 
 import formatDate from '@/lib/format-date';
+import { paths } from '@/paths';
 
 export type Team = {
   id: string;
@@ -27,7 +30,7 @@ interface TeamCardProps {
 export const TeamCard = ({ item }: TeamCardProps): React.JSX.Element => {
   return (
     <Card sx={{ display: 'flex' }}>
-      <CardActionArea>
+      <CardActionArea component={NextLink} href={`${paths.dashboard.teams}/${item.id}/edit`}>
         <CardMedia sx={{ height: 200, display: 'flex' }} image={item.picture} title={item.name}>
           {!item.picture && <Avatar sx={{ height: 180, width: 180, m: 'auto' }} />}
         </CardMedia>

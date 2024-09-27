@@ -1,5 +1,6 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material';
-import { ruRU } from '@mui/material/locale';
+import { ruRU as coreRuRU } from '@mui/material/locale';
+import { ruRU } from '@mui/x-date-pickers/locales';
 
 import { colorSchemes } from './color-schemes';
 import { components } from './components/components';
@@ -34,5 +35,6 @@ export function createTheme(): Theme {
       typography,
     },
     ruRU,
+    coreRuRU,
   );
 }
