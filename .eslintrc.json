@@ -87,6 +87,14 @@
       }
     ],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-uses-react": "off"
+    "react/jsx-uses-react": "off",
+    "import/no-named-as-default": "error", // Правило для импорта React
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ImportDeclaration[source.value='react'][importKind='value'] ImportSpecifier",
+        "message": "Use default import for React (e.g., `import * as React from 'react';`)"
+      }
+    ]
   }
 }
