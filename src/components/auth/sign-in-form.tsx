@@ -8,18 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z as zod } from 'zod';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-} from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Stack, TextField } from '@mui/material';
 
 import { useRequestOtpMutation } from '@/lib/store/features/authApi';
 import { paths } from '@/paths';
@@ -40,11 +29,10 @@ export const SignInForm = (): React.JSX.Element => {
 
   const [requestOtp, { isLoading }] = useRequestOtpMutation();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
+  const { control, handleSubmit } = useForm<Values>({
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
@@ -71,13 +59,13 @@ export const SignInForm = (): React.JSX.Element => {
                 control={control}
                 name="email"
                 render={({ field, fieldState }) => (
-                  <FormControl error={Boolean(errors.email)}>
-                    <InputLabel>Email</InputLabel>
-                    <OutlinedInput {...field} label="Email" type="email" />
-                    {fieldState.error && (
-                      <FormHelperText>{fieldState.error.message}</FormHelperText>
-                    )}
-                  </FormControl>
+                  <TextField
+                    {...field}
+                    label="Email"
+                    fullWidth
+                    helperText={fieldState.error?.message}
+                    error={fieldState.invalid}
+                  />
                 )}
               />
               <Button disabled={isLoading} type="submit" variant="contained">
