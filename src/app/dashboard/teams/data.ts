@@ -12,20 +12,17 @@ export const teams: Team[] = [
     id: '0',
     name: 'пример самого длинного к названия',
     picture: PICTURE1,
-    // logo: IMG1,
     createdAt: subDays(new Date(), 3),
   },
   {
     id: '1',
     name: 'ATLETICO',
-    // picture: PICTURE2,
     logo: IMG2,
     createdAt: subDays(new Date(), 2),
   },
   {
     id: '2',
     name: 'VSEPROSPORT.RU',
-    // picture: PICTURE1,
     logo: IMG1,
     createdAt: subDays(new Date(), 2),
   },
@@ -33,7 +30,6 @@ export const teams: Team[] = [
     id: '3',
     name: 'ATLETICO',
     picture: PICTURE2,
-    // logo: IMG2,
     createdAt: subDays(new Date(), 1),
   },
 ];

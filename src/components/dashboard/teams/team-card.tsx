@@ -30,7 +30,7 @@ interface TeamCardProps {
 export const TeamCard = ({ item }: TeamCardProps): React.JSX.Element => {
   return (
     <Card sx={{ display: 'flex' }}>
-      <CardActionArea component={NextLink} href={`${paths.dashboard.teams}/${item.id}/edit`}>
+      <CardActionArea component={NextLink} href={`${paths.dashboard.teams.index}/${item.id}/edit`}>
         <CardMedia sx={{ height: 200, display: 'flex' }} image={item.picture} title={item.name}>
           {!item.picture && <Avatar sx={{ height: 180, width: 180, m: 'auto' }} />}
         </CardMedia>

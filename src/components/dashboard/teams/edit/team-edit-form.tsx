@@ -24,7 +24,6 @@ import {
 import { teams } from '@/app/dashboard/teams/data';
 import FileInput from '@/components/ui/file-input';
 import useObjectURL from '@/hooks/use-object-url';
-import useOnChange from '@/hooks/use-on-change';
 import { paths } from '@/paths';
 
 import {
@@ -40,7 +39,7 @@ const defaultValues: TeamEditFormData = {
   name: '',
   logoFile: null,
   pictureFile: null,
-  players: [getInitialValuesPlayer()],
+  players: [],
 };
 
 type TeamEditFormProps = {
@@ -49,10 +48,16 @@ type TeamEditFormProps = {
 };
 
 const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
-  const router = useRouter();
-
   // HARDCODE
-  const value = id ? teams[Number(id)] : null;
+  const value = React.useMemo(() => {
+    if (id) {
+      return { ...teams[Number(id)], players: [getInitialValuesPlayer()] };
+    }
+
+    return defaultValues;
+  }, [id]);
+
+  const router = useRouter();
 
   const methods = useForm<TeamEditFormData>({
     defaultValues,
@@ -62,13 +67,13 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
   const logoUrl = useObjectURL(methods.watch('logoFile'));
   const pictureUrl = useObjectURL(methods.watch('pictureFile'));
 
-  useOnChange(() => methods.reset(value), [value]);
+  React.useEffect(() => methods.reset(value), [methods, value]);
 
   const onSubmit = React.useCallback(
     async (_: TeamEditFormData): Promise<void> => {
       // setIsPending(true);
       // HARDCODE
-      router.replace(paths.dashboard.teams);
+      router.replace(paths.dashboard.teams.index);
       // setIsPending(false);
     },
     [router],

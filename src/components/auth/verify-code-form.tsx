@@ -53,7 +53,7 @@ export const VerifyCodeForm = (): React.JSX.Element => {
     async (values: Values) => {
       try {
         await login({ ...values, email: email ?? '' }).unwrap();
-        router.replace(paths.dashboard.teams);
+        router.replace(paths.dashboard.teams.index);
       } catch {}
     },
     [login, email, router],

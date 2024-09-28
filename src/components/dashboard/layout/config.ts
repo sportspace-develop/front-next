@@ -10,6 +10,6 @@ export const navItems: NavItemConfig[] = [
     href: paths.dashboard.tournaments,
     icon: NavIconNames.trophy,
   },
-  { key: 'teams', title: 'Команды', href: paths.dashboard.teams, icon: NavIconNames.users },
+  { key: 'teams', title: 'Команды', href: paths.dashboard.teams.index, icon: NavIconNames.users },
   { key: 'account', title: 'Аккаунт', href: paths.dashboard.account, icon: NavIconNames.user },
 ];

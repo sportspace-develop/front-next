@@ -14,7 +14,7 @@ import { paths } from '@/paths';
 
 import { teams } from './data';
 
-export const metadata = { title: `Команды | ${config.site.name}` } satisfies Metadata;
+export const metadata = { title: `Список команд | ${config.site.name}` } satisfies Metadata;
 
 export default function Page(): React.JSX.Element {
   const isEmptyList = teams.length === 0;
@@ -25,7 +25,7 @@ export default function Page(): React.JSX.Element {
         <ListHeader text="Команды" />
         <Button
           component={NextLink}
-          href={paths.dashboard.teamsNew}
+          href={paths.dashboard.teams.new}
           startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
           variant="contained"
         >

@@ -5,7 +5,7 @@ import { teamEditFormSchema } from './constants';
 export type PlayerType = {
   id: string;
   fio: string;
-  birthDate?: Date;
+  birthDate: Date | null;
   photo: File | null;
 };
 

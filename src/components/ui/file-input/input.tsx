@@ -66,7 +66,6 @@ const Input = React.forwardRef(
     );
   },
 );
-// as ElementType<InputBaseComponentProps, keyof IntrinsicElements> | undefined;
 
 Input.displayName = 'Input';
 

@@ -1,6 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
 import { z as zod } from 'zod';
-
-import uuidv4 from '@/lib/uuidv4';
 
 import { PlayerType } from './types';
 
@@ -11,6 +10,7 @@ export const getInitialValuesPlayer = (): PlayerType => ({
   id: uuidv4(),
   fio: '',
   photo: null,
+  birthDate: null,
 });
 
 export const MAX_PLAYER_FIO_LENGTH = 130;
@@ -33,17 +33,15 @@ export const playerEditFormSchema = {
     ),
   birthDate: zod
     .date({
-      required_error: 'Поле обязательно',
-      //@ts-ignore TODO исправить после добавления переводов
-      invalidDate: 'Некорректный формат даты',
+      errorMap: (issue, { defaultError }) => ({
+        message: issue.code === 'invalid_date' ? 'Некорректный формат даты' : defaultError,
+      }),
     })
-    .refine((date) => !isNaN(date.getTime()), {
-      message: 'Некорректная дата',
-    })
-    .refine((date) => date <= new Date(), {
+    .nullable()
+    .refine((date) => !date || date <= new Date(), {
       message: 'Дата не может быть в будущем',
     })
-    .refine((date) => date.getFullYear() >= 1900, {
+    .refine((date) => !date || date.getFullYear() >= 1900, {
       message: 'Дата должна быть не ранее 1900 года',
     }),
 };
@@ -75,5 +73,5 @@ export const teamEditFormSchema = zod.object({
       (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file?.type),
       'Формат файла должен быть jpg, jpeg или png',
     ),
-  players: zod.object(playerEditFormSchema).array(),
+  players: zod.object(playerEditFormSchema).array().optional(),
 });

@@ -14,10 +14,8 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
-import { DateField } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
 
@@ -25,9 +23,6 @@ import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, getInitialValuesPlayer } f
 import { TeamEditFormData } from './types';
 
 const PlayerFormContent = React.memo(() => {
-  const theme = useTheme();
-  const isLessThanMid = useMediaQuery(theme.breakpoints.down('md'));
-
   const { control } = useFormContext<TeamEditFormData>();
 
   const {
@@ -52,14 +47,12 @@ const PlayerFormContent = React.memo(() => {
 
         return (
           <Stack key={player.id} spacing={1} sx={{ flexDirection: { md: 'row' } }}>
-            {isLessThanMid && (
-              <Stack flexDirection="row" sx={{ alignItems: 'center' }}>
-                <Typography variant="subtitle1">Игрок №{index + 1}</Typography>
-                <IconButton onClick={handleRemovePlayer} disabled={hasOnePlayer}>
-                  <TrashIcon />
-                </IconButton>
-              </Stack>
-            )}
+            <Stack flexDirection="row" sx={{ alignItems: 'center', display: { md: 'none' } }}>
+              <Typography variant="subtitle1">Игрок №{index + 1}</Typography>
+              <IconButton onClick={handleRemovePlayer} disabled={hasOnePlayer}>
+                <TrashIcon />
+              </IconButton>
+            </Stack>
             <Grid container spacing={2} flex={1}>
               <Grid md={5} xs={12}>
                 <Controller
@@ -81,19 +74,19 @@ const PlayerFormContent = React.memo(() => {
                 <Controller
                   control={control}
                   name={`players.${index}.birthDate`}
-                  render={({ field, fieldState }) => {
-                    console.log(typeof field.value);
-
-                    return (
-                      <DateField
-                        {...field}
-                        label="Дата рождения"
-                        fullWidth
-                        helperText={fieldState.error?.message}
-                        error={fieldState.invalid}
-                      />
-                    );
-                  }}
+                  render={({ field, fieldState }) => (
+                    <DatePicker
+                      {...field}
+                      label="Дата рождения"
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          error: fieldState.invalid,
+                          helperText: fieldState.error?.message,
+                        },
+                      }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid md={4} xs={12}>
@@ -113,23 +106,21 @@ const PlayerFormContent = React.memo(() => {
                 />
               </Grid>
             </Grid>
-            {!isLessThanMid && (
-              <Box display="flex">
-                <IconButton
-                  onClick={handleRemovePlayer}
-                  sx={{
-                    maxHeight: 'max-content',
-                    width: 'max-content',
-                    alignItems: 'flex-start',
-                    mt: 1,
-                  }}
-                  disabled={hasOnePlayer}
-                >
-                  <TrashIcon />
-                </IconButton>
-              </Box>
-            )}
-            {isLessThanMid && isNotLastPlayer && <Divider sx={{ mt: 2 }} />}
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton
+                onClick={handleRemovePlayer}
+                sx={{
+                  maxHeight: 'max-content',
+                  width: 'max-content',
+                  alignItems: 'flex-start',
+                  mt: 1,
+                }}
+                disabled={hasOnePlayer}
+              >
+                <TrashIcon />
+              </IconButton>
+            </Box>
+            {isNotLastPlayer && <Divider sx={{ mt: 2, display: { md: 'none' } }} />}
           </Stack>
         );
       })}
