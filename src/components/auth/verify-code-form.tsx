@@ -29,7 +29,7 @@ import { useLoginMutation } from '@/lib/store/features/authApi';
 import { paths } from '@/paths';
 
 const schema = zod.object({
-  otp: zod.string().min(1, { message: 'Обязательно к заполнению' }).max(8),
+  otp: zod.string().min(1, { message: 'Поле обязательно' }).max(8),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -53,7 +53,7 @@ export const VerifyCodeForm = (): React.JSX.Element => {
     async (values: Values) => {
       try {
         await login({ ...values, email: email ?? '' }).unwrap();
-        router.replace(paths.dashboard.teams);
+        router.replace(paths.dashboard.teams.index);
       } catch {}
     },
     [login, email, router],

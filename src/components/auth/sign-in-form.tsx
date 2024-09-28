@@ -27,7 +27,7 @@ import { paths } from '@/paths';
 const schema = zod.object({
   email: zod
     .string()
-    .min(1, { message: 'Обязательно к заполнению' })
+    .min(1, { message: 'Поле обязательно' })
     .email({ message: 'Невалидный email' }),
 });
 

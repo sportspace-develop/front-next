@@ -1,6 +1,9 @@
 import type { Components } from '@mui/material/styles';
 
 import type { Theme } from '../types';
+import { MuiAccordion } from './accordion';
+import { MuiAccordionDetails } from './accordion-details';
+import { MuiAccordionSummary } from './accordion-summary';
 import { MuiAppBar } from './app-bar';
 import { MuiAvatar } from './avatar';
 import { MuiButton } from './button';
@@ -16,6 +19,9 @@ import { MuiTableHead } from './table-head';
 
 export const components = {
   MuiAppBar,
+  MuiAccordion,
+  MuiAccordionSummary,
+  MuiAccordionDetails,
   MuiAvatar,
   MuiButton,
   MuiCard,

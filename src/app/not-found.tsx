@@ -32,7 +32,7 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h3">Страница не найдена</Typography>
           <Typography variant="subtitle1">Но есть другие полезные страницы</Typography>
           <Button
-            href={paths.dashboard.teams}
+            href={paths.dashboard.teams.index}
             variant="contained"
             sx={{ maxWidth: 'max-content', margin: 'auto' }}
           >

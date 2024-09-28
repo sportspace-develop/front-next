@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Paperclip as PaperclipIcon } from '@phosphor-icons/react/dist/ssr/Paperclip';
 import { X as CloseIcon } from '@phosphor-icons/react/dist/ssr/X';
 import prettyBytes from 'pretty-bytes';
 
@@ -33,16 +34,13 @@ const FileInput = React.forwardRef(
       placeholder = 'Выбрать файл',
       hideSizeText,
       inputProps,
-      InputProps,
       multiple,
       disabled,
       ...restTextFieldProps
     } = props;
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const { startAdornment, ...restInputProps } = InputProps || {};
-    const isMultiple =
-      multiple || !!inputProps?.multiple || !!InputProps?.inputProps?.multiple || false;
+    const isMultiple = multiple || !!inputProps?.multiple || false;
 
     const resetInputValue = () => {
       if (inputRef.current) {
@@ -133,8 +131,17 @@ const FileInput = React.forwardRef(
         type="file"
         disabled={disabled}
         onChange={handleChange}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            cursor: 'default',
+          },
+        }}
         InputProps={{
-          startAdornment: <InputAdornment position="start">{startAdornment}</InputAdornment>,
+          startAdornment: (
+            <InputAdornment position="start">
+              <PaperclipIcon />
+            </InputAdornment>
+          ),
           endAdornment: hasAtLeastOneFile && (
             <InputAdornment position="end">
               {!hideSizeText && (
@@ -145,26 +152,22 @@ const FileInput = React.forwardRef(
               <IconButton
                 aria-label="Clear"
                 title="Отчистить"
-                size="small"
                 disabled={disabled}
                 onClick={handleClearAll}
+                sx={{ ml: 0.5 }}
               >
-                <CloseIcon size={30} />
+                <CloseIcon />
               </IconButton>
             </InputAdornment>
           ),
-          ...restInputProps,
           inputProps: {
             ...getTheInputText(),
             multiple: isMultiple,
             ref: inputRef,
-            isPlaceholder: !hasAtLeastOneFile,
             placeholder,
             error: restTextFieldProps.error,
             ...inputProps,
-            ...InputProps?.inputProps,
           },
-          // @ts-expect-error TODO: убрать
           inputComponent: Input,
         }}
         {...restTextFieldProps}

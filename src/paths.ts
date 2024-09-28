@@ -4,8 +4,11 @@ export const paths = {
   dashboard: {
     overview: '/dashboard',
     account: '/dashboard/account',
-    teams: '/dashboard/teams',
-    teamsCreate: '/dashboard/teams/create',
+    teams: {
+      index: '/dashboard/teams',
+      new: '/dashboard/teams/new',
+      edit: '/dashboard/teams/[id]/edit',
+    },
     tournaments: '/dashboard/tournaments',
   },
 } as const;
