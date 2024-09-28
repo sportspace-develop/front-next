@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
@@ -77,4 +77,4 @@ const ListHeader = React.memo(({ text }: { text: string }) => (
   </Typography>
 ));
 
-export { ListError, ListNoData, SkeletonList, ListHeader };
+export { ListError, ListHeader, ListNoData, SkeletonList };
