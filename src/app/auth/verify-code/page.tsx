@@ -8,5 +8,9 @@ import { config } from '@/config';
 export const metadata = { title: `Ввести код | ${config.site.name}` } satisfies Metadata;
 
 export default function Page(): React.JSX.Element {
-  return <VerifyCodeForm />;
+  return (
+    <React.Suspense fallback="...Загрузка">
+      <VerifyCodeForm />
+    </React.Suspense>
+  );
 }
