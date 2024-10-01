@@ -54,14 +54,46 @@ const PlayerFormContent = React.memo(() => {
               </IconButton>
             </Stack>
             <Grid container spacing={2} flex={1}>
-              <Grid md={5} xs={12}>
+              <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.fio`}
+                  name={`players.${index}.surname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
-                      label="ФИО"
+                      label="Фамилия"
+                      fullWidth
+                      helperText={fieldState.error?.message}
+                      error={fieldState.invalid}
+                      inputProps={{ maxLength: MAX_PLAYER_FIO_LENGTH }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid md={2} xs={12}>
+                <Controller
+                  control={control}
+                  name={`players.${index}.name`}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      label="Имя"
+                      fullWidth
+                      helperText={fieldState.error?.message}
+                      error={fieldState.invalid}
+                      inputProps={{ maxLength: MAX_PLAYER_FIO_LENGTH }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid md={2} xs={12}>
+                <Controller
+                  control={control}
+                  name={`players.${index}.patronymic`}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      label="Отчество"
                       fullWidth
                       helperText={fieldState.error?.message}
                       error={fieldState.invalid}
@@ -89,7 +121,7 @@ const PlayerFormContent = React.memo(() => {
                   )}
                 />
               </Grid>
-              <Grid md={4} xs={12}>
+              <Grid md={3} xs={12}>
                 <Controller
                   control={control}
                   name={`players.${index}.photo`}
