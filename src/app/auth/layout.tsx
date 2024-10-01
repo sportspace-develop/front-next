@@ -8,18 +8,17 @@ export interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
-    <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pt: 30 }}>
-      <Box
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          flex: '1 1 auto',
-          justifyContent: 'center',
-          p: 3,
-        }}
-      >
-        {children}
-      </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        p: 3,
+      }}
+    >
+      {children}
     </Box>
   );
 }
