@@ -17,6 +17,4 @@ type MultipleOrSingleFile =
       multiple: true;
     };
 
-export type FileInputProps = TextFieldProps & {
-  hideSizeText?: boolean;
-} & MultipleOrSingleFile;
+export type FileInputProps = TextFieldProps & MultipleOrSingleFile;

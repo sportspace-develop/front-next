@@ -26,8 +26,16 @@ const Input = React.forwardRef(
       return 'currentColor';
     }, [error, fileName]);
 
+    const title = React.useMemo(() => {
+      if (!fileName || !fileExtension) {
+        return '';
+      }
+
+      return [fileName, fileExtension].join('.');
+    }, [fileExtension, fileName]);
+
     return (
-      <InputLabel sx={{ position: 'relative', flexGrow: 1 }}>
+      <InputLabel title={title} sx={{ position: 'relative', flexGrow: 1 }}>
         <span
           aria-placeholder={placeholder}
           style={{

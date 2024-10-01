@@ -2,9 +2,8 @@ import * as React from 'react';
 
 import { Paperclip as PaperclipIcon } from '@phosphor-icons/react/dist/ssr/Paperclip';
 import { X as CloseIcon } from '@phosphor-icons/react/dist/ssr/X';
-import prettyBytes from 'pretty-bytes';
 
-import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import Input from './input';
 import type { FileInputProps } from './types';
@@ -32,7 +31,6 @@ const FileInput = React.forwardRef(
       value,
       onChange,
       placeholder = 'Выбрать файл',
-      hideSizeText,
       inputProps,
       multiple,
       disabled,
@@ -107,24 +105,6 @@ const FileInput = React.forwardRef(
       return '';
     };
 
-    const getTotalSizeText = () => {
-      if (hasAtLeastOneFile) {
-        if (Array.isArray(value)) {
-          const totalSize = value.reduce((previousValue, currentFile) => {
-            return previousValue + currentFile.size;
-          }, 0);
-
-          return prettyBytes(totalSize);
-        }
-
-        if (matchIsFile(value)) {
-          return prettyBytes(value.size);
-        }
-      }
-
-      return '';
-    };
-
     return (
       <TextField
         ref={ref}
@@ -134,6 +114,7 @@ const FileInput = React.forwardRef(
         sx={{
           '& .MuiOutlinedInput-root': {
             cursor: 'default',
+            paddingRight: '2px',
           },
         }}
         InputProps={{
@@ -144,19 +125,13 @@ const FileInput = React.forwardRef(
           ),
           endAdornment: hasAtLeastOneFile && (
             <InputAdornment position="end">
-              {!hideSizeText && (
-                <Typography variant="caption" mr="2px" lineHeight={1}>
-                  {getTotalSizeText()}
-                </Typography>
-              )}
               <IconButton
                 aria-label="Clear"
                 title="Отчистить"
                 disabled={disabled}
                 onClick={handleClearAll}
-                sx={{ ml: 0.5 }}
               >
-                <CloseIcon />
+                <CloseIcon size={20} />
               </IconButton>
             </InputAdornment>
           ),
