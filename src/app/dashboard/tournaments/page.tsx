@@ -9,7 +9,7 @@ import { ListHeader, ListNoData } from '@/components/ui/list';
 import { config } from '@/config';
 
 export const metadata = {
-  title: `Tournaments | Dashboard | ${config.site.name}`,
+  title: `Список турниров | ${config.site.name}`,
 } satisfies Metadata;
 
 const tournaments: Tournament[] = [

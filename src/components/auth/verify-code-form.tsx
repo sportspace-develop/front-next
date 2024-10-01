@@ -1,13 +1,11 @@
 'use client';
 
-import NextLink from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowLeft';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { z as zod } from 'zod';
 
@@ -19,12 +17,10 @@ import {
   CardHeader,
   FormControl,
   FormHelperText,
-  Link,
   Stack,
-  SvgIcon,
-  Typography,
 } from '@mui/material';
 
+import BackToLink from '@/components/ui/back-to-link';
 import { useLoginMutation } from '@/lib/store/features/authApi';
 import { paths } from '@/paths';
 
@@ -61,24 +57,8 @@ export const VerifyCodeForm = (): React.JSX.Element => {
 
   return (
     <Box sx={{ maxWidth: '600px', width: '100%' }}>
-      <Box sx={{ mb: 4 }}>
-        <Link
-          color="text.primary"
-          component={NextLink}
-          href={paths.auth.signIn}
-          sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
-          }}
-          underline="hover"
-        >
-          <SvgIcon sx={{ mr: 1 }}>
-            <ArrowLeftIcon />
-          </SvgIcon>
-          <Typography variant="subtitle2">Назад</Typography>
-        </Link>
-      </Box>
-      <Card elevation={16}>
+      <BackToLink href={paths.auth.signIn} />
+      <Card elevation={16} sx={{ mt: 1 }}>
         <CardHeader sx={{ pb: 0 }} title="Введите код" />
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>

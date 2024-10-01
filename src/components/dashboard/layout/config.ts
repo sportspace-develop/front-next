@@ -3,7 +3,6 @@ import { paths } from '@/paths';
 import type { NavItemConfig } from '@/types/nav';
 
 export const navItems: NavItemConfig[] = [
-  { key: 'overview', title: 'Обзор', href: paths.dashboard.overview, icon: NavIconNames.charPie },
   {
     key: 'tournaments',
     title: 'Турниры',

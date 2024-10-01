@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 
+import BackToLink from '@/components/ui/back-to-link';
 import { config } from '@/config';
 import { paths } from '@/paths';
 
@@ -28,16 +29,14 @@ export default function Page(): React.JSX.Element {
             }}
           />
         </Box>
-        <Stack spacing={2} textAlign="center">
+        <Stack
+          spacing={2}
+          textAlign="center"
+          sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        >
           <Typography variant="h3">Страница не найдена</Typography>
           <Typography variant="subtitle1">Но есть другие полезные страницы</Typography>
-          <Button
-            href={paths.dashboard.teams.index}
-            variant="contained"
-            sx={{ maxWidth: 'max-content', margin: 'auto' }}
-          >
-            Вернуться на главную
-          </Button>
+          <BackToLink text="На главную" href={paths.dashboard.tournaments} />
         </Stack>
       </Container>
     </main>
