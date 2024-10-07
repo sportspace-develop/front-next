@@ -9,7 +9,7 @@ const listenerMiddleware = createListenerMiddleware();
 
 const rootApi = createApi({
   reducerPath: 'rootApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/v1' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1' }),
   endpoints: () => ({}),
 });
 
@@ -24,4 +24,4 @@ listenerMiddleware.startListening({
   },
 });
 
-export { rootApi, listenerMiddleware };
+export { listenerMiddleware, rootApi };
