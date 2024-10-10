@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['localhost'], // Добавьте сюда нужные домены
+  },
   async rewrites() {
     return [
       {

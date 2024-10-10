@@ -19,8 +19,8 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
 
+import { TeamEditFormData } from '../types';
 import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, getInitialValuesPlayer } from './constants';
-import { TeamEditFormData } from './types';
 
 const PlayerFormContent = React.memo(() => {
   const { control } = useFormContext<TeamEditFormData>();
@@ -57,7 +57,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.surname`}
+                  name={`players.${index}.lastname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
@@ -105,7 +105,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={3} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.birthDate`}
+                  name={`players.${index}.b_day`}
                   render={({ field, fieldState }) => (
                     <DatePicker
                       {...field}

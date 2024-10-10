@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 import BackToLink from '@/components/ui/back-to-link';
-import { useLoginMutation } from '@/lib/store/features/authApi';
+import { useLoginMutation } from '@/lib/store/features/auth-api';
 import { paths } from '@/paths';
 
 const schema = zod.object({

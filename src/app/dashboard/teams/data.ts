@@ -1,6 +1,6 @@
 import { subDays } from 'date-fns';
 
-import { Team } from '@/components/dashboard/teams/team-card';
+import { Team } from '@/components/dashboard/teams/types';
 
 const PICTURE1 = 'https://st.joinsport.io/team/1305877/cover/65d8d6b757d14_385x257.jpg';
 const PICTURE2 = 'https://st.joinsport.io/team/1305818/cover/667167d7b347e_385x257.png';

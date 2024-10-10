@@ -13,8 +13,8 @@ function matchIsFile(value: unknown): value is File {
   return typeof window !== 'undefined' && value instanceof File;
 }
 
-function getFileDetails(value: File | File[]) {
-  const name = matchIsFile(value) ? value.name : value[0]?.name || '';
+function getFileDetails(value: File) {
+  const name = value.name;
   const parts = name.split('.');
   const fileExtension = parts.pop();
   const filenameWithoutExtension = parts.join('.');
@@ -32,13 +32,10 @@ const FileInput = React.forwardRef(
       onChange,
       placeholder = 'Выбрать файл',
       inputProps,
-      multiple,
       disabled,
       ...restTextFieldProps
     } = props;
     const inputRef = React.useRef<HTMLInputElement>(null);
-
-    const isMultiple = multiple || !!inputProps?.multiple || false;
 
     const resetInputValue = () => {
       if (inputRef.current) {
@@ -47,21 +44,19 @@ const FileInput = React.forwardRef(
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const fileList = event.target.files;
-      const files = fileList ? Array.from(fileList) : [];
+      const file = event.target.files?.[0] || null;
+      const reader = new FileReader();
 
-      if (multiple) {
-        onChange?.(files);
+      reader.onloadend = () => {
+        onChange?.({ file, url: reader.result as string });
+      };
 
-        if (files.length === 0) {
-          resetInputValue();
-        }
-      } else {
-        onChange?.(files[0] || null);
+      if (file) {
+        reader.readAsDataURL(file);
+      }
 
-        if (!files[0]) {
-          resetInputValue();
-        }
+      if (!file) {
+        resetInputValue();
       }
     };
 
@@ -72,14 +67,10 @@ const FileInput = React.forwardRef(
         return;
       }
 
-      if (multiple) {
-        onChange?.([]);
-      } else {
-        onChange?.(null);
-      }
+      onChange?.({ file: null, url: '' });
     };
 
-    const hasAtLeastOneFile = Array.isArray(value) ? value.length > 0 : matchIsFile(value);
+    const hasAtLeastOneFile = matchIsFile(value?.file);
 
     React.useLayoutEffect(() => {
       const inputElement = inputRef.current;
@@ -90,16 +81,23 @@ const FileInput = React.forwardRef(
     }, [hasAtLeastOneFile]);
 
     const getTheInputText = () => {
-      if (value === null || (Array.isArray(value) && value.length === 0)) {
+      if (value?.file === null) {
+        if (value?.url) {
+          const fileNameWithExtension = value.url.split('/').pop();
+
+          if (!fileNameWithExtension) {
+            return '';
+          }
+          const [fileName, fileExtension] = fileNameWithExtension.split('.');
+
+          return { fileName, fileExtension };
+        }
+
         return { placeholder: placeholder || '' };
       }
 
-      if (value && hasAtLeastOneFile) {
-        if (Array.isArray(value) && value.length > 1) {
-          return { fileName: `${value.length} files` };
-        }
-
-        return getFileDetails(value);
+      if (value?.file && hasAtLeastOneFile) {
+        return getFileDetails(value.file);
       }
 
       return '';
@@ -137,7 +135,6 @@ const FileInput = React.forwardRef(
           ),
           inputProps: {
             ...getTheInputText(),
-            multiple: isMultiple,
             ref: inputRef,
             placeholder,
             error: restTextFieldProps.error,

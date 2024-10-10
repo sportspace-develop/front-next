@@ -1,11 +1,13 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import * as React from 'react';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 import {
   Accordion,
@@ -14,31 +16,34 @@ import {
   Avatar,
   Box,
   Button,
-  CardMedia,
   Unstable_Grid2 as Grid,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
-import { teams } from '@/app/dashboard/teams/data';
 import FileInput from '@/components/ui/file-input';
-import useObjectURL from '@/hooks/use-object-url';
-import { paths } from '@/paths';
-
 import {
-  ACCEPTED_IMAGE_TYPES,
-  MAX_TEAM_NAME_LENGTH,
-  getInitialValuesPlayer,
-  teamEditFormSchema,
-} from './constants';
-import PlayerFormContent from './player-form-content';
-import { TeamEditFormData } from './types';
+  useCreateTeamMutation,
+  useGetTeamByIdQuery,
+  useUpdateTeamMutation,
+  useUploadImageMutation,
+} from '@/lib/store/features/teams-api';
 
-const defaultValues: TeamEditFormData = {
-  name: '',
-  logoFile: null,
-  pictureFile: null,
+import { TeamEditFormData } from '../types';
+import { ACCEPTED_IMAGE_TYPES, MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from './constants';
+import PlayerFormContent from './player-form-content';
+
+const DEFAULT_INITIAL_VALUES: TeamEditFormData = {
+  title: '',
+  logo: {
+    url: '',
+    file: null,
+  },
+  photo: {
+    url: '',
+    file: null,
+  },
   players: [],
 };
 
@@ -48,40 +53,65 @@ type TeamEditFormProps = {
 };
 
 const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
-  // HARDCODE
-  const value = React.useMemo(() => {
-    if (id) {
-      return { ...teams[Number(id)], players: [getInitialValuesPlayer()] };
-    }
+  const isNew = React.useMemo(() => id === undefined, [id]);
+  const { data: teamItem = DEFAULT_INITIAL_VALUES, isLoading } = useGetTeamByIdQuery(
+    id ?? skipToken,
+  );
 
-    return defaultValues;
-  }, [id]);
+  console.log(teamItem);
+
+  const [createTeam] = useCreateTeamMutation();
+  const [updateTeam] = useUpdateTeamMutation();
+  const [uploadImage] = useUploadImageMutation();
 
   const router = useRouter();
 
   const methods = useForm<TeamEditFormData>({
-    defaultValues,
+    mode: 'all',
+    defaultValues: teamItem,
     resolver: zodResolver(teamEditFormSchema),
   });
 
-  const logoUrl = useObjectURL(methods.watch('logoFile'));
-  const pictureUrl = useObjectURL(methods.watch('pictureFile'));
+  React.useEffect(() => methods.reset(teamItem), [teamItem]);
 
-  React.useEffect(() => methods.reset(value), [methods, value]);
+  const handleSubmitForm: SubmitHandler<TeamEditFormData> = React.useCallback(
+    async (values) => {
+      console.log(values);
+      const result = isNew
+        ? await createTeam(values).unwrap()
+        : await updateTeam({ ...values, id: id! }).unwrap();
 
-  const onSubmit = React.useCallback(
-    async (_: TeamEditFormData): Promise<void> => {
+      console.log(JSON.stringify(result));
+
+      if (result) {
+        const formData = new FormData();
+
+        if (values.logo.url !== result.logo_url) {
+          formData.append('logo_file', values.logo.file || '');
+        }
+
+        if (values.photo.url !== result.photo_url) {
+          formData.append('photo_file', values.photo.file || '');
+        }
+
+        const res = await uploadImage({ formData, id: result.id });
+
+        console.log(res);
+      }
       // setIsPending(true);
       // HARDCODE
-      router.replace(paths.dashboard.teams.index);
-      // setIsPending(false);
+
+      console.log(result);
+
+      // router.replace(paths.dashboard.teams.index);
     },
-    [router],
+    [createTeam, router, updateTeam],
   );
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(handleSubmitForm)}>
+        <input type="submit" hidden disabled={isLoading} />
         <Stack
           spacing={3}
           display="flex"
@@ -90,32 +120,41 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
           <Typography variant="h5" component="h1">
             {title}
           </Typography>
-          <Button type="submit" variant="contained" sx={{ width: 'max-content' }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ width: 'max-content' }}
+            disabled={isLoading}
+          >
             Сохранить
           </Button>
         </Stack>
         <Box>
-          <Accordion defaultExpanded>
+          <Accordion defaultExpanded expanded={isNew ? true : undefined}>
             <AccordionSummary>Настройки команды</AccordionSummary>
             <AccordionDetails>
               <Stack spacing={3}>
                 <Controller
                   control={methods.control}
-                  name="name"
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      {...field}
-                      helperText={fieldState.error?.message}
-                      error={fieldState.invalid}
-                      label="Название команды"
-                      fullWidth
-                      inputProps={{ maxLength: MAX_TEAM_NAME_LENGTH }}
-                    />
-                  )}
+                  name="title"
+                  render={({ field, fieldState }) => {
+                    console.log('ERRR', methods.formState.errors, methods.getValues());
+
+                    return (
+                      <TextField
+                        {...field}
+                        helperText={fieldState.error?.message}
+                        error={fieldState.invalid}
+                        label="Название команды"
+                        fullWidth
+                        inputProps={{ maxLength: MAX_TEAM_NAME_LENGTH }}
+                      />
+                    );
+                  }}
                 />
                 <Controller
                   control={methods.control}
-                  name="pictureFile"
+                  name="photo"
                   render={({ field, fieldState }) => (
                     <>
                       <FileInput
@@ -125,16 +164,18 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
                         helperText={fieldState.error?.message}
                         error={fieldState.invalid}
                       />
-                      {pictureUrl && !fieldState.error && (
+                      {field.value?.url && (
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <CardMedia
-                            sx={{
-                              height: 150,
-                              width: '100%',
+                          <Image
+                            style={{
                               maxWidth: 500,
-                              backgroundSize: 'contain',
+                              maxHeight: 100,
                             }}
-                            image={pictureUrl}
+                            height={100}
+                            width={100}
+                            objectFit="contain"
+                            alt="фото команды"
+                            src={field.value.url}
                           />
                         </Box>
                       )}
@@ -142,7 +183,7 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
                   )}
                 />
                 <Controller
-                  name="logoFile"
+                  name="logo"
                   control={methods.control}
                   render={({ field, fieldState }) => (
                     <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
@@ -156,8 +197,11 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
                         />
                       </Grid>
                       <Grid>
-                        {logoUrl && !fieldState.error && (
-                          <Avatar src={logoUrl} sx={{ height: 100, width: 100, boxShadow: 3 }} />
+                        {field.value?.url && (
+                          <Avatar
+                            src={field.value.url}
+                            sx={{ height: 100, width: 100, boxShadow: 3 }}
+                          />
                         )}
                       </Grid>
                     </Grid>
@@ -166,12 +210,14 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
               </Stack>
             </AccordionDetails>
           </Accordion>
-          <Accordion defaultExpanded>
-            <AccordionSummary>Игроки</AccordionSummary>
-            <AccordionDetails>
-              <PlayerFormContent />
-            </AccordionDetails>
-          </Accordion>
+          {!isNew && (
+            <Accordion defaultExpanded>
+              <AccordionSummary>Игроки</AccordionSummary>
+              <AccordionDetails>
+                <PlayerFormContent />
+              </AccordionDetails>
+            </Accordion>
+          )}
         </Box>
       </form>
     </FormProvider>

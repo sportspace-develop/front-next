@@ -10,7 +10,7 @@ import { z as zod } from 'zod';
 
 import { Box, Button, Card, CardContent, CardHeader, Stack, TextField } from '@mui/material';
 
-import { useRequestOtpMutation } from '@/lib/store/features/authApi';
+import { useRequestOtpMutation } from '@/lib/store/features/auth-api';
 import { paths } from '@/paths';
 
 const schema = zod.object({
