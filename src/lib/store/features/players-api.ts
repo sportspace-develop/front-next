@@ -1,8 +1,8 @@
-import { Team } from '@/components/dashboard/teams/types';
+import { Player, PlayerEditFormData } from '@/components/dashboard/teams/types';
 import { rootApi } from '@/lib/store/api';
 
-type ResponseGetTeams = {
-  data: Team[];
+type ResponseGetPlayers = {
+  data: Player[];
   pagination: {
     current_page: number;
     next_page: number;
@@ -12,45 +12,39 @@ type ResponseGetTeams = {
   };
 };
 
-export const teamsApi = rootApi.injectEndpoints({
+export const playersApi = rootApi.injectEndpoints({
   endpoints: (build) => ({
-    getTeams: build.query<ResponseGetTeams['data'], void>({
+    getPlayers: build.query<ResponseGetPlayers['data'], void>({
       query: () => ({
         url: 'user/teams',
       }),
-      transformResponse: (response: ResponseGetTeams) => response.data,
+      transformResponse: (response: ResponseGetPlayers) => response.data,
     }),
-    getTeamById: build.query<Team, string | undefined>({
-      query: (id) => `user/teams/${id}`,
-      transformResponse: (response: Team) => {
-        return {
-          ...response,
-          photo: { url: response.photo_url, file: null },
-          logo: { url: response.logo_url, file: null },
-        };
-      },
-    }),
-    createTeam: build.mutation<Team, Omit<Team, 'id'>>({
+    // нету всех игроков
+    // getTeamById: build.query<Team, string | undefined>({
+    //   query: (id) => `user/teams/${id}`,
+    //   transformResponse: (response: Team) => {
+    //     return {
+    //       ...response,
+    //       photo: { url: response.photo_url, file: null },
+    //       logo: { url: response.logo_url, file: null },
+    //     };
+    //   },
+    // }),
+    savePlayer: build.mutation<Player, PlayerEditFormData>({
       query: (data) => ({
-        method: 'POST',
-        url: 'user/teams',
+        method: data.id ? 'PUT' : 'POST',
+        url: `user/players/${data.id ?? ''}`,
         body: data,
       }),
     }),
-    updateTeam: build.mutation<Team, Team>({
-      query: (data) => ({
-        method: 'PUT',
-        url: `user/teams/${data.id}`,
-        body: data,
-      }),
-    }),
-    uploadImage: build.mutation<string, { id: string; formData: FormData }>({
+    uploadPlayerImage: build.mutation<string, { id: string; formData: FormData }>({
       query: (data) => {
         console.log(data);
 
         return {
           method: 'PUT',
-          url: `user/teams/${data.id}/upload`,
+          url: `user/players/${data.id}/upload`,
           body: data.formData,
         };
       },
@@ -58,10 +52,5 @@ export const teamsApi = rootApi.injectEndpoints({
   }),
 });
 
-export const {
-  useGetTeamsQuery,
-  useGetTeamByIdQuery,
-  useCreateTeamMutation,
-  useUpdateTeamMutation,
-  useUploadImageMutation,
-} = teamsApi;
+export const { useSavePlayerMutation, useGetPlayersQuery, useUploadPlayerImageMutation } =
+  playersApi;

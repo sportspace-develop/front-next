@@ -5,6 +5,7 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Trash as TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
 import { UserPlus as UserPlusIcon } from '@phosphor-icons/react/dist/ssr/UserPlus';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   Box,
@@ -19,8 +20,20 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
 
-import { TeamEditFormData } from '../types';
-import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, getInitialValuesPlayer } from './constants';
+import { PlayerEditFormData, TeamEditFormData } from '../types';
+import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH } from './constants';
+
+const getInitialValuesPlayer = (): PlayerEditFormData => ({
+  id: uuidv4().toString(),
+  b_day: null,
+  lastname: '',
+  firstname: '',
+  secondname: '',
+  photo: {
+    file: null,
+    url: '',
+  },
+});
 
 const PlayerFormContent = React.memo(() => {
   const { control } = useFormContext<TeamEditFormData>();
@@ -73,7 +86,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.name`}
+                  name={`players.${index}.firstname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
@@ -89,7 +102,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.patronymic`}
+                  name={`players.${index}.secondname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}

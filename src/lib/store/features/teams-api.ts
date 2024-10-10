@@ -30,21 +30,14 @@ export const teamsApi = rootApi.injectEndpoints({
         };
       },
     }),
-    createTeam: build.mutation<Team, Omit<Team, 'id'>>({
+    saveTeam: build.mutation<Team, Team>({
       query: (data) => ({
-        method: 'POST',
-        url: 'user/teams',
+        method: data.id ? 'PUT' : 'POST',
+        url: `user/teams/${data.id ?? ''}`,
         body: data,
       }),
     }),
-    updateTeam: build.mutation<Team, Team>({
-      query: (data) => ({
-        method: 'PUT',
-        url: `user/teams/${data.id}`,
-        body: data,
-      }),
-    }),
-    uploadImage: build.mutation<string, { id: string; formData: FormData }>({
+    uploadTeamImage: build.mutation<string, { id: string; formData: FormData }>({
       query: (data) => {
         console.log(data);
 
@@ -63,5 +56,5 @@ export const {
   useGetTeamByIdQuery,
   useCreateTeamMutation,
   useUpdateTeamMutation,
-  useUploadImageMutation,
+  useUploadTeamImageMutation,
 } = teamsApi;

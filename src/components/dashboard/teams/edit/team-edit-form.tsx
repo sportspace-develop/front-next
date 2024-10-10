@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 import * as React from 'react';
 import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -23,18 +22,16 @@ import {
 } from '@mui/material';
 
 import FileInput from '@/components/ui/file-input';
-import {
-  useCreateTeamMutation,
-  useGetTeamByIdQuery,
-  useUpdateTeamMutation,
-  useUploadImageMutation,
-} from '@/lib/store/features/teams-api';
+import { useGetTeamByIdQuery } from '@/lib/store/features/teams-api';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { saveTeamThunk } from '@/lib/store/thunks/teams-thunks';
 
 import { TeamEditFormData } from '../types';
 import { ACCEPTED_IMAGE_TYPES, MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from './constants';
 import PlayerFormContent from './player-form-content';
 
 const DEFAULT_INITIAL_VALUES: TeamEditFormData = {
+  id: '',
   title: '',
   logo: {
     url: '',
@@ -59,12 +56,7 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
   );
 
   console.log(teamItem);
-
-  const [createTeam] = useCreateTeamMutation();
-  const [updateTeam] = useUpdateTeamMutation();
-  const [uploadImage] = useUploadImageMutation();
-
-  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const methods = useForm<TeamEditFormData>({
     mode: 'all',
@@ -72,32 +64,12 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
     resolver: zodResolver(teamEditFormSchema),
   });
 
-  React.useEffect(() => methods.reset(teamItem), [teamItem]);
+  React.useEffect(() => methods.reset(teamItem), [methods, teamItem]);
 
   const handleSubmitForm: SubmitHandler<TeamEditFormData> = React.useCallback(
     async (values) => {
-      console.log(values);
-      const result = isNew
-        ? await createTeam(values).unwrap()
-        : await updateTeam({ ...values, id: id! }).unwrap();
+      const result = dispatch(saveTeamThunk(values));
 
-      console.log(JSON.stringify(result));
-
-      if (result) {
-        const formData = new FormData();
-
-        if (values.logo.url !== result.logo_url) {
-          formData.append('logo_file', values.logo.file || '');
-        }
-
-        if (values.photo.url !== result.photo_url) {
-          formData.append('photo_file', values.photo.file || '');
-        }
-
-        const res = await uploadImage({ formData, id: result.id });
-
-        console.log(res);
-      }
       // setIsPending(true);
       // HARDCODE
 
@@ -105,7 +77,7 @@ const TeamEditForm = React.memo(({ id, title }: TeamEditFormProps) => {
 
       // router.replace(paths.dashboard.teams.index);
     },
-    [createTeam, router, updateTeam],
+    [dispatch],
   );
 
   return (
