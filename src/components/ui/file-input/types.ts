@@ -1,20 +1,12 @@
+import { ControllerFieldState } from 'react-hook-form';
+
 import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 
-type TextFieldProps = Omit<
-  MuiTextFieldProps,
-  'onChange' | 'select' | 'type' | 'multiline' | 'defaultValue'
->;
+type TextFieldProps = Omit<MuiTextFieldProps, 'onChange' | 'select' | 'type' | 'defaultValue'>;
 
-type MultipleOrSingleFile =
-  | {
-      value?: File | null;
-      onChange?: (value: File | null) => void;
-      multiple?: false | undefined;
-    }
-  | {
-      value?: File[];
-      onChange?: (value: File[]) => void;
-      multiple: true;
-    };
-
-export type FileInputProps = TextFieldProps & MultipleOrSingleFile;
+export type FileInputProps = TextFieldProps & {
+  value?: { file?: File | null; url?: string };
+  onChange?: (value: { file: File | null; url: string }) => void;
+  multiple?: false | undefined;
+  fieldState: ControllerFieldState;
+};

@@ -5,16 +5,18 @@ import { X as CloseIcon } from '@phosphor-icons/react/dist/ssr/X';
 
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 
+import { useUploadFileMutation } from '@/lib/store/features/file-api';
+
 import Input from './input';
 import type { FileInputProps } from './types';
 
-function matchIsFile(value: unknown): value is File {
+function matchIsFile(value: FileInputProps['value']) {
   // Secure SSR
-  return typeof window !== 'undefined' && value instanceof File;
+  return (typeof window !== 'undefined' && value?.file instanceof File) || value?.url;
 }
 
-function getFileDetails(value: File | File[]) {
-  const name = matchIsFile(value) ? value.name : value[0]?.name || '';
+function getFileDetails(value: File) {
+  const name = value.name;
   const parts = name.split('.');
   const fileExtension = parts.pop();
   const filenameWithoutExtension = parts.join('.');
@@ -32,13 +34,13 @@ const FileInput = React.forwardRef(
       onChange,
       placeholder = 'Выбрать файл',
       inputProps,
-      multiple,
       disabled,
+      fieldState,
       ...restTextFieldProps
     } = props;
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const isMultiple = multiple || !!inputProps?.multiple || false;
+    const [uploadFile] = useUploadFileMutation();
 
     const resetInputValue = () => {
       if (inputRef.current) {
@@ -46,22 +48,21 @@ const FileInput = React.forwardRef(
       }
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const fileList = event.target.files;
-      const files = fileList ? Array.from(fileList) : [];
+    const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0] || null;
 
-      if (multiple) {
-        onChange?.(files);
+      if (file) {
+        const formData = new FormData();
 
-        if (files.length === 0) {
-          resetInputValue();
-        }
-      } else {
-        onChange?.(files[0] || null);
+        formData.append('file', file);
 
-        if (!files[0]) {
-          resetInputValue();
-        }
+        const { url } = await uploadFile(formData).unwrap();
+
+        onChange?.({ file, url });
+      }
+
+      if (!file) {
+        resetInputValue();
       }
     };
 
@@ -72,14 +73,10 @@ const FileInput = React.forwardRef(
         return;
       }
 
-      if (multiple) {
-        onChange?.([]);
-      } else {
-        onChange?.(null);
-      }
+      onChange?.({ file: null, url: '' });
     };
 
-    const hasAtLeastOneFile = Array.isArray(value) ? value.length > 0 : matchIsFile(value);
+    const hasAtLeastOneFile = matchIsFile(value);
 
     React.useLayoutEffect(() => {
       const inputElement = inputRef.current;
@@ -90,20 +87,32 @@ const FileInput = React.forwardRef(
     }, [hasAtLeastOneFile]);
 
     const getTheInputText = () => {
-      if (value === null || (Array.isArray(value) && value.length === 0)) {
+      if (value?.file === null) {
+        if (value?.url) {
+          const fileNameWithExtension = value.url.split('/').pop();
+
+          if (!fileNameWithExtension) {
+            return '';
+          }
+          const [fileName, fileExtension] = fileNameWithExtension.split('.');
+
+          return { fileName, fileExtension };
+        }
+
         return { placeholder: placeholder || '' };
       }
 
-      if (value && hasAtLeastOneFile) {
-        if (Array.isArray(value) && value.length > 1) {
-          return { fileName: `${value.length} files` };
-        }
-
-        return getFileDetails(value);
+      if (value?.file && hasAtLeastOneFile) {
+        return getFileDetails(value.file);
       }
 
       return '';
     };
+
+    const error = fieldState.invalid;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const helperText = (fieldState.error as any)?.file?.message;
 
     return (
       <TextField
@@ -111,6 +120,8 @@ const FileInput = React.forwardRef(
         type="file"
         disabled={disabled}
         onChange={handleChange}
+        error={error}
+        helperText={helperText}
         sx={{
           '& .MuiOutlinedInput-root': {
             cursor: 'default',
@@ -137,10 +148,9 @@ const FileInput = React.forwardRef(
           ),
           inputProps: {
             ...getTheInputText(),
-            multiple: isMultiple,
             ref: inputRef,
             placeholder,
-            error: restTextFieldProps.error,
+            error,
             ...inputProps,
           },
           inputComponent: Input,

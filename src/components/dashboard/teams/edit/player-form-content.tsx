@@ -5,6 +5,7 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Trash as TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
 import { UserPlus as UserPlusIcon } from '@phosphor-icons/react/dist/ssr/UserPlus';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   Box,
@@ -19,8 +20,23 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
 
-import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, getInitialValuesPlayer } from './constants';
-import { TeamEditFormData } from './types';
+import { PlayerEditFormData, TeamEditFormData } from '../types';
+import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH } from './constants';
+
+const getInitialValuesPlayer = (): PlayerEditFormData => ({
+  key: uuidv4(),
+  b_day: null,
+  lastname: '',
+  firstname: '',
+  secondname: '',
+  photo: {
+    file: null,
+    url: '',
+  },
+});
+
+const MIN_BIRTH_DATE = new Date('1900-12-01');
+const MAX_BIRTH_DATE = new Date();
 
 const PlayerFormContent = React.memo(() => {
   const { control } = useFormContext<TeamEditFormData>();
@@ -46,7 +62,7 @@ const PlayerFormContent = React.memo(() => {
         const handleRemovePlayer = () => removePlayer(index);
 
         return (
-          <Stack key={player.id} spacing={1} sx={{ flexDirection: { md: 'row' } }}>
+          <Stack key={player.id || player.key} spacing={1} sx={{ flexDirection: { md: 'row' } }}>
             <Stack flexDirection="row" sx={{ alignItems: 'center', display: { md: 'none' } }}>
               <Typography variant="subtitle1">Игрок №{index + 1}</Typography>
               <IconButton onClick={handleRemovePlayer} disabled={hasOnePlayer}>
@@ -57,7 +73,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.surname`}
+                  name={`players.${index}.lastname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
@@ -73,7 +89,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.name`}
+                  name={`players.${index}.firstname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
@@ -89,7 +105,7 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={2} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.patronymic`}
+                  name={`players.${index}.secondname`}
                   render={({ field, fieldState }) => (
                     <TextField
                       {...field}
@@ -105,11 +121,13 @@ const PlayerFormContent = React.memo(() => {
               <Grid md={3} xs={12}>
                 <Controller
                   control={control}
-                  name={`players.${index}.birthDate`}
+                  name={`players.${index}.b_day`}
                   render={({ field, fieldState }) => (
                     <DatePicker
                       {...field}
                       label="Дата рождения"
+                      maxDate={MAX_BIRTH_DATE}
+                      minDate={MIN_BIRTH_DATE}
                       slotProps={{
                         textField: {
                           fullWidth: true,
@@ -131,8 +149,7 @@ const PlayerFormContent = React.memo(() => {
                       fullWidth
                       label="Фото"
                       inputProps={{ accept: ACCEPTED_IMAGE_TYPES }}
-                      helperText={fieldState.error?.message}
-                      error={fieldState.invalid}
+                      fieldState={fieldState}
                     />
                   )}
                 />

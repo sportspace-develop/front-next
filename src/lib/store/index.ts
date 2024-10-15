@@ -2,9 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { listenerMiddleware, rootApi } from '@/lib/store/api';
 
+import teamsSlice from './features/teams-slice';
+
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      teams: teamsSlice.reducer,
       [rootApi.reducerPath]: rootApi.reducer,
     },
     middleware: (getDefaultMiddleware) => {
@@ -12,9 +15,3 @@ export const makeStore = () => {
     },
   });
 };
-
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>;
-export type AppDispatch = AppStore['dispatch'];
