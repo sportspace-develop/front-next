@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import StoreProvider from '@/app/StoreProvider';
+import AuthProvider from '@/components/core/auth-provider';
 import DatePickerProvider from '@/components/core/date-picker-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 
@@ -46,7 +47,9 @@ export default function RootLayout({
         <body className={inter.className}>
           <ThemeProvider>
             <ToastContainer autoClose={2000} />
-            <DatePickerProvider>{children}</DatePickerProvider>
+            <DatePickerProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </DatePickerProvider>
           </ThemeProvider>
         </body>
       </html>
