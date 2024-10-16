@@ -24,4 +24,16 @@ listenerMiddleware.startListening({
   },
 });
 
+listenerMiddleware.startListening({
+  predicate: (action) => action.type.endsWith('/rejected'),
+  // actionCreator: setUnauthorized,
+  effect: (action, listenerApi) => {
+    const error = action.payload as { status: number };
+
+    if (error?.status === 401) {
+      listenerApi.dispatch({ type: 'auth/logout' });
+    }
+  },
+});
+
 export { listenerMiddleware, rootApi };
