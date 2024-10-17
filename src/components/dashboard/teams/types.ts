@@ -8,18 +8,21 @@ export type PlayerEditFormData = zod.input<typeof playerEditFormSchema>;
 
 export type Player = {
   id: number;
-  lastname: string; //фамилия
-  firstname: string; //имя
-  secondname?: string; //отчество
-  b_day?: Date | null;
-  photo_url?: string;
+  lastName: string; //фамилия
+  firstName: string; //имя
+  secondName?: string; //отчество
+  bDay?: string;
+  photoUrl?: string;
 };
 
 export type Team = {
   id: number;
   title: string;
-  created_at?: string;
-  logo_url?: string;
-  photo_url?: string;
-  players?: Player[];
+  createdAt?: string;
+  logoUrl?: string;
+  photoUrl?: string;
 };
+
+export type PlayerDTO = Omit<Player, 'id'> & { id?: Player['id'] };
+
+export type TeamDTO = Omit<Team, 'id'> & { id?: Team['id']; players?: Player[] };

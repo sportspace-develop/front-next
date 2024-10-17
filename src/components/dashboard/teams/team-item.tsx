@@ -29,10 +29,10 @@ const TeamItem = React.memo(({ item }: TeamCardProps): React.JSX.Element => {
       <CardActionArea component={NextLink} href={`${paths.dashboard.teams.index}/${item.id}/edit`}>
         <CardMedia
           sx={{ height: 200, display: 'flex', backgroundSize: 'contain' }}
-          image={item.photo_url}
+          image={item.photoUrl}
           title={item.title}
         >
-          {!item.photo_url && <Avatar sx={{ height: 180, width: 180, m: 'auto' }} />}
+          {!item.photoUrl && <Avatar sx={{ height: 180, width: 180, m: 'auto' }} />}
         </CardMedia>
         <CardContent>
           <Grid
@@ -42,7 +42,7 @@ const TeamItem = React.memo(({ item }: TeamCardProps): React.JSX.Element => {
           >
             <Grid md={4} xs={12}>
               <Avatar
-                src={item.logo_url}
+                src={item.logoUrl}
                 title={item.title}
                 sx={{
                   width: { lg: 70, md: 50, xs: 100 },
@@ -55,9 +55,9 @@ const TeamItem = React.memo(({ item }: TeamCardProps): React.JSX.Element => {
               <Typography variant="h6" sx={{ wordWrap: 'break-word' }}>
                 {item.title}
               </Typography>
-              {item.created_at && (
+              {item.createdAt && (
                 <Typography color="text.secondary" variant="body2">
-                  {formatDate(parseISO(item.created_at), { format: 'd MMMM yyyy' })}
+                  {formatDate(parseISO(item.createdAt), { format: 'd MMMM yyyy' })}
                 </Typography>
               )}
             </Grid>

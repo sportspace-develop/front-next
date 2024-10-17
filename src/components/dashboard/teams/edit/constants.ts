@@ -1,5 +1,7 @@
 import { z as zod } from 'zod';
 
+import { PlayerEditFormData } from '../types';
+
 export const MAX_FILE_SIZE = 2 * 1024 * 1024;
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -7,22 +9,21 @@ export const MAX_PLAYER_FIO_LENGTH = 50;
 
 export const playerEditFormSchema = zod.object({
   id: zod.coerce.number().optional(),
-  key: zod.string().optional(),
-  lastname: zod
+  lastName: zod
     .string()
     .min(1, { message: 'Обязательно' })
     .min(3, { message: 'Минимум 3 символа' })
     .max(MAX_PLAYER_FIO_LENGTH, {
       message: `Фамилия слишком длинная - должно быть максимум ${MAX_PLAYER_FIO_LENGTH} символа`,
     }),
-  firstname: zod
+  firstName: zod
     .string()
     .min(1, { message: 'Обязательно' })
     .min(3, { message: 'Минимум 3 символа' })
     .max(MAX_PLAYER_FIO_LENGTH, {
       message: `Имя слишком длинное - должно быть максимум ${MAX_PLAYER_FIO_LENGTH} символа`,
     }),
-  secondname: zod
+  secondName: zod
     .string()
     .min(3, { message: 'Минимум 3 символа' })
     .max(MAX_PLAYER_FIO_LENGTH, {
@@ -41,7 +42,7 @@ export const playerEditFormSchema = zod.object({
         'Формат файла должен быть jpg, jpeg или png',
       ),
   }),
-  b_day: zod
+  bDay: zod
     .date({
       errorMap: (issue, { defaultError }) => ({
         message: issue.code === 'invalid_date' ? 'Некорректный формат даты' : defaultError,
@@ -90,5 +91,15 @@ export const teamEditFormSchema = zod.object({
         'Формат файла должен быть jpg, jpeg или png',
       ),
   }),
-  players: playerEditFormSchema.array(),
 });
+
+export const DEFAULT_INITIAL_VALUES_PLAYER: PlayerEditFormData = {
+  lastName: '',
+  firstName: '',
+  secondName: '',
+  bDay: null,
+  photo: {
+    url: '',
+    file: null,
+  },
+};

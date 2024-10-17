@@ -25,6 +25,7 @@ const TeamsList = React.memo((): React.JSX.Element => {
   });
 
   const teams = React.useMemo(() => data?.data || [], [data?.data]);
+  const pagination = React.useMemo(() => data?.pagination, [data?.pagination]);
 
   const isEmptyList = React.useMemo(() => teams.length === 0, [teams]);
 
@@ -35,10 +36,6 @@ const TeamsList = React.memo((): React.JSX.Element => {
     [setPage],
   );
 
-  if (isLoading) {
-    return <SkeletonList />;
-  }
-
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
@@ -48,11 +45,13 @@ const TeamsList = React.memo((): React.JSX.Element => {
           href={paths.dashboard.teams.new}
           startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
           variant="contained"
+          disabled={isLoading}
         >
           {isEmptyList ? 'Создать' : 'Добавить'}
         </Button>
       </Stack>
-      {isEmptyList && <ListNoData />}
+      {isLoading && <SkeletonList />}
+      {!isLoading && isEmptyList && <ListNoData />}
       <Grid container spacing={3}>
         {teams.map((item) => (
           <Grid key={item.id} md={4} xs={12} display="grid">
@@ -60,13 +59,15 @@ const TeamsList = React.memo((): React.JSX.Element => {
           </Grid>
         ))}
       </Grid>
-      <Pagination
-        count={data?.pagination?.total_pages} // Общее количество страниц
-        page={data?.pagination?.current_page} // Текущая страница
-        onChange={handleChange}
-        color="primary"
-        sx={{ mt: 1 }}
-      />
+      {pagination && pagination.total_pages > 1 && (
+        <Pagination
+          count={pagination.total_pages} // Общее количество страниц
+          page={pagination.current_page} // Текущая страница
+          onChange={handleChange}
+          color="primary"
+          sx={{ mt: 1 }}
+        />
+      )}
     </Stack>
   );
 });

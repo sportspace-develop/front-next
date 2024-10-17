@@ -1,7 +1,13 @@
-import { Player, Team, TeamEditFormData } from '@/components/dashboard/teams/types';
+import { Player, Team, TeamDTO } from '@/components/dashboard/teams/types';
 import { rootApi } from '@/lib/store/api';
 
-import { PaginationTypes } from './teams-slice';
+export type PaginationTypes = {
+  current_page: number;
+  next_page: number;
+  prev_page: number;
+  total_pages: number;
+  total_records: number;
+};
 
 type ResponseGetTeams = {
   data: Team[];
@@ -10,28 +16,8 @@ type ResponseGetTeams = {
 
 export type RequestSaveTeam = Omit<Team, 'players' | 'id'> & {
   id?: Team['id'];
-  player_ids?: Player['id'][];
+  playerIds?: Player['id'][];
 };
-
-const transformResponseForGetTeamById = (response: Team): TeamEditFormData => ({
-  ...response,
-  photo: {
-    url: response.photo_url,
-    file: null,
-  },
-  logo: {
-    url: response.logo_url,
-    file: null,
-  },
-  players: (response.players || []).map((player) => ({
-    ...player,
-    b_day: player.b_day ? new Date(player.b_day) : null,
-    photo: {
-      url: player.photo_url,
-      file: null,
-    },
-  })),
-});
 
 export const teamsApi = rootApi.injectEndpoints({
   endpoints: (build) => ({
@@ -40,9 +26,8 @@ export const teamsApi = rootApi.injectEndpoints({
         url: `user/teams?page=${data.page}&limit=${data.limit}`,
       }),
     }),
-    getTeamById: build.query<TeamEditFormData, number | string | undefined>({
+    getTeamById: build.query<TeamDTO, number | string | undefined>({
       query: (id) => `user/teams/${id}`,
-      transformResponse: transformResponseForGetTeamById,
     }),
     saveTeam: build.mutation<Team, RequestSaveTeam>({
       query: (data) => ({

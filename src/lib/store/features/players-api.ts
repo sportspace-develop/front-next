@@ -1,4 +1,4 @@
-import { Player } from '@/components/dashboard/teams/types';
+import { Player, PlayerDTO } from '@/components/dashboard/teams/types';
 import { rootApi } from '@/lib/store/api';
 
 type ResponseGetPlayers = {
@@ -30,7 +30,7 @@ export const playersApi = rootApi.injectEndpoints({
         body: data,
       }),
     }),
-    savePlayer: build.mutation<Player, RequestBatchPlayer>({
+    savePlayer: build.mutation<Player, PlayerDTO>({
       query: (data) => ({
         method: data.id ? 'PUT' : 'POST',
         url: `user/players/${data.id ?? ''}`,
