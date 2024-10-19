@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import StoreProvider from '@/app/StoreProvider';
 import DatePickerProvider from '@/components/core/date-picker-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
+import ScrollUpButton from '@/components/ui/scroll-up-button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -48,6 +49,7 @@ export default function RootLayout({
             <ToastContainer autoClose={2000} />
             <DatePickerProvider>{children}</DatePickerProvider>
           </ThemeProvider>
+          <ScrollUpButton />
         </body>
       </html>
     </StoreProvider>
