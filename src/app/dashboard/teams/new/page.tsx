@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { Stack } from '@mui/material';
 
-import TeamEditForm from '@/components/dashboard/teams/edit/team-edit-form';
+import TabsTeamEditForm from '@/components/dashboard/teams/edit/team-tabs-edit-form';
 import BackToLink from '@/components/ui/back-to-link';
 import { config } from '@/config';
 import { paths } from '@/paths';
@@ -17,7 +17,7 @@ export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={2}>
       <BackToLink text="Вернуться к списку команд" href={paths.dashboard.teams.index} />
-      <TeamEditForm title={title} />
+      <TabsTeamEditForm title={title} />
     </Stack>
   );
 }

@@ -2,6 +2,8 @@ import NextLink from 'next/link';
 
 import * as React from 'react';
 
+import { parseISO } from 'date-fns';
+
 import {
   Avatar,
   Card,
@@ -15,24 +17,30 @@ import {
 import formatDate from '@/lib/format-date';
 import { paths } from '@/paths';
 
-export type Team = {
-  id: string;
-  name: string;
-  logo?: string;
-  picture?: string;
-  createdAt: Date;
-};
+import { Team } from './types';
 
 interface TeamCardProps {
   item: Team;
 }
 
-export const TeamCard = ({ item }: TeamCardProps): React.JSX.Element => {
+const TeamItem = React.memo(({ item }: TeamCardProps): React.JSX.Element => {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea component={NextLink} href={`${paths.dashboard.teams.index}/${item.id}/edit`}>
-        <CardMedia sx={{ height: 200, display: 'flex' }} image={item.picture} title={item.name}>
-          {!item.picture && <Avatar sx={{ height: 180, width: 180, m: 'auto' }} />}
+        <CardMedia
+          sx={{ height: { xs: 100, sm: 200 }, display: 'flex', backgroundSize: 'contain' }}
+          image={item.photoUrl}
+          title={item.title}
+        >
+          {!item.photoUrl && (
+            <Avatar
+              sx={{
+                height: { xs: 80, sm: 180 },
+                width: { xs: 80, sm: 180 },
+                m: 'auto',
+              }}
+            />
+          )}
         </CardMedia>
         <CardContent>
           <Grid
@@ -42,26 +50,30 @@ export const TeamCard = ({ item }: TeamCardProps): React.JSX.Element => {
           >
             <Grid md={4} xs={12}>
               <Avatar
-                src={item.logo}
-                title={item.name}
+                src={item.logoUrl}
+                title={item.title}
                 sx={{
-                  width: { lg: 70, md: 50, xs: 100 },
-                  height: { lg: 70, md: 50, xs: 100 },
+                  width: { lg: 70, md: 50, xs: 80 },
+                  height: { lg: 70, md: 50, xs: 80 },
                   boxShadow: 3,
                 }}
               />
             </Grid>
             <Grid md={8} xs={12} spacing={1} sx={{ flexBasis: 'content' }}>
               <Typography variant="h6" sx={{ wordWrap: 'break-word' }}>
-                {item.name}
+                {item.title}
               </Typography>
-              <Typography color="text.secondary" variant="body2">
-                {formatDate(item.createdAt, { format: 'd MMMM yyyy' })}
-              </Typography>
+              {item.createdAt && (
+                <Typography color="text.secondary" variant="body2">
+                  {formatDate(parseISO(item.createdAt), { format: 'd MMMM yyyy' })}
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </CardContent>
       </CardActionArea>
     </Card>
   );
-};
+});
+
+export default TeamItem;
