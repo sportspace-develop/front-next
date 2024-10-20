@@ -1,16 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z as zod } from 'zod';
 
 import { Box, Button, Card, CardContent, CardHeader, Stack, TextField } from '@mui/material';
 
-import { useRequestOtpMutation } from '@/lib/store/features/authApi';
+import { useAsyncRoutePush } from '@/hooks/use-async-route';
+import { useRequestOtpMutation } from '@/lib/store/features/auth-api';
 import { paths } from '@/paths';
 
 const schema = zod.object({
@@ -25,27 +24,30 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = { email: 'help@sportspace.com' } satisfies Values;
 
 export const SignInForm = (): React.JSX.Element => {
-  const router = useRouter();
+  const [requestOtp] = useRequestOtpMutation();
+  const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(false);
 
-  const [requestOtp, { isLoading }] = useRequestOtpMutation();
+  const asyncRouterPush = useAsyncRoutePush();
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues,
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = React.useCallback(
-    async (values: Values): Promise<void> => {
+  const handleSubmitForm: SubmitHandler<Values> = React.useCallback(
+    async (values) => {
+      setIsSubmitDisabled(true);
+
       try {
         await requestOtp(values).unwrap();
-        const params = new URLSearchParams({
-          email: values.email,
-        });
+        const params = new URLSearchParams({ email: values.email });
 
-        router.push(`${paths.auth.verifyCode}?${params.toString()}`);
-      } catch {}
+        await asyncRouterPush(`${paths.auth.verifyCode}?${params.toString()}`);
+      } finally {
+        setIsSubmitDisabled(false);
+      }
     },
-    [requestOtp, router],
+    [asyncRouterPush, requestOtp],
   );
 
   return (
@@ -53,7 +55,7 @@ export const SignInForm = (): React.JSX.Element => {
       <Card elevation={16}>
         <CardHeader sx={{ pb: 0 }} title="Войти" />
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleSubmitForm)}>
             <Stack spacing={2}>
               <Controller
                 control={control}
@@ -63,12 +65,13 @@ export const SignInForm = (): React.JSX.Element => {
                     {...field}
                     label="Email"
                     fullWidth
+                    autoComplete="email"
                     helperText={fieldState.error?.message}
                     error={fieldState.invalid}
                   />
                 )}
               />
-              <Button disabled={isLoading} type="submit" variant="contained">
+              <Button disabled={isSubmitDisabled} type="submit" variant="contained">
                 Войти
               </Button>
             </Stack>

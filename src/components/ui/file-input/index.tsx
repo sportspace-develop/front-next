@@ -8,13 +8,8 @@ import { IconButton, InputAdornment, TextField } from '@mui/material';
 import Input from './input';
 import type { FileInputProps } from './types';
 
-function matchIsFile(value: unknown): value is File {
-  // Secure SSR
-  return typeof window !== 'undefined' && value instanceof File;
-}
-
-function getFileDetails(value: File | File[]) {
-  const name = matchIsFile(value) ? value.name : value[0]?.name || '';
+function getFileDetails(file: File) {
+  const name = file.name;
   const parts = name.split('.');
   const fileExtension = parts.pop();
   const filenameWithoutExtension = parts.join('.');
@@ -32,36 +27,26 @@ const FileInput = React.forwardRef(
       onChange,
       placeholder = 'Выбрать файл',
       inputProps,
-      multiple,
       disabled,
+      onUnload,
       ...restTextFieldProps
     } = props;
+    const [currentFile, setCurrentFile] = React.useState<File | null>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const isMultiple = multiple || !!inputProps?.multiple || false;
+    const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0] || null;
 
-    const resetInputValue = () => {
-      if (inputRef.current) {
-        inputRef.current.value = '';
+      if (file) {
+        const url = await onUnload(file);
+
+        setCurrentFile(url ? file : null);
+        onChange(url);
       }
-    };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const fileList = event.target.files;
-      const files = fileList ? Array.from(fileList) : [];
-
-      if (multiple) {
-        onChange?.(files);
-
-        if (files.length === 0) {
-          resetInputValue();
-        }
-      } else {
-        onChange?.(files[0] || null);
-
-        if (!files[0]) {
-          resetInputValue();
-        }
+      if (!file && inputRef.current) {
+        inputRef.current.value = '';
+        setCurrentFile(null);
       }
     };
 
@@ -72,34 +57,35 @@ const FileInput = React.forwardRef(
         return;
       }
 
-      if (multiple) {
-        onChange?.([]);
-      } else {
-        onChange?.(null);
-      }
+      onChange('');
     };
-
-    const hasAtLeastOneFile = Array.isArray(value) ? value.length > 0 : matchIsFile(value);
 
     React.useLayoutEffect(() => {
       const inputElement = inputRef.current;
 
-      if (inputElement && !hasAtLeastOneFile) {
+      if (inputElement && !value) {
         inputElement.value = '';
       }
-    }, [hasAtLeastOneFile]);
+    }, [value]);
 
     const getTheInputText = () => {
-      if (value === null || (Array.isArray(value) && value.length === 0)) {
+      if (currentFile === null) {
+        if (value) {
+          const fileNameWithExtension = value.split('/').pop();
+
+          if (!fileNameWithExtension) {
+            return '';
+          }
+          const [fileName, fileExtension] = fileNameWithExtension.split('.');
+
+          return { fileName, fileExtension };
+        }
+
         return { placeholder: placeholder || '' };
       }
 
-      if (value && hasAtLeastOneFile) {
-        if (Array.isArray(value) && value.length > 1) {
-          return { fileName: `${value.length} files` };
-        }
-
-        return getFileDetails(value);
+      if (currentFile) {
+        return getFileDetails(currentFile);
       }
 
       return '';
@@ -123,7 +109,7 @@ const FileInput = React.forwardRef(
               <PaperclipIcon />
             </InputAdornment>
           ),
-          endAdornment: hasAtLeastOneFile && (
+          endAdornment: value && (
             <InputAdornment position="end">
               <IconButton
                 aria-label="Clear"
@@ -137,10 +123,8 @@ const FileInput = React.forwardRef(
           ),
           inputProps: {
             ...getTheInputText(),
-            multiple: isMultiple,
             ref: inputRef,
             placeholder,
-            error: restTextFieldProps.error,
             ...inputProps,
           },
           inputComponent: Input,

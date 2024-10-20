@@ -2,7 +2,7 @@ import { Metadata, NextPage } from 'next';
 
 import { Stack } from '@mui/material';
 
-import TeamEditForm from '@/components/dashboard/teams/edit/team-edit-form';
+import TabsTeamEditForm from '@/components/dashboard/teams/edit/team-tabs-edit-form';
 import BackToLink from '@/components/ui/back-to-link';
 import { config } from '@/config';
 import { paths } from '@/paths';
@@ -16,12 +16,10 @@ interface Params {
 }
 
 const Page: NextPage<{ params: Params }> = ({ params }) => {
-  const { id } = params;
-
   return (
     <Stack spacing={2}>
       <BackToLink text="Вернуться к списку команд" href={paths.dashboard.teams.index} />
-      <TeamEditForm title={title} id={id} />
+      <TabsTeamEditForm title={title} id={params.id} />
     </Stack>
   );
 };

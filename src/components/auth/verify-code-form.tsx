@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,7 +21,8 @@ import {
 } from '@mui/material';
 
 import BackToLink from '@/components/ui/back-to-link';
-import { useLoginMutation } from '@/lib/store/features/authApi';
+import { useAsyncRouteReplace } from '@/hooks/use-async-route';
+import { useLoginMutation } from '@/lib/store/features/auth-api';
 import { paths } from '@/paths';
 
 const schema = zod.object({
@@ -32,12 +33,13 @@ type Values = zod.infer<typeof schema>;
 
 const defaultValues = { otp: '' } satisfies Values;
 
-export const VerifyCodeForm = (): React.JSX.Element => {
-  const router = useRouter();
+const VerifyCodeForm = (): React.JSX.Element => {
+  const asyncRouteReplace = useAsyncRouteReplace();
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
+  const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(false);
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const {
     control,
@@ -47,12 +49,16 @@ export const VerifyCodeForm = (): React.JSX.Element => {
 
   const onSubmit = React.useCallback(
     async (values: Values) => {
+      setIsSubmitDisabled(true);
+
       try {
         await login({ ...values, email: email ?? '' }).unwrap();
-        router.replace(paths.dashboard.teams.index);
-      } catch {}
+        await asyncRouteReplace(paths.dashboard.teams.index);
+      } finally {
+        setIsSubmitDisabled(false);
+      }
     },
-    [login, email, router],
+    [login, email, asyncRouteReplace],
   );
 
   return (
@@ -75,7 +81,7 @@ export const VerifyCodeForm = (): React.JSX.Element => {
                   </FormControl>
                 )}
               />
-              <Button disabled={isLoading} type="submit" variant="contained">
+              <Button disabled={isSubmitDisabled} type="submit" variant="contained">
                 Отправить
               </Button>
             </Stack>
@@ -85,3 +91,5 @@ export const VerifyCodeForm = (): React.JSX.Element => {
     </Box>
   );
 };
+
+export default VerifyCodeForm;
