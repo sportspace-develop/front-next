@@ -2,11 +2,22 @@ import * as React from 'react';
 
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
-const SkeletonList = React.memo(() =>
-  Array(3)
-    .fill(1)
-    .map((index) => <Skeleton key={index} height="40px" animation="wave" />),
-);
+const SkeletonList = React.memo(() => (
+  <Stack
+    display="flex"
+    spacing={3}
+    sx={{
+      alignItems: 'center',
+      justifyContent: { lg: 'space-around', xs: 'center' },
+    }}
+  >
+    {Array(3)
+      .fill(1)
+      .map((_, index) => (
+        <Skeleton key={index} height="40px" animation="wave" width="100%" />
+      ))}
+  </Stack>
+));
 
 const ListError = React.memo(() => {
   return (
@@ -43,8 +54,11 @@ const ListNoData = React.memo(() => {
       display="flex"
       spacing={3}
       sx={{
+        maxWidth: '900px',
         flexDirection: { md: 'row' },
         alignItems: 'center',
+        mx: 'auto',
+        mt: { md: 3 },
         justifyContent: { lg: 'space-around', xs: 'center' },
       }}
     >

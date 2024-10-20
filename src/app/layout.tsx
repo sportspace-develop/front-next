@@ -5,7 +5,7 @@ import * as React from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import StoreProvider from '@/app/StoreProvider';
+import StoreProvider from '@/app/store-provider';
 import DatePickerProvider from '@/components/core/date-picker-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import ScrollUpButton from '@/components/ui/scroll-up-button';
