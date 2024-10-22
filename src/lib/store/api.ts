@@ -7,8 +7,14 @@ import { isErrorWithMessage, isFetchBaseQueryError } from '@/lib/store/helpers';
 
 const listenerMiddleware = createListenerMiddleware();
 
+enum CacheTag {
+  TEAMS = 'TEAMS',
+  TEAM = 'TEAM',
+}
+
 const rootApi = createApi({
   reducerPath: 'rootApi',
+  tagTypes: Object.values(CacheTag),
   baseQuery: fetchBaseQuery({ baseUrl: '/api/v1' }),
   endpoints: () => ({}),
 });
@@ -24,4 +30,4 @@ listenerMiddleware.startListening({
   },
 });
 
-export { listenerMiddleware, rootApi };
+export { CacheTag, listenerMiddleware, rootApi };
