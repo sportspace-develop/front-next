@@ -55,7 +55,7 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
   const [tabValue, setTabValue] = React.useState<TabsTeamValues>(TabsTeamValues.settings);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: TabsTeamValues) => {
-    if (id === 'undefined' && newValue === TabsTeamValues.players) {
+    if (id === undefined && newValue === TabsTeamValues.players) {
       event.preventDefault();
 
       return;
@@ -149,7 +149,7 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
                 <Typography
                   sx={{
                     display: { xs: 'none', sm: 'block' },
-                    cursor: team?.id === undefined ? 'not-allowed' : 'default',
+                    cursor: id === undefined ? 'not-allowed' : 'default',
                   }}
                 >
                   Игроки
