@@ -99,7 +99,7 @@ export function NavItem({
         )}
       </Box>
       <Box sx={{ flex: '1 1 auto' }}>
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="h4">{title}</Typography>
       </Box>
     </Box>
   );

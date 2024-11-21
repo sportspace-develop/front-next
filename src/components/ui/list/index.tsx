@@ -41,7 +41,7 @@ const ListError = React.memo(() => {
           mx: { md: 4 },
         }}
       />
-      <Typography textAlign="center" variant="h5">
+      <Typography textAlign="center" variant="h3">
         Ошибка! Мы не смогли найти то, что вы ищете
       </Typography>
     </Stack>
@@ -74,7 +74,7 @@ const ListNoData = React.memo(() => {
         }}
       />
       <Stack spacing={1}>
-        <Typography textAlign="center" variant="h5">
+        <Typography textAlign="center" variant="h3">
           Пока список пуст
         </Typography>
         <Typography textAlign="center" variant="subtitle2">
@@ -86,7 +86,7 @@ const ListNoData = React.memo(() => {
 });
 
 const ListHeader = React.memo(({ text }: { text: string }) => (
-  <Typography variant="h4" sx={{ flex: '1 1 auto' }}>
+  <Typography variant="h2" sx={{ flex: '1 1 auto' }}>
     {text}
   </Typography>
 ));

@@ -4,7 +4,7 @@ import type { Theme } from '../types';
 
 export const MuiCardHeader = {
   defaultProps: {
-    titleTypographyProps: { variant: 'h6' },
+    titleTypographyProps: { variant: 'h4' },
     subheaderTypographyProps: { variant: 'body2' },
   },
   styleOverrides: { root: { padding: '32px 24px 16px' } },
