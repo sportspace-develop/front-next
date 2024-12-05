@@ -60,7 +60,7 @@ const TeamItem = React.memo(({ item }: TeamCardProps): React.JSX.Element => {
               />
             </Grid>
             <Grid md={8} xs={12} spacing={1} sx={{ flexBasis: 'content' }}>
-              <Typography variant="h6" sx={{ wordWrap: 'break-word' }}>
+              <Typography variant="h4" sx={{ wordWrap: 'break-word' }}>
                 {item.title}
               </Typography>
               {item.createdAt && (

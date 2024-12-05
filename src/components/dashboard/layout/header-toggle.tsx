@@ -46,7 +46,7 @@ const HeaderToggle = ({ onToggle, open, isDrawer }: HeaderToggleProps) => {
       >
         <Box alt="logo" component="img" src="/assets/logo.svg" width={45} height={45} />
         <Typography
-          variant="h5"
+          variant="h3"
           sx={{
             fontWeight: 600,
             ml: 1,

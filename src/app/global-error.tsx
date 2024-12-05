@@ -37,7 +37,7 @@ export default function GlobalError({
           />
         </Box>
         <Stack spacing={2} textAlign="center">
-          <Typography variant="h3">Ошибка сервера</Typography>
+          <Typography variant="h1">Ошибка сервера</Typography>
           <Typography variant="subtitle1">Запрос временно не может быть обработан</Typography>
           <Button
             onClick={() => reset()}

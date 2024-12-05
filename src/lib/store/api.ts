@@ -10,6 +10,7 @@ const listenerMiddleware = createListenerMiddleware();
 enum CacheTag {
   TEAMS = 'TEAMS',
   TEAM = 'TEAM',
+  TOURNAMENTS = 'TOURNAMENTS',
 }
 
 const rootApi = createApi({
