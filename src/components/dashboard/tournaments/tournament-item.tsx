@@ -15,8 +15,19 @@ interface TournamentProps {
   item: Tournament;
 }
 
-const getRenderDate = (date?: string) =>
-  date ? formatDate(parseISO(date), { format: 'd MMMM yyyy' }) : null;
+const FORMAT_DATE = 'd MMMM yyyy';
+
+const DateTimePeriod = React.memo(
+  ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+    return (
+      <Typography color="text.secondary" variant="caption">
+        {startDate && formatDate(parseISO(startDate), { format: FORMAT_DATE })}
+        {startDate && endDate && ' - '}
+        {endDate && formatDate(parseISO(endDate), { format: FORMAT_DATE })}
+      </Typography>
+    );
+  },
+);
 
 const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element => {
   return (
@@ -31,31 +42,15 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
           <Typography variant="h3" sx={{ wordWrap: 'break-word' }}>
             {item.title}
           </Typography>
-          {/* TODO: добавить на бек description и organisation
-					<Typography color="text.secondary" variant="body2">
-            {item.organisation}
-          </Typography>
-          <Typography color="text.secondary" variant="body2">
-            {item.description}
-          </Typography> */}
           <Stack>
             <Typography color="text.secondary" variant="subtitle2">
               Продолжительность:
             </Typography>
-            <Typography color="text.secondary" variant="caption">
-              {getRenderDate(item.startDate)}
-              {item.startDate && item.endDate && ' - '}
-              {getRenderDate(item.endDate)}
-            </Typography>
-
+            <DateTimePeriod startDate={item.startDate} endDate={item.endDate} />
             <Typography color="text.secondary" variant="subtitle2">
               Регистрация:
             </Typography>
-            <Typography color="text.secondary" variant="caption">
-              {getRenderDate(item.registerStartDate)}
-              {item.registerStartDate && item.registerEndDate && ' - '}
-              {getRenderDate(item.registerEndDate)}
-            </Typography>
+            <DateTimePeriod startDate={item.registerStartDate} endDate={item.registerEndDate} />
           </Stack>
         </CardContent>
       </CardActionArea>
