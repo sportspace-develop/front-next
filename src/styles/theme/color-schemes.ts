@@ -12,7 +12,6 @@ export const colorSchemes = {
         defaultChannel: '9 10 11',
         paper: 'var(--mui-palette-neutral-900)',
         paperChannel: '19 78 72',
-        // @ts-ignore: TODO correct with line
         level1: 'var(--mui-palette-neutral-800)',
         level2: 'var(--mui-palette-neutral-700)',
         level3: 'var(--mui-palette-neutral-600)',
@@ -80,7 +79,6 @@ export const colorSchemes = {
         defaultChannel: '246 247 248',
         paper: 'var(--mui-palette-common-white)',
         paperChannel: '255 255 255',
-        // @ts-ignore: TODO correct with line
         level1: 'var(--mui-palette-neutral-50)',
         level2: 'var(--mui-palette-neutral-100)',
         level3: 'var(--mui-palette-neutral-200)',

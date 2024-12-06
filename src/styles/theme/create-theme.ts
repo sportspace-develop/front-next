@@ -22,6 +22,17 @@ declare module '@mui/material/styles/createPalette' {
     900: string;
     950: string;
   }
+
+  interface TypeBackground {
+    level1?: string;
+    level2?: string;
+    level3?: string;
+  }
+
+  interface PaletteOptions {
+    neutral?: PaletteRange;
+    background?: Partial<TypeBackground>;
+  }
 }
 
 export function createTheme(): Theme {
