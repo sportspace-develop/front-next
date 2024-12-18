@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-//TODO: добавить получение width и height, может переделать в промис
 const useObjectURL = (initialObject: null | File | Blob | MediaSource) => {
   const [objectURL, setObjectURL] = React.useState<null | string>(null);
 
