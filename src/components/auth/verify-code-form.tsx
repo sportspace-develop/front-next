@@ -6,19 +6,9 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MuiOtpInput } from 'mui-one-time-password-input';
 import { z as zod } from 'zod';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  FormControl,
-  FormHelperText,
-  Stack,
-} from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Stack, TextField } from '@mui/material';
 
 import BackToLink from '@/components/ui/back-to-link';
 import { useAsyncRouteReplace } from '@/hooks/use-async-route';
@@ -41,11 +31,10 @@ const VerifyCodeForm = (): React.JSX.Element => {
 
   const [login] = useLoginMutation();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
+  const { control, handleSubmit, setValue } = useForm<Values>({
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = React.useCallback(
     async (values: Values) => {
@@ -61,6 +50,12 @@ const VerifyCodeForm = (): React.JSX.Element => {
     [login, email, asyncRouteReplace],
   );
 
+  const handleChangeOtp: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const trimmedValue = event.target.value.trim();
+
+    setValue('otp', trimmedValue, { shouldValidate: true });
+  };
+
   return (
     <Box sx={{ maxWidth: '600px', width: '100%' }}>
       <BackToLink href={paths.auth.signIn} />
@@ -73,12 +68,14 @@ const VerifyCodeForm = (): React.JSX.Element => {
                 control={control}
                 name="otp"
                 render={({ field, fieldState }) => (
-                  <FormControl error={Boolean(errors.otp)}>
-                    <MuiOtpInput {...field} length={8} />
-                    {fieldState.error && (
-                      <FormHelperText>{fieldState.error.message}</FormHelperText>
-                    )}
-                  </FormControl>
+                  <TextField
+                    {...field}
+                    helperText={fieldState.error?.message}
+                    error={fieldState.invalid}
+                    fullWidth
+                    onChange={handleChangeOtp}
+                    inputProps={{ maxLength: 6 }}
+                  />
                 )}
               />
               <Button disabled={isSubmitDisabled} type="submit" variant="contained">
