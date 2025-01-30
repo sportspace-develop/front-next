@@ -1,11 +1,16 @@
 'use client';
 
+import NextLink from 'next/link';
+
 import * as React from 'react';
 
-import { Unstable_Grid2 as Grid, Pagination, Stack } from '@mui/material';
+import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+
+import { Button, Unstable_Grid2 as Grid, Pagination, Stack } from '@mui/material';
 
 import { ListHeader, ListNoData, SkeletonList } from '@/components/ui/list';
 import { useGetTournamentsQuery } from '@/lib/store/features/tournaments-api';
+import { paths } from '@/paths';
 
 import TournamentItem from './tournament-item';
 
@@ -35,6 +40,15 @@ const TournamentsList = React.memo((): React.JSX.Element => {
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <ListHeader text="Турниры" />
+        <Button
+          component={NextLink}
+          href={paths.dashboard.tournaments.new}
+          startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+          variant="contained"
+          disabled={isLoading}
+        >
+          {isEmptyList ? 'Создать' : 'Добавить'}
+        </Button>
       </Stack>
       {isLoading && <SkeletonList />}
       {!isLoading && isEmptyList && <ListNoData />}

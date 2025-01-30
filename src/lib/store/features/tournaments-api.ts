@@ -35,10 +35,10 @@ export const tournamentsApi = rootApi.injectEndpoints({
       query: (id) => `user/tournaments/${id}`,
       providesTags: (result) => {
         if (!result) {
-          return [CacheTag.TOURNAMENTS];
+          return [CacheTag.TOURNAMENT];
         }
 
-        return [CacheTag.TOURNAMENTS, { id: result.id, type: CacheTag.TOURNAMENTS }];
+        return [CacheTag.TOURNAMENT, { id: result.id, type: CacheTag.TOURNAMENT }];
       },
     }),
     saveTournament: build.mutation<Tournament, TournamentDTO>({
@@ -47,7 +47,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
         url: `user/tournaments/${data.id ?? ''}`,
         body: data,
       }),
-      invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENTS],
+      invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
     }),
   }),
 });

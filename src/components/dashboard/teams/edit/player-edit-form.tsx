@@ -11,7 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
 import { ACCEPTED_IMAGE_TYPES } from '@/constants';
-import { useUploadFileMutation } from '@/lib/store/features/file-api';
+import { useUploadFile } from '@/hooks/use-upload-file';
 
 import { MAX_PLAYER_FIO_LENGTH, playerEditFormSchema } from '../constants';
 import { PlayerEditFormData } from '../types';
@@ -26,7 +26,7 @@ type TeamPlayersEditFormProps = {
 };
 
 const TeamPlayerEditForm = React.memo(({ item, onSave, isLoading }: TeamPlayersEditFormProps) => {
-  const [uploadFile] = useUploadFileMutation();
+  const handleUploadFile = useUploadFile();
 
   const methods = useForm<PlayerEditFormData>({
     mode: 'all',
@@ -35,14 +35,6 @@ const TeamPlayerEditForm = React.memo(({ item, onSave, isLoading }: TeamPlayersE
   });
 
   React.useEffect(() => methods.reset(item), [methods, item]);
-
-  const handleUploadFile = async (file: File) => {
-    try {
-      const { url } = await uploadFile(file).unwrap();
-
-      return url;
-    } catch {}
-  };
 
   return (
     <form onSubmit={methods.handleSubmit(onSave)}>

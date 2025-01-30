@@ -1,7 +1,5 @@
 import { z as zod } from 'zod';
 
-export const MAX_FILE_SIZE = 2 * 1024 * 1024;
-
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
 const dateSchema = zod.date({

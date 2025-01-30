@@ -20,11 +20,12 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
+import { SkeletonList } from '@/components/ui/list';
 import { ACCEPTED_IMAGE_TYPES } from '@/constants';
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
+import { useUploadFile } from '@/hooks/use-upload-file';
 import formatDateToISO from '@/lib/format-date-to-ISO';
 import parseDateFromISO from '@/lib/parse-date-from-ISO';
-import { useUploadFileMutation } from '@/lib/store/features/file-api';
 import {
   useGetTournamentByIdQuery,
   useSaveTournamentMutation,
@@ -38,8 +39,6 @@ type TournamentEditFormProps = {
   id?: string;
   title: string;
 };
-
-const MIN_DATE = new Date();
 
 const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData => {
   if (!tournament) {
@@ -72,7 +71,7 @@ const prepareTournamentDataForSave = (values: TournamentEditFormData): Tournamen
 const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) => {
   const asyncRouterPush = useAsyncRoutePush();
 
-  const [uploadFile] = useUploadFileMutation();
+  const handleUploadFile = useUploadFile();
 
   const { data: tournament, isLoading: isGetLoading } = useGetTournamentByIdQuery(id ?? skipToken);
   const [saveTournament, { isLoading: isSaveTournamentLoading }] = useSaveTournamentMutation();
@@ -114,16 +113,12 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
 
   React.useEffect(() => methods.reset(getTournamentValues(tournament)), [methods, tournament]);
 
-  const handleUploadFile = async (file: File) => {
-    try {
-      const { url } = await uploadFile(file).unwrap();
-
-      return url;
-    } catch {}
-  };
-
   const startDate = methods.watch('startDate');
   const registerStartDate = methods.watch('registerStartDate');
+
+  if (isLoading) {
+    return <SkeletonList />;
+  }
 
   return (
     <>
@@ -184,7 +179,6 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                         <DatePicker
                           {...field}
                           label="Начало турнира"
-                          minDate={MIN_DATE}
                           slotProps={{
                             textField: {
                               fullWidth: true,
@@ -226,7 +220,6 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                         <DatePicker
                           {...field}
                           label="Начало регистрации на турнир"
-                          minDate={MIN_DATE}
                           maxDate={startDate || new Date()}
                           slotProps={{
                             textField: {
