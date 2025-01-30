@@ -57,7 +57,7 @@ const VerifyCodeForm = (): React.JSX.Element => {
   };
 
   return (
-    <Box sx={{ maxWidth: '600px', width: '100%' }}>
+    <Box sx={{ maxWidth: '400px', width: '100%' }}>
       <BackToLink href={paths.auth.signIn} />
       <Card elevation={16} sx={{ mt: 1 }}>
         <CardHeader sx={{ pb: 0 }} title="Введите код" />
