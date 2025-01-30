@@ -1,6 +1,6 @@
 import { z as zod } from 'zod';
 
-import { playerEditFormSchema, teamEditFormSchema } from './edit/constants';
+import { playerEditFormSchema, teamEditFormSchema } from './constants';
 
 export type TeamEditFormData = zod.input<typeof teamEditFormSchema>;
 

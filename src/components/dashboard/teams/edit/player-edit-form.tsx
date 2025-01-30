@@ -10,10 +10,11 @@ import { Button, Unstable_Grid2 as Grid, Stack, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
+import { ACCEPTED_IMAGE_TYPES } from '@/constants';
 import { useUploadFileMutation } from '@/lib/store/features/file-api';
 
+import { MAX_PLAYER_FIO_LENGTH, playerEditFormSchema } from '../constants';
 import { PlayerEditFormData } from '../types';
-import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, playerEditFormSchema } from './constants';
 
 const MIN_BIRTH_DATE = new Date('1900-12-01');
 const MAX_BIRTH_DATE = new Date();

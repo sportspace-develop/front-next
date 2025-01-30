@@ -24,8 +24,8 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import formatDate from '@/lib/format-date';
 
+import { DEFAULT_INITIAL_VALUES_PLAYER } from '../constants';
 import { PlayerEditFormData } from '../types';
-import { DEFAULT_INITIAL_VALUES_PLAYER } from './constants';
 import TeamPlayerEditForm from './player-edit-form';
 
 type TeamPlayersEditFormProps = {

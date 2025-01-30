@@ -11,10 +11,11 @@ import { Avatar, Box, Button, Unstable_Grid2 as Grid, Stack, TextField } from '@
 
 import FileInput from '@/components/ui/file-input';
 import { SkeletonList } from '@/components/ui/list';
+import { ACCEPTED_IMAGE_TYPES } from '@/constants';
 import { useUploadFileMutation } from '@/lib/store/features/file-api';
 
+import { MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from '../constants';
 import { TeamEditFormData } from '../types';
-import { ACCEPTED_IMAGE_TYPES, MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from './constants';
 
 const DEFAULT_INITIAL_VALUES: TeamEditFormData = {
   title: '',

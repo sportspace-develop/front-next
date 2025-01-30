@@ -1,4 +1,1 @@
-export const shouldNotForwardPropsWithKeys =
-  <CustomProps>(props: Array<keyof CustomProps>) =>
-  (propName: PropertyKey): boolean =>
-    !props.map((p) => p.toString()).includes(propName.toString());
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
