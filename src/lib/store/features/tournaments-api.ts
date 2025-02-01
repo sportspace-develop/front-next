@@ -1,4 +1,4 @@
-import { Tournament } from '@/components/dashboard/tournaments/types';
+import { Tournament, TournamentDTO } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
 export type PaginationTypes = {
@@ -31,7 +31,26 @@ export const tournamentsApi = rootApi.injectEndpoints({
         ];
       },
     }),
+    getTournamentById: build.query<TournamentDTO, number | string | undefined>({
+      query: (id) => `user/tournaments/${id}`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TOURNAMENT];
+        }
+
+        return [CacheTag.TOURNAMENT, { id: result.id, type: CacheTag.TOURNAMENT }];
+      },
+    }),
+    saveTournament: build.mutation<Tournament, TournamentDTO>({
+      query: (data) => ({
+        method: data.id ? 'PUT' : 'POST',
+        url: `user/tournaments/${data.id ?? ''}`,
+        body: data,
+      }),
+      invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
+    }),
   }),
 });
 
-export const { useGetTournamentsQuery } = tournamentsApi;
+export const { useGetTournamentsQuery, useGetTournamentByIdQuery, useSaveTournamentMutation } =
+  tournamentsApi;

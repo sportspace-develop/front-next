@@ -1,9 +1,6 @@
 import { z as zod } from 'zod';
 
-import { PlayerEditFormData } from '../types';
-
-export const MAX_FILE_SIZE = 2 * 1024 * 1024;
-export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+import { PlayerEditFormData } from './types';
 
 export const MAX_PLAYER_FIO_LENGTH = 50;
 

@@ -10,10 +10,11 @@ import { Button, Unstable_Grid2 as Grid, Stack, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers';
 
 import FileInput from '@/components/ui/file-input';
-import { useUploadFileMutation } from '@/lib/store/features/file-api';
+import { ACCEPTED_IMAGE_TYPES } from '@/constants';
+import { useUploadFile } from '@/hooks/use-upload-file';
 
+import { MAX_PLAYER_FIO_LENGTH, playerEditFormSchema } from '../constants';
 import { PlayerEditFormData } from '../types';
-import { ACCEPTED_IMAGE_TYPES, MAX_PLAYER_FIO_LENGTH, playerEditFormSchema } from './constants';
 
 const MIN_BIRTH_DATE = new Date('1900-12-01');
 const MAX_BIRTH_DATE = new Date();
@@ -25,7 +26,7 @@ type TeamPlayersEditFormProps = {
 };
 
 const TeamPlayerEditForm = React.memo(({ item, onSave, isLoading }: TeamPlayersEditFormProps) => {
-  const [uploadFile] = useUploadFileMutation();
+  const handleUploadFile = useUploadFile();
 
   const methods = useForm<PlayerEditFormData>({
     mode: 'all',
@@ -34,14 +35,6 @@ const TeamPlayerEditForm = React.memo(({ item, onSave, isLoading }: TeamPlayersE
   });
 
   React.useEffect(() => methods.reset(item), [methods, item]);
-
-  const handleUploadFile = async (file: File) => {
-    try {
-      const { url } = await uploadFile(file).unwrap();
-
-      return url;
-    } catch {}
-  };
 
   return (
     <form onSubmit={methods.handleSubmit(onSave)}>

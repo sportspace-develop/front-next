@@ -18,7 +18,7 @@ interface TournamentProps {
 const FORMAT_DATE = 'd MMMM yyyy';
 
 const DateTimePeriod = React.memo(
-  ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+  ({ startDate, endDate }: { startDate?: string; endDate?: string }) => {
     return (
       <Typography color="text.secondary" variant="caption">
         {startDate && formatDate(parseISO(startDate), { format: FORMAT_DATE })}
@@ -32,7 +32,10 @@ const DateTimePeriod = React.memo(
 const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element => {
   return (
     <Card sx={{ display: 'flex' }}>
-      <CardActionArea component={NextLink} href={paths.dashboard.tournaments}>
+      <CardActionArea
+        component={NextLink}
+        href={`${paths.dashboard.tournaments.index}/${item.id}/edit`}
+      >
         <CardMedia
           sx={{ height: { xs: 100, sm: 200 }, display: 'flex', backgroundSize: 'contain' }}
           image={item.logoUrl}
@@ -47,10 +50,14 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
               Продолжительность:
             </Typography>
             <DateTimePeriod startDate={item.startDate} endDate={item.endDate} />
-            <Typography color="text.secondary" variant="subtitle2">
-              Регистрация:
-            </Typography>
-            <DateTimePeriod startDate={item.registerStartDate} endDate={item.registerEndDate} />
+            {(item.registerStartDate || item.registerEndDate) && (
+              <>
+                <Typography color="text.secondary" variant="subtitle2">
+                  Регистрация:
+                </Typography>
+                <DateTimePeriod startDate={item.registerStartDate} endDate={item.registerEndDate} />
+              </>
+            )}
           </Stack>
         </CardContent>
       </CardActionArea>

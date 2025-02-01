@@ -8,6 +8,10 @@ export const paths = {
       new: '/dashboard/teams/new',
       edit: '/dashboard/teams/[id]/edit',
     },
-    tournaments: '/dashboard/tournaments',
+    tournaments: {
+      index: '/dashboard/tournaments',
+      new: '/dashboard/tournaments/new',
+      edit: '/dashboard/tournaments/[id]/edit',
+    },
   },
 } as const;

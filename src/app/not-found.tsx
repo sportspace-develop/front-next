@@ -36,7 +36,7 @@ export default function Page(): React.JSX.Element {
         >
           <Typography variant="h1">Страница не найдена</Typography>
           <Typography variant="subtitle1">Но есть другие полезные страницы</Typography>
-          <BackToLink text="На главную" href={paths.dashboard.tournaments} />
+          <BackToLink text="На главную" href={paths.dashboard.tournaments.index} />
         </Stack>
       </Container>
     </main>

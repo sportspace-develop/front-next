@@ -11,10 +11,11 @@ import { Avatar, Box, Button, Unstable_Grid2 as Grid, Stack, TextField } from '@
 
 import FileInput from '@/components/ui/file-input';
 import { SkeletonList } from '@/components/ui/list';
-import { useUploadFileMutation } from '@/lib/store/features/file-api';
+import { ACCEPTED_IMAGE_TYPES } from '@/constants';
+import { useUploadFile } from '@/hooks/use-upload-file';
 
+import { MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from '../constants';
 import { TeamEditFormData } from '../types';
-import { ACCEPTED_IMAGE_TYPES, MAX_TEAM_NAME_LENGTH, teamEditFormSchema } from './constants';
 
 const DEFAULT_INITIAL_VALUES: TeamEditFormData = {
   title: '',
@@ -28,7 +29,7 @@ type TeamSettingsEditFormProps = {
 
 const TeamSettingsEditForm = React.memo(
   ({ team = DEFAULT_INITIAL_VALUES, isLoading, onSave }: TeamSettingsEditFormProps) => {
-    const [uploadFile] = useUploadFileMutation();
+    const handleUploadFile = useUploadFile();
 
     const methods = useForm<TeamEditFormData>({
       mode: 'all',
@@ -41,14 +42,6 @@ const TeamSettingsEditForm = React.memo(
     if (isLoading) {
       return <SkeletonList />;
     }
-
-    const handleUploadFile = async (file: File) => {
-      try {
-        const { url } = await uploadFile(file).unwrap();
-
-        return url;
-      } catch {}
-    };
 
     return (
       <FormProvider {...methods}>

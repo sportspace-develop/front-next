@@ -11,6 +11,7 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { Card, CardContent, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
+import formatDateToISO from '@/lib/format-date-to-ISO';
 import { useSavePlayerMutation } from '@/lib/store/features/players-api';
 import { useGetTeamByIdQuery, useSaveTeamMutation } from '@/lib/store/features/teams-api';
 import { paths } from '@/paths';
@@ -42,7 +43,7 @@ const getPlayersValues = (players?: PlayerDTO[]): PlayerEditFormData[] => {
 
 const preparePlayerDataForSave = (values: PlayerEditFormData): PlayerDTO => ({
   ...values,
-  bDay: values.bDay ? values.bDay.toISOString() : '',
+  bDay: formatDateToISO(values.bDay),
 });
 
 const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {

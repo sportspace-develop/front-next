@@ -6,7 +6,7 @@ export const navItems: NavItemConfig[] = [
   {
     key: 'tournaments',
     title: 'Турниры',
-    href: paths.dashboard.tournaments,
+    href: paths.dashboard.tournaments.index,
     icon: NavIconNames.trophy,
   },
   { key: 'teams', title: 'Команды', href: paths.dashboard.teams.index, icon: NavIconNames.users },
