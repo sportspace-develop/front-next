@@ -4,7 +4,15 @@ import * as React from 'react';
 
 import { parseISO } from 'date-fns';
 
-import { Card, CardActionArea, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import {
+  Avatar,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import formatDate from '@/lib/format-date';
 import { paths } from '@/paths';
@@ -40,7 +48,17 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
           sx={{ height: { xs: 100, sm: 200 }, display: 'flex', backgroundSize: 'contain' }}
           image={item.logoUrl}
           title={item.title}
-        />
+        >
+          {!item.logoUrl && (
+            <Avatar
+              sx={{
+                height: { xs: 80, sm: 180 },
+                width: { xs: 80, sm: 180 },
+                m: 'auto',
+              }}
+            />
+          )}
+        </CardMedia>
         <CardContent>
           <Typography variant="h3" sx={{ wordWrap: 'break-word' }}>
             {item.title}
