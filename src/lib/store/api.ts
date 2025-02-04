@@ -10,6 +10,8 @@ const listenerMiddleware = createListenerMiddleware();
 enum CacheTag {
   TEAMS = 'TEAMS',
   TEAM = 'TEAM',
+  TEAM_APPLICATIONS = 'TEAM_APPLICATIONS',
+  TEAM_APPLICATION = 'TEAM_APPLICATION',
   TOURNAMENT = 'TOURNAMENT',
   TOURNAMENTS = 'TOURNAMENTS',
 }
@@ -25,7 +27,11 @@ listenerMiddleware.startListening({
   matcher: isAllOf(isRejected),
   effect: (action) => {
     if (isFetchBaseQueryError(action.payload)) {
-      toast.error(JSON.stringify(action.payload.data ?? action.payload.status));
+      if (action.payload?.status === 'CUSTOM_ERROR') {
+        toast.error(action.payload.error);
+      } else {
+        toast.error(JSON.stringify(action.payload.data ?? action.payload.status));
+      }
     } else if (isErrorWithMessage(action.payload)) {
       toast.error(JSON.stringify(action.payload.message));
     }

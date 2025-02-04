@@ -78,7 +78,7 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleSaveSettings: SubmitHandler<TournamentEditFormData> = React.useCallback(
+  const handleSave: SubmitHandler<TournamentEditFormData> = React.useCallback(
     async (values) => {
       try {
         setIsSubmitting(true);
@@ -130,7 +130,7 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
       <Card>
         <CardContent>
           <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleSaveSettings)}>
+            <form onSubmit={methods.handleSubmit(handleSave)}>
               <Stack spacing={3}>
                 <Controller
                   control={methods.control}
