@@ -17,7 +17,10 @@ export const paths = {
       index: '/dashboard/tournaments',
       new: '/dashboard/tournaments/new',
       edit: '/dashboard/tournaments/[id]/edit',
-      applications: '/dashboard/tournaments/[id]/applications',
+      applications: {
+        index: '/dashboard/tournaments/[id]/applications',
+        edit: '/dashboard/tournaments/[id]/applications/[applicationId]/edit',
+      },
     },
   },
 } as const;

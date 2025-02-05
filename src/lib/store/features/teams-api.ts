@@ -1,6 +1,8 @@
-import { Player, Team, TeamApplication, TeamDTO } from '@/components/dashboard/teams/types';
+import { Team, TeamApplication, TeamDTO } from '@/components/dashboard/teams/types';
 import { Tournament } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
+
+import { Player } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;

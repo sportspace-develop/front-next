@@ -28,7 +28,7 @@ const Page: NextPage<{ params: Params }> = ({ params }) => {
         <BackToLink text="Вернуться к списку турниров" href={paths.dashboard.tournaments.index} />
         <Link
           component={NextLink}
-          href={`${paths.dashboard.teams.index}/${params.id}/applications`}
+          href={`${paths.dashboard.tournaments.index}/${params.id}/applications`}
         >
           <Typography variant="subtitle2">К списку заявок на турнир</Typography>
         </Link>

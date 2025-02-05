@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import getLocalizedStatus from '@/lib/get-localized-status';
 import { paths } from '@/paths';
 
 import { TeamApplication } from '../types';
@@ -39,7 +40,7 @@ const TeamsApplicationItem = ({ item, teamId }: TeamsApplicationItemProps) => {
                 sx={{ wordWrap: 'break-word' }}
                 color="text.secondary"
               >
-                Статус: {item.status}
+                Статус: {getLocalizedStatus(item.status)}
               </Typography>
             </Grid>
           </Grid>

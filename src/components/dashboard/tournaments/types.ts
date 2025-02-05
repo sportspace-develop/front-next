@@ -1,5 +1,7 @@
 import { z as zod } from 'zod';
 
+import { ApplicationStatus } from '@/lib/store/types';
+
 import { tournamentApplicationEditFormSchema, tournamentEditFormSchema } from './constants';
 
 export type Tournament = {
@@ -22,7 +24,7 @@ export type TournamentApplicationEditFormData = zod.input<
 
 export type TournamentApplication = {
   id?: number;
-  status: string;
+  status: ApplicationStatus;
   teamId: number;
   teamTitle: string;
 };

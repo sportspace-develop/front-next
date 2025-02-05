@@ -1,5 +1,7 @@
 import { z as zod } from 'zod';
 
+import { ApplicationStatus } from '@/lib/store/types';
+
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
 const dateSchema = zod.date({
@@ -60,9 +62,5 @@ export const tournamentEditFormSchema = zod
   });
 
 export const tournamentApplicationEditFormSchema = zod.object({
-  id: zod.coerce.number().optional(),
-  teamId: zod.preprocess(
-    (val) => (val === null ? undefined : val), // Заменяем `null` на `undefined`
-    zod.number({ message: 'Поле обязательно' }),
-  ),
+  status: zod.nativeEnum(ApplicationStatus, { message: 'Недопустимый статус заявки' }),
 });
