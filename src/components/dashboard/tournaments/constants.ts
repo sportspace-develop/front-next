@@ -58,3 +58,11 @@ export const tournamentEditFormSchema = zod
     path: ['registerEndDate'],
     message: 'Укажите дату завершения регистрации',
   });
+
+export const tournamentApplicationEditFormSchema = zod.object({
+  id: zod.coerce.number().optional(),
+  teamId: zod.preprocess(
+    (val) => (val === null ? undefined : val), // Заменяем `null` на `undefined`
+    zod.number({ message: 'Поле обязательно' }),
+  ),
+});

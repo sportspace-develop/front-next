@@ -36,18 +36,6 @@ export type TeamDTO = Omit<Team, 'id'> & { id?: Team['id']; players?: Player[] }
 export type TeamApplication = {
   id?: number;
   status: string;
-  tournamentId?: number;
+  tournamentId: number;
   tournamentTitle: string;
-};
-
-export type TeamApplicationDTO = {
-  id?: number;
-  status: string;
-  tournamentId?: number;
-  tournamentTitle: string;
-  players?: Player[];
-};
-
-export type TeamApplicationsDTO = {
-  data: TeamApplication[];
 };
