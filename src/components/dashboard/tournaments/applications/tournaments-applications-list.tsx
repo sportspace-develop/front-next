@@ -45,11 +45,11 @@ const TournamentApplicationList = ({ tournamentId }: TournamentApplicationListPr
         )}
       </Stack>
       {isLoading && <SkeletonList />}
-      {!isLoading && isEmptyList && <ListNoData />}
+      {!isLoading && isEmptyList && <ListNoData hiddenCreateText />}
       <Grid container spacing={3}>
         {applications?.data?.map((item) => (
           <Grid key={item.id} md={4} sm={6} xs={12} display="grid">
-            <TournamentApplicationItem item={item} />
+            <TournamentApplicationItem item={item} tournamentId={tournamentId} />
           </Grid>
         ))}
       </Grid>

@@ -1,5 +1,7 @@
 import { z as zod } from 'zod';
 
+import { ApplicationStatus } from '@/lib/store/types';
+
 import {
   playerEditFormSchema,
   teamApplicationEditFormSchema,
@@ -11,15 +13,6 @@ export type TeamEditFormData = zod.input<typeof teamEditFormSchema>;
 export type PlayerEditFormData = zod.input<typeof playerEditFormSchema>;
 
 export type TeamApplicationEditFormData = zod.input<typeof teamApplicationEditFormSchema>;
-
-export type Player = {
-  id: number;
-  lastName: string; //фамилия
-  firstName: string; //имя
-  secondName?: string; //отчество
-  bDay?: string;
-  photoUrl?: string;
-};
 
 export type Team = {
   id: number;
@@ -35,7 +28,7 @@ export type TeamDTO = Omit<Team, 'id'> & { id?: Team['id']; players?: Player[] }
 
 export type TeamApplication = {
   id?: number;
-  status: string;
+  status: ApplicationStatus;
   tournamentId: number;
   tournamentTitle: string;
 };

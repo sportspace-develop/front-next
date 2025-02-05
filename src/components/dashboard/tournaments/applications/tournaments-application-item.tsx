@@ -8,20 +8,22 @@ import {
   Typography,
 } from '@mui/material';
 
+import getLocalizedStatus from '@/lib/get-localized-status';
 import { paths } from '@/paths';
 
 import { TournamentApplication } from '../types';
 
 interface TournamentsApplicationItemProps {
   item: TournamentApplication;
+  tournamentId: number | string;
 }
 
-const TournamentsApplicationItem = ({ item }: TournamentsApplicationItemProps) => {
+const TournamentsApplicationItem = ({ item, tournamentId }: TournamentsApplicationItemProps) => {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea
         component={NextLink}
-        href={`${paths.dashboard.teams.index}/${item.teamId}/applications/${item.id}/edit`}
+        href={`${paths.dashboard.tournaments.index}/${tournamentId}/applications/${item.id}/edit`}
       >
         <CardContent>
           <Grid
@@ -38,7 +40,7 @@ const TournamentsApplicationItem = ({ item }: TournamentsApplicationItemProps) =
                 sx={{ wordWrap: 'break-word' }}
                 color="text.secondary"
               >
-                Статус: {item.status}
+                Статус: {getLocalizedStatus(item.status)}
               </Typography>
             </Grid>
           </Grid>
