@@ -1,4 +1,8 @@
-import { Tournament, TournamentDTO } from '@/components/dashboard/tournaments/types';
+import {
+  Tournament,
+  TournamentApplication,
+  TournamentDTO,
+} from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
 export type PaginationTypes = {
@@ -12,6 +16,10 @@ export type PaginationTypes = {
 type ResponseGetTournaments = {
   data: Tournament[];
   pagination: PaginationTypes;
+};
+
+type TournamentApplicationsDTO = {
+  data: TournamentApplication[];
 };
 
 export const tournamentsApi = rootApi.injectEndpoints({
@@ -49,8 +57,25 @@ export const tournamentsApi = rootApi.injectEndpoints({
       }),
       invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
     }),
+    getTournamentsApplications: build.query<TournamentApplicationsDTO, number | string>({
+      query: (id) => `user/tournaments/${id}/applications`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TOURNAMENT_APPLICATIONS];
+        }
+
+        return [
+          CacheTag.TOURNAMENT_APPLICATIONS,
+          ...result.data.map(({ id }) => ({ id, type: CacheTag.TOURNAMENT_APPLICATIONS })),
+        ];
+      },
+    }),
   }),
 });
 
-export const { useGetTournamentsQuery, useGetTournamentByIdQuery, useSaveTournamentMutation } =
-  tournamentsApi;
+export const {
+  useGetTournamentsQuery,
+  useGetTournamentByIdQuery,
+  useSaveTournamentMutation,
+  useGetTournamentsApplicationsQuery,
+} = tournamentsApi;

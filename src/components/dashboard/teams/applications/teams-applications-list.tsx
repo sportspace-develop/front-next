@@ -9,6 +9,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Avatar, Button, Unstable_Grid2 as Grid, Stack, Typography } from '@mui/material';
 
 import { ListNoData, SkeletonList } from '@/components/ui/list';
+import addQuotes from '@/lib/add-quotes';
 import { useGetTeamByIdQuery, useGetTeamsApplicationsQuery } from '@/lib/store/features/teams-api';
 import { paths } from '@/paths';
 
@@ -31,7 +32,7 @@ const TeamsApplicationsList = ({ teamId }: TeamsApplicationListProps) => {
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
-        <Typography variant="h2">Заявки команды{team?.title ? ` "${team.title}"` : ''}</Typography>
+        <Typography variant="h2">Заявки команды {addQuotes(team?.title)}</Typography>
         {team && (
           <Avatar
             src={team.logoUrl}
