@@ -117,6 +117,10 @@ const TeamPlayersTableEditForm = React.memo(
       onSelectedIds(newSelected);
     };
 
+    React.useEffect(() => {
+      return () => setIsPlayersDirty?.(false);
+    }, [setIsPlayersDirty]);
+
     if (isLoading) {
       return <SkeletonList />;
     }
