@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportspace-frontend
+    restart: always
+    ports:
+      - '3000:3000'
+    networks:
+      - sportspace-network
+networks:
+  sportspace-network:
+    external: true
