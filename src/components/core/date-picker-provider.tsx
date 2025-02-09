@@ -1,6 +1,6 @@
 'use client';
 
-import localeRu from 'date-fns/locale/ru';
+import { ru } from 'date-fns/locale';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
@@ -11,7 +11,7 @@ export interface DatePickerProviderProps {
 
 function DatePickerProvider({ children }: DatePickerProviderProps): React.JSX.Element {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeRu}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
       {children}
     </LocalizationProvider>
   );

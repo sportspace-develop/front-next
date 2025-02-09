@@ -1,5 +1,5 @@
 import { Locale, format, isValid } from 'date-fns';
-import localeRu from 'date-fns/locale/ru';
+import { ru as localeRu } from 'date-fns/locale';
 import deepmerge from 'deepmerge';
 
 export type TSettings = {
