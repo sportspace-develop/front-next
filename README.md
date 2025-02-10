@@ -14,3 +14,7 @@
 ```bash
 docker run -e BACKEND_URL=http://sportspace-api:8080 -p 3000:3000 sportspace-frontend
 ```
+
+Для запуска docker container через docker-compose нужно:
+1. создать сеть для работы с фронтом ```docker network create sportspace-network```
+2. запустить ```docker-compose up``` или пересобрать и запустить ```docker-compose up --build```

@@ -13,6 +13,8 @@ RUN npm install
 # Копируем остальные файлы проекта
 COPY . .
 
+ENV BACKEND_URL=http://sportspace-api:8080
+
 # Собираем проект
 RUN npm run build
 
