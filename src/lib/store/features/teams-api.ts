@@ -2,7 +2,7 @@ import { Team, TeamApplication, TeamDTO } from '@/components/dashboard/teams/typ
 import { Tournament } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
-import { Player } from '../types';
+import { Player, TeamApplicationUpdateStatuses } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;
@@ -22,11 +22,17 @@ export type RequestSaveTeam = Omit<Team, 'players' | 'id'> & {
   playerIds?: Player['id'][];
 };
 
-export type RequestSaveTeamsApplication = {
+export type RequestCreateTeamsApplication = {
   teamId: Team['id'];
-  applicationId?: TeamApplication['id'];
   tournamentId?: Tournament['id'];
   playerIds?: Player['id'][];
+};
+
+export type RequestUpdateTeamsApplication = {
+  teamId: Team['id'];
+  applicationId: TeamApplication['id'];
+  playerIds: Player['id'][];
+  status?: TeamApplicationUpdateStatuses;
 };
 
 type RequestGetTeamsApplicationById = {
@@ -34,11 +40,11 @@ type RequestGetTeamsApplicationById = {
   applicationId?: number | string;
 };
 
-type TeamApplicationsDTO = {
+export type TeamApplicationsDTO = {
   data: TeamApplication[];
 };
 
-type TeamApplicationItemDTO = TeamApplication & {
+export type TeamApplicationItemDTO = TeamApplication & {
   players?: Player[];
 };
 
@@ -97,10 +103,10 @@ export const teamsApi = rootApi.injectEndpoints({
         ];
       },
     }),
-    saveTeamsApplication: build.mutation<Team, RequestSaveTeamsApplication>({
+    createTeamsApplication: build.mutation<Team, RequestCreateTeamsApplication>({
       query: (data) => ({
-        method: data.applicationId ? 'PUT' : 'POST',
-        url: `user/teams/${data.teamId}/applications/${data.applicationId ?? ''}`,
+        method: 'POST',
+        url: `user/teams/${data.teamId}/applications`,
         body: data,
       }),
       invalidatesTags: [CacheTag.TEAM_APPLICATIONS, CacheTag.TEAM_APPLICATION],
@@ -116,6 +122,14 @@ export const teamsApi = rootApi.injectEndpoints({
         return response;
       },
     }),
+    updateTeamsApplication: build.mutation<Team, RequestUpdateTeamsApplication>({
+      query: (data) => ({
+        method: 'PUT',
+        url: `user/teams/${data.teamId}/applications/${data.applicationId}`,
+        body: data,
+      }),
+      invalidatesTags: [CacheTag.TEAM_APPLICATIONS, CacheTag.TEAM_APPLICATION],
+    }),
   }),
 });
 
@@ -125,5 +139,6 @@ export const {
   useSaveTeamMutation,
   useGetTeamsApplicationByIdQuery,
   useGetTeamsApplicationsQuery,
-  useSaveTeamsApplicationMutation,
+  useCreateTeamsApplicationMutation,
+  useUpdateTeamsApplicationMutation,
 } = teamsApi;

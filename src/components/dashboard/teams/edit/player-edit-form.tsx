@@ -159,7 +159,7 @@ const TeamPlayerEditForm = React.memo(
                 }}
                 disabled={isLoading}
               >
-                Сохранить
+                Сохранить игрока
               </Button>
             </Grid>
           </Grid>
