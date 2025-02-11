@@ -1,17 +1,15 @@
 import { z as zod } from 'zod';
 
 import formatDateToISO from '@/lib/format-date-to-ISO';
+import { TeamApplicationUpdateStatuses } from '@/lib/store/types';
 
 import { PlayerDTO, PlayerEditFormData } from './types';
 
 export const MAX_PLAYER_FIO_LENGTH = 50;
 
 export const teamApplicationEditFormSchema = zod.object({
-  id: zod.coerce.number().optional(),
-  tournamentId: zod.preprocess(
-    (val) => (val === null ? undefined : val), // Заменяем `null` на `undefined`
-    zod.number({ message: 'Поле обязательно' }),
-  ),
+  tournamentId: zod.coerce.number({ message: 'Поле обязательно' }),
+  status: zod.nativeEnum(TeamApplicationUpdateStatuses).or(zod.literal('')).optional(),
 });
 
 export const playerEditFormSchema = zod.object({

@@ -1,6 +1,6 @@
 import { z as zod } from 'zod';
 
-import { ApplicationStatus } from '@/lib/store/types';
+import { ApplicationStatus, Player } from '@/lib/store/types';
 
 import {
   playerEditFormSchema,
