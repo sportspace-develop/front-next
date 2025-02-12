@@ -1,8 +1,18 @@
 import { z as zod } from 'zod';
 
-import { PlayerEditFormData } from './types';
+import formatDateToISO from '@/lib/format-date-to-ISO';
+
+import { PlayerDTO, PlayerEditFormData } from './types';
 
 export const MAX_PLAYER_FIO_LENGTH = 50;
+
+export const teamApplicationEditFormSchema = zod.object({
+  id: zod.coerce.number().optional(),
+  tournamentId: zod.preprocess(
+    (val) => (val === null ? undefined : val), // Заменяем `null` на `undefined`
+    zod.number({ message: 'Поле обязательно' }),
+  ),
+});
 
 export const playerEditFormSchema = zod.object({
   id: zod.coerce.number().optional(),
@@ -67,3 +77,19 @@ export const DEFAULT_INITIAL_VALUES_PLAYER: PlayerEditFormData = {
   bDay: null,
   photoUrl: undefined,
 };
+
+export const getPlayersValues = (players?: PlayerDTO[]): PlayerEditFormData[] => {
+  if (players && players.length > 0) {
+    return players.map((player) => ({
+      ...player,
+      bDay: player.bDay ? new Date(player.bDay) : null,
+    }));
+  }
+
+  return [];
+};
+
+export const preparePlayerDataForSave = (values: PlayerEditFormData): PlayerDTO => ({
+  ...values,
+  bDay: formatDateToISO(values.bDay),
+});

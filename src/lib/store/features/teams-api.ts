@@ -1,4 +1,12 @@
-import { Player, Team, TeamDTO } from '@/components/dashboard/teams/types';
+import {
+  Player,
+  Team,
+  TeamApplication,
+  TeamApplicationDTO,
+  TeamApplicationsDTO,
+  TeamDTO,
+} from '@/components/dashboard/teams/types';
+import { Tournament } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
 export type PaginationTypes = {
@@ -17,6 +25,18 @@ type ResponseGetTeams = {
 export type RequestSaveTeam = Omit<Team, 'players' | 'id'> & {
   id?: Team['id'];
   playerIds?: Player['id'][];
+};
+
+export type RequestSaveTeamsApplication = {
+  teamId: Team['id'];
+  applicationId?: TeamApplication['id'];
+  tournamentId?: Tournament['id'];
+  playerIds?: Player['id'][];
+};
+
+type RequestGetTeamsApplicationById = {
+  teamId: number | string;
+  applicationId?: number | string;
 };
 
 export const teamsApi = rootApi.injectEndpoints({
@@ -51,7 +71,56 @@ export const teamsApi = rootApi.injectEndpoints({
       }),
       invalidatesTags: [CacheTag.TEAMS, CacheTag.TEAM],
     }),
+    getTeamsApplicationById: build.query<TeamApplicationDTO, RequestGetTeamsApplicationById>({
+      query: (data) => `user/teams/${data.teamId}/applications/${data.applicationId}`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TEAM_APPLICATION];
+        }
+
+        return [CacheTag.TEAM_APPLICATION, { id: result.id, type: CacheTag.TEAM_APPLICATION }];
+      },
+    }),
+    getTeamsApplications: build.query<TeamApplicationsDTO, number | string>({
+      query: (id) => `user/teams/${id}/applications`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TEAM_APPLICATIONS];
+        }
+
+        return [
+          CacheTag.TEAM_APPLICATIONS,
+          ...result.data.map(({ id }) => ({ id, type: CacheTag.TEAM_APPLICATIONS })),
+        ];
+      },
+    }),
+    saveTeamsApplication: build.mutation<Team, RequestSaveTeamsApplication>({
+      query: (data) => ({
+        method: data.applicationId ? 'PUT' : 'POST',
+        url: `user/teams/${data.teamId}/applications/${data.applicationId ?? ''}`,
+        body: data,
+      }),
+      invalidatesTags: [CacheTag.TEAM_APPLICATIONS, CacheTag.TEAM_APPLICATION],
+      transformErrorResponse: (response) => {
+        if (response.status === 409) {
+          return {
+            status: 'CUSTOM_ERROR',
+            error: 'Заявка с выбранным турниром уже существует',
+            data: response.data,
+          };
+        }
+
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetTeamsQuery, useGetTeamByIdQuery, useSaveTeamMutation } = teamsApi;
+export const {
+  useGetTeamsQuery,
+  useGetTeamByIdQuery,
+  useSaveTeamMutation,
+  useGetTeamsApplicationByIdQuery,
+  useGetTeamsApplicationsQuery,
+  useSaveTeamsApplicationMutation,
+} = teamsApi;

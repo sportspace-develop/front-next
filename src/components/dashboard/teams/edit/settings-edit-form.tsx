@@ -23,12 +23,18 @@ const DEFAULT_INITIAL_VALUES: TeamEditFormData = {
 
 type TeamSettingsEditFormProps = {
   isLoading: boolean;
+  setIsSettingsDirty: (value: boolean) => void;
   team?: TeamEditFormData;
   onSave: (values: TeamEditFormData) => void;
 };
 
 const TeamSettingsEditForm = React.memo(
-  ({ team = DEFAULT_INITIAL_VALUES, isLoading, onSave }: TeamSettingsEditFormProps) => {
+  ({
+    team = DEFAULT_INITIAL_VALUES,
+    isLoading,
+    onSave,
+    setIsSettingsDirty,
+  }: TeamSettingsEditFormProps) => {
     const handleUploadFile = useUploadFile();
 
     const methods = useForm<TeamEditFormData>({
@@ -38,6 +44,10 @@ const TeamSettingsEditForm = React.memo(
     });
 
     React.useEffect(() => methods.reset(team), [methods, team]);
+
+    React.useEffect(() => {
+      setIsSettingsDirty(methods.formState.isDirty);
+    }, [methods.formState.isDirty, setIsSettingsDirty]);
 
     if (isLoading) {
       return <SkeletonList />;

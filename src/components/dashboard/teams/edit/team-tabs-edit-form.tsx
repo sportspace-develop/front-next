@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import * as React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -8,15 +10,16 @@ import { IdentificationCard as IdentificationCardIcon } from '@phosphor-icons/re
 import { PersonSimpleRun as PersonSimpleRunIcon } from '@phosphor-icons/react/dist/ssr/PersonSimpleRun';
 import { skipToken } from '@reduxjs/toolkit/query';
 
-import { Card, CardContent, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Button, Card, CardContent, Stack, Tab, Tabs, Typography } from '@mui/material';
 
+import ConfirmNavigationDialog from '@/components/ui/confirm-navigation-dialog';
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
-import formatDateToISO from '@/lib/format-date-to-ISO';
 import { useSavePlayerMutation } from '@/lib/store/features/players-api';
 import { useGetTeamByIdQuery, useSaveTeamMutation } from '@/lib/store/features/teams-api';
 import { paths } from '@/paths';
 
-import { PlayerDTO, PlayerEditFormData, TeamEditFormData } from '../types';
+import { getPlayersValues, preparePlayerDataForSave } from '../constants';
+import { PlayerEditFormData, TeamEditFormData } from '../types';
 import TeamPlayersTableEditForm from './players-table-edit-form';
 import TeamSettingsEditForm from './settings-edit-form';
 
@@ -30,30 +33,46 @@ enum TabsTeamValues {
   players = 'players',
 }
 
-const getPlayersValues = (players?: PlayerDTO[]): PlayerEditFormData[] => {
-  if (players && players.length > 0) {
-    return players.map((player) => ({
-      ...player,
-      bDay: player.bDay ? new Date(player.bDay) : null,
-    }));
-  }
-
-  return [];
-};
-
-const preparePlayerDataForSave = (values: PlayerEditFormData): PlayerDTO => ({
-  ...values,
-  bDay: formatDateToISO(values.bDay),
-});
-
 const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
   const { data: team, isLoading: isGetLoading } = useGetTeamByIdQuery(id ?? skipToken);
   const [saveTeam, { isLoading: isSaveTeamLoading }] = useSaveTeamMutation();
   const [savePlayer, { isLoading: isSavePlayerLoading }] = useSavePlayerMutation();
   const asyncRouterPush = useAsyncRoutePush();
 
+  const [isSettingsDirty, setIsSettingsDirty] = React.useState(false);
+  const [isPlayersDirty, setIsPlayersDirty] = React.useState(false);
+
+  const isDirty = isSettingsDirty || isPlayersDirty;
+  const [nextRoute, setNextRoute] = React.useState<string | null>(null);
+  const [nextTab, setNextTab] = React.useState<TabsTeamValues | null>(null);
+
+  const router = useRouter();
+
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showModal, setShowModal] = React.useState(false);
+
   const [tabValue, setTabValue] = React.useState<TabsTeamValues>(TabsTeamValues.settings);
+
+  const handleNavigate = (route: string) => {
+    if (isDirty) {
+      setShowModal(true);
+      setNextRoute(route);
+    } else {
+      router.push(route);
+    }
+  };
+
+  const confirmNavigation = () => {
+    setShowModal(false);
+
+    if (nextRoute) {
+      router.push(nextRoute);
+    }
+
+    if (nextTab) {
+      setTabValue(nextTab);
+    }
+  };
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: TabsTeamValues) => {
     if (id === undefined && newValue === TabsTeamValues.players) {
@@ -62,7 +81,12 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
       return;
     }
 
-    setTabValue(newValue);
+    if (isDirty) {
+      setShowModal(true);
+      setNextTab(newValue);
+    } else {
+      setTabValue(newValue);
+    }
   };
 
   const handleSaveSettings: SubmitHandler<TeamEditFormData> = React.useCallback(
@@ -124,10 +148,25 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
 
   return (
     <>
-      <Stack>
+      <Stack direction="row" spacing={3}>
         <Typography variant="h4" sx={{ flex: '1 1 auto' }}>
           {title}
         </Typography>
+        {id && (
+          <Button
+            variant="contained"
+            sx={{ width: 'max-content' }}
+            disabled={isLoading}
+            onClick={() => handleNavigate(`${paths.dashboard.teams.index}/${id}/applications/new`)}
+          >
+            Создать заявку на турнир
+          </Button>
+        )}
+        <ConfirmNavigationDialog
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          onConfirm={confirmNavigation}
+        />
       </Stack>
       <Card>
         <CardContent sx={{ pt: 0 }}>
@@ -159,13 +198,20 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
             />
           </Tabs>
           {tabValue === TabsTeamValues.settings && (
-            <TeamSettingsEditForm team={team} onSave={handleSaveSettings} isLoading={isLoading} />
+            <TeamSettingsEditForm
+              team={team}
+              onSave={handleSaveSettings}
+              isLoading={isLoading}
+              setIsSettingsDirty={setIsSettingsDirty}
+            />
           )}
           {tabValue === TabsTeamValues.players && (
             <TeamPlayersTableEditForm
               isLoading={isLoading}
               players={getPlayersValues(team?.players)}
               onSave={handleSavePlayers}
+              setIsPlayersDirty={setIsPlayersDirty}
+              selectable={false}
             />
           )}
         </CardContent>
