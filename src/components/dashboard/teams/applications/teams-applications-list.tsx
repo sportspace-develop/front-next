@@ -60,7 +60,7 @@ const TeamsApplicationsList = ({ teamId }: TeamsApplicationListProps) => {
       {!isLoading && isEmptyList && <ListNoData />}
       <Grid container spacing={3}>
         {applications?.data?.map((item) => (
-          <Grid key={item.id} md={4} sm={6} xs={12} display="grid">
+          <Grid key={item.id} md={6} xs={12} display="grid">
             <TeamsApplicationItem item={item} teamId={teamId} />
           </Grid>
         ))}

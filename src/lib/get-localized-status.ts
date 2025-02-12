@@ -7,11 +7,11 @@ const getLocalizedStatus = (status: ApplicationStatus) => {
     }
 
     case ApplicationStatus.Accepted: {
-      return 'Принята';
+      return 'Заявка принята';
     }
 
     case ApplicationStatus.Canceled: {
-      return 'Отменена';
+      return 'Заявка отменена';
     }
 
     case ApplicationStatus.InProgress: {
@@ -19,7 +19,7 @@ const getLocalizedStatus = (status: ApplicationStatus) => {
     }
 
     case ApplicationStatus.Rejected: {
-      return 'Отклонена';
+      return 'Заявка отклонена';
     }
 
     default: {

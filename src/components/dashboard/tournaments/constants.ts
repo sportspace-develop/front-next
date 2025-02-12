@@ -1,6 +1,6 @@
 import { z as zod } from 'zod';
 
-import { ApplicationStatus } from '@/lib/store/types';
+import { TournamentApplicationUpdateStatuses } from '@/lib/store/types';
 
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
@@ -62,5 +62,8 @@ export const tournamentEditFormSchema = zod
   });
 
 export const tournamentApplicationEditFormSchema = zod.object({
-  status: zod.nativeEnum(ApplicationStatus, { message: 'Недопустимый статус заявки' }),
+  status: zod
+    .nativeEnum(TournamentApplicationUpdateStatuses)
+    .or(zod.literal(''))
+    .refine((data) => !!data, { message: 'Поле обязательно' }),
 });
