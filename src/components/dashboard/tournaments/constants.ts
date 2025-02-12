@@ -4,6 +4,10 @@ import { TournamentApplicationUpdateStatuses } from '@/lib/store/types';
 
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
+export const MAX_TOURNAMENT_ORGANIZATION = 50;
+
+export const MAX_TOURNAMENT_DESCRIPTION = 100;
+
 const dateSchema = zod.date({
   errorMap: (issue, { defaultError }) => {
     if (issue.code === 'invalid_date') {
@@ -34,6 +38,24 @@ export const tournamentEditFormSchema = zod
       .max(MAX_TOURNAMENT_TITLE_LENGTH, {
         message: `Максимум ${MAX_TOURNAMENT_TITLE_LENGTH} символов`,
       }),
+    description: zod.union([
+      zod.literal(''),
+      zod
+        .string()
+        .min(3, { message: 'Минимум 3 символа' })
+        .max(MAX_TOURNAMENT_DESCRIPTION, {
+          message: `Максимум ${MAX_TOURNAMENT_DESCRIPTION} символов`,
+        }),
+    ]),
+    organization: zod.union([
+      zod.literal(''),
+      zod
+        .string()
+        .min(3, { message: 'Минимум 3 символа' })
+        .max(MAX_TOURNAMENT_ORGANIZATION, {
+          message: `Максимум ${MAX_TOURNAMENT_ORGANIZATION} символов`,
+        }),
+    ]),
     logoUrl: zod.string().optional(),
     startDate: dateSchema,
     endDate: dateSchema,
