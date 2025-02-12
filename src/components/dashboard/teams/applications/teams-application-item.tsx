@@ -1,12 +1,6 @@
 import NextLink from 'next/link';
 
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Unstable_Grid2 as Grid,
-  Typography,
-} from '@mui/material';
+import { Card, CardActionArea, CardContent, Stack, Typography } from '@mui/material';
 
 import getLocalizedStatus from '@/lib/get-localized-status';
 import { paths } from '@/paths';
@@ -26,24 +20,14 @@ const TeamsApplicationItem = ({ item, teamId }: TeamsApplicationItemProps) => {
         href={`${paths.dashboard.teams.index}/${teamId}/applications/${item.id}/edit`}
       >
         <CardContent>
-          <Grid
-            container
-            spacing={1}
-            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-          >
-            <Grid md={8} xs={12} spacing={1} sx={{ flexBasis: 'content' }}>
-              <Typography variant="h4" sx={{ wordWrap: 'break-word' }}>
-                {item.tournamentTitle || 'Название турнира'}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{ wordWrap: 'break-word' }}
-                color="text.secondary"
-              >
-                Статус: {getLocalizedStatus(item.status)}
-              </Typography>
-            </Grid>
-          </Grid>
+          <Stack spacing={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h4" sx={{ wordWrap: 'break-word' }}>
+              {item.tournamentTitle || 'Название турнира'}
+            </Typography>
+            <Typography variant="subtitle1" sx={{ wordWrap: 'break-word' }} color="text.secondary">
+              Статус: {getLocalizedStatus(item.status)}
+            </Typography>
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>

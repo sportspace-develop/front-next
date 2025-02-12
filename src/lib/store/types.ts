@@ -22,3 +22,8 @@ export type Player = {
   bDay?: string;
   photoUrl?: string;
 };
+
+export enum TeamApplicationUpdateStatuses {
+  SUBMIT = 'submit',
+  CANCEL = 'cancel',
+}

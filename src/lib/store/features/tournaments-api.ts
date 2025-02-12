@@ -1,4 +1,3 @@
-import { Player } from '@/components/dashboard/teams/types';
 import {
   Tournament,
   TournamentApplication,
@@ -6,7 +5,7 @@ import {
 } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
-import { ApplicationStatus } from '../types';
+import { ApplicationStatus, Player } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;

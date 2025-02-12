@@ -1,5 +1,7 @@
-import { Player, PlayerDTO } from '@/components/dashboard/teams/types';
+import { PlayerDTO } from '@/components/dashboard/teams/types';
 import { rootApi } from '@/lib/store/api';
+
+import { Player } from '../types';
 
 type PaginationTypes = {
   currentPage: number;

@@ -159,7 +159,7 @@ const TeamPlayersTableEditForm = React.memo(
                   onClick={() => isMobile && setEditingPlayer(player)}
                   sx={{ cursor: { xs: 'pointer', sm: 'default' } }}
                 >
-                  {selectable && (
+                  {selectable && player.id !== undefined && (
                     <TableCell sx={{ maxWidth: '60px', p: 0 }}>
                       <Checkbox
                         checked={selectedIds.includes(player.id)}

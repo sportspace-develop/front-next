@@ -77,7 +77,7 @@ const PlayersTable = React.memo(({ players, isLoading }: PlayersTableProps) => {
                     },
                   }}
                 >
-                  {player.bDay && formatDate(player.bDay, { format: 'dd.MM.yyyy' })}
+                  {player.bDay && formatDate(new Date(player.bDay), { format: 'dd.MM.yyyy' })}
                 </TableCell>
                 <TableCell>
                   <Avatar src={player.photoUrl} />
