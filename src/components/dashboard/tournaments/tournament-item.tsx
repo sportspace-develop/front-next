@@ -63,6 +63,21 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
           <Typography variant="h3" sx={{ wordWrap: 'break-word' }}>
             {item.title}
           </Typography>
+          {item.description && (
+            <Typography variant="body2" color="text.secondary" sx={{ wordWrap: 'break-word' }}>
+              {item.description}
+            </Typography>
+          )}
+          {item.organization && (
+            <Stack>
+              <Typography color="text.secondary" variant="subtitle2">
+                Организатор:
+              </Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ wordWrap: 'break-word' }}>
+                {item.organization}
+              </Typography>
+            </Stack>
+          )}
           <Stack>
             <Typography color="text.secondary" variant="subtitle2">
               Продолжительность:

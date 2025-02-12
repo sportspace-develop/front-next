@@ -7,6 +7,8 @@ import { tournamentApplicationEditFormSchema, tournamentEditFormSchema } from '.
 export type Tournament = {
   id: number;
   title: string;
+  organization?: string;
+  description?: string;
   startDate: string;
   endDate: string;
   logoUrl?: string;

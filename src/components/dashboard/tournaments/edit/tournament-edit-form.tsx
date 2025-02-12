@@ -32,7 +32,12 @@ import {
 } from '@/lib/store/features/tournaments-api';
 import { paths } from '@/paths';
 
-import { MAX_TOURNAMENT_TITLE_LENGTH, tournamentEditFormSchema } from '../constants';
+import {
+  MAX_TOURNAMENT_DESCRIPTION,
+  MAX_TOURNAMENT_ORGANIZATION,
+  MAX_TOURNAMENT_TITLE_LENGTH,
+  tournamentEditFormSchema,
+} from '../constants';
 import { TournamentDTO, TournamentEditFormData } from '../types';
 
 type TournamentEditFormProps = {
@@ -44,6 +49,8 @@ const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData
   if (!tournament) {
     return {
       title: '',
+      description: '',
+      organization: '',
       startDate: new Date(),
       endDate: new Date(),
       registerStartDate: null,
@@ -53,6 +60,8 @@ const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData
 
   return {
     ...tournament,
+    description: tournament.description || '',
+    organization: tournament.organization || '',
     startDate: new Date(tournament.startDate),
     endDate: new Date(tournament.endDate),
     registerStartDate: parseDateFromISO(tournament.registerStartDate),
@@ -168,6 +177,34 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                         )}
                       </Grid>
                     </Grid>
+                  )}
+                />
+                <Controller
+                  control={methods.control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      helperText={fieldState.error?.message}
+                      error={fieldState.invalid}
+                      label="Описание турнира"
+                      fullWidth
+                      inputProps={{ maxLength: MAX_TOURNAMENT_DESCRIPTION }}
+                    />
+                  )}
+                />
+                <Controller
+                  control={methods.control}
+                  name="organization"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      helperText={fieldState.error?.message}
+                      error={fieldState.invalid}
+                      label="Организатор турнира"
+                      fullWidth
+                      inputProps={{ maxLength: MAX_TOURNAMENT_ORGANIZATION }}
+                    />
                   )}
                 />
                 <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
