@@ -1,5 +1,12 @@
-import { Tournament, TournamentDTO } from '@/components/dashboard/tournaments/types';
+import { Player } from '@/components/dashboard/teams/types';
+import {
+  Tournament,
+  TournamentApplication,
+  TournamentDTO,
+} from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
+
+import { ApplicationStatus } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;
@@ -12,6 +19,27 @@ export type PaginationTypes = {
 type ResponseGetTournaments = {
   data: Tournament[];
   pagination: PaginationTypes;
+};
+
+type TournamentApplicationsDTO = {
+  data: TournamentApplication[];
+};
+
+export type RequestUpdateTournamentsApplication = {
+  applicationId: number | string;
+  tournamentId: number | string;
+  application: {
+    status: ApplicationStatus;
+  };
+};
+
+type RequestGetTournamentsApplicationById = {
+  tournamentId: number | string;
+  applicationId: number | string;
+};
+
+type TournamentApplicationDTO = TournamentApplication & {
+  players: Player[];
 };
 
 export const tournamentsApi = rootApi.injectEndpoints({
@@ -49,8 +77,54 @@ export const tournamentsApi = rootApi.injectEndpoints({
       }),
       invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
     }),
+    getTournamentsApplicationById: build.query<
+      TournamentApplicationDTO,
+      RequestGetTournamentsApplicationById
+    >({
+      query: (data) => `user/tournaments/${data.tournamentId}/applications/${data.applicationId}`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TOURNAMENT_APPLICATION];
+        }
+
+        return [
+          CacheTag.TOURNAMENT_APPLICATION,
+          { id: result.id, type: CacheTag.TOURNAMENT_APPLICATION },
+        ];
+      },
+    }),
+    getTournamentsApplications: build.query<TournamentApplicationsDTO, number | string>({
+      query: (id) => `user/tournaments/${id}/applications`,
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.TOURNAMENT_APPLICATIONS];
+        }
+
+        return [
+          CacheTag.TOURNAMENT_APPLICATIONS,
+          ...result.data.map(({ id }) => ({ id, type: CacheTag.TOURNAMENT_APPLICATIONS })),
+        ];
+      },
+    }),
+    updateTournamentsApplication: build.mutation<
+      TournamentApplication,
+      RequestUpdateTournamentsApplication
+    >({
+      query: (data) => ({
+        method: 'PUT',
+        url: `user/tournaments/${data.tournamentId}/applications/${data.applicationId}`,
+        body: data.application,
+      }),
+      invalidatesTags: [CacheTag.TOURNAMENT_APPLICATIONS],
+    }),
   }),
 });
 
-export const { useGetTournamentsQuery, useGetTournamentByIdQuery, useSaveTournamentMutation } =
-  tournamentsApi;
+export const {
+  useGetTournamentsQuery,
+  useGetTournamentByIdQuery,
+  useSaveTournamentMutation,
+  useGetTournamentsApplicationByIdQuery,
+  useGetTournamentsApplicationsQuery,
+  useUpdateTournamentsApplicationMutation,
+} = tournamentsApi;

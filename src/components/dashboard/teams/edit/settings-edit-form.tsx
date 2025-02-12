@@ -49,6 +49,10 @@ const TeamSettingsEditForm = React.memo(
       setIsSettingsDirty(methods.formState.isDirty);
     }, [methods.formState.isDirty, setIsSettingsDirty]);
 
+    React.useEffect(() => {
+      return () => setIsSettingsDirty(false);
+    }, [setIsSettingsDirty]);
+
     if (isLoading) {
       return <SkeletonList />;
     }

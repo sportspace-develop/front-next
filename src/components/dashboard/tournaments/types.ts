@@ -1,6 +1,8 @@
 import { z as zod } from 'zod';
 
-import { tournamentEditFormSchema } from './constants';
+import { ApplicationStatus } from '@/lib/store/types';
+
+import { tournamentApplicationEditFormSchema, tournamentEditFormSchema } from './constants';
 
 export type Tournament = {
   id: number;
@@ -15,3 +17,14 @@ export type Tournament = {
 export type TournamentDTO = Omit<Tournament, 'id'> & { id?: Tournament['id'] };
 
 export type TournamentEditFormData = zod.input<typeof tournamentEditFormSchema>;
+
+export type TournamentApplicationEditFormData = zod.input<
+  typeof tournamentApplicationEditFormSchema
+>;
+
+export type TournamentApplication = {
+  id?: number;
+  status: ApplicationStatus;
+  teamId: number;
+  teamTitle: string;
+};
