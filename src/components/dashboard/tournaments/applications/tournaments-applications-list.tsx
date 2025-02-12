@@ -48,7 +48,7 @@ const TournamentApplicationList = ({ tournamentId }: TournamentApplicationListPr
       {!isLoading && isEmptyList && <ListNoData hiddenCreateText />}
       <Grid container spacing={3}>
         {applications?.data?.map((item) => (
-          <Grid key={item.id} md={4} sm={6} xs={12} display="grid">
+          <Grid key={item.id} md={6} xs={12} display="grid">
             <TournamentApplicationItem item={item} tournamentId={tournamentId} />
           </Grid>
         ))}
