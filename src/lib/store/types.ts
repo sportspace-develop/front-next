@@ -27,3 +27,8 @@ export enum TeamApplicationUpdateStatuses {
   SUBMIT = 'submit',
   CANCEL = 'cancel',
 }
+
+export enum TournamentApplicationUpdateStatuses {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+}

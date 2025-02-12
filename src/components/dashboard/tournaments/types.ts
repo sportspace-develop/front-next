@@ -27,4 +27,5 @@ export type TournamentApplication = {
   status: ApplicationStatus;
   teamId: number;
   teamTitle: string;
+  teamLogoUrl: string;
 };
