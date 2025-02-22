@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import NextLink from 'next/link';
 
 import * as React from 'react';
@@ -29,7 +30,10 @@ const BackToLinkContent = React.memo<BackToLinkProps>(({ text }) => {
   );
 });
 
-const BackToLink = React.memo<BackToLinkProps>(({ href, text = 'Назад' }) => {
+const BackToLink = React.memo<BackToLinkProps>(({ href, text }) => {
+  const t = useTranslations('Common');
+  const validText = text || t('back');
+
   if (href) {
     return (
       <Link
@@ -40,7 +44,7 @@ const BackToLink = React.memo<BackToLinkProps>(({ href, text = 'Назад' }) =
           display: 'inline-flex',
         }}
       >
-        <BackToLinkContent text={text} />
+        <BackToLinkContent text={validText} />
       </Link>
     );
   }
@@ -54,7 +58,7 @@ const BackToLink = React.memo<BackToLinkProps>(({ href, text = 'Назад' }) =
         display: 'inline-flex',
       }}
     >
-      <BackToLinkContent text={text} />
+      <BackToLinkContent text={validText} />
     </Link>
   );
 });
