@@ -11,7 +11,8 @@ import { Avatar, Button, Card, CardContent, Stack, Typography } from '@mui/mater
 
 import LazySelect from '@/components/ui/lazy-select';
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
-import useTournamentSelect from '@/hooks/use-tournament-select';
+import useDataSelector from '@/hooks/use-data-selector';
+import addQuotes from '@/lib/add-quotes';
 import { useSavePlayerMutation } from '@/lib/store/features/players-api';
 import {
   useGetTeamByIdQuery,
@@ -19,6 +20,7 @@ import {
   useSaveTeamMutation,
   useSaveTeamsApplicationMutation,
 } from '@/lib/store/features/teams-api';
+import { useGetTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { paths } from '@/paths';
 
 import {
@@ -33,7 +35,7 @@ const DEFAULT_INITIAL_VALUES: TeamApplicationEditFormData = {
   tournamentId: null,
 };
 
-interface TeamApplicationEditFormProps {
+interface TeamsApplicationEditFormProps {
   teamId: number;
   applicationId?: number;
   title: string;
@@ -43,7 +45,7 @@ const TeamsApplicationEditForm = ({
   teamId,
   title,
   applicationId,
-}: TeamApplicationEditFormProps) => {
+}: TeamsApplicationEditFormProps) => {
   const { data: application, isLoading: isGetApplicationLoading } = useGetTeamsApplicationByIdQuery(
     { teamId: teamId, applicationId: applicationId },
     { skip: applicationId === undefined },
@@ -58,8 +60,14 @@ const TeamsApplicationEditForm = ({
   const [savePlayer, { isLoading: isSavePlayerLoading }] = useSavePlayerMutation();
   const [saveApplication, { isLoading: isSaveApplication }] = useSaveTeamsApplicationMutation();
 
-  const { tournaments, setTournaments, isTournamentsLoading, loadTournamentsNextPage } =
-    useTournamentSelect();
+  const {
+    items: tournaments,
+    isLoading: isTournamentsLoading,
+    loadNextPage: loadTournamentsNextPage,
+  } = useDataSelector(
+    useGetTournamentsQuery,
+    application ? { id: application.tournamentId, title: application.tournamentTitle } : undefined,
+  );
 
   const asyncRouterPush = useAsyncRoutePush();
 
@@ -74,12 +82,6 @@ const TeamsApplicationEditForm = ({
       setSelectedPlayersIds(team.players.map((item) => item.id));
     }
   }, [team?.players, application, selectedPlayersIds.length, applicationId]);
-
-  React.useEffect(() => {
-    if (application?.tournamentId) {
-      setTournaments([{ id: application.tournamentId, title: application.tournamentTitle }]);
-    }
-  }, [application, setTournaments]);
 
   const methods = useForm<TeamApplicationEditFormData>({
     mode: 'all',
@@ -167,7 +169,7 @@ const TeamsApplicationEditForm = ({
                   {team && (
                     <Stack direction="row">
                       <Typography variant="h3" color="text.secondary">
-                        для команды &quot;{team.title}&quot;
+                        для команды {addQuotes(team.title)}
                       </Typography>
                       <Avatar
                         src={team.logoUrl}

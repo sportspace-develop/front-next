@@ -1,13 +1,8 @@
-import {
-  Player,
-  Team,
-  TeamApplication,
-  TeamApplicationDTO,
-  TeamApplicationsDTO,
-  TeamDTO,
-} from '@/components/dashboard/teams/types';
+import { Team, TeamApplication, TeamDTO } from '@/components/dashboard/teams/types';
 import { Tournament } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
+
+import { Player } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;
@@ -37,6 +32,14 @@ export type RequestSaveTeamsApplication = {
 type RequestGetTeamsApplicationById = {
   teamId: number | string;
   applicationId?: number | string;
+};
+
+type TeamApplicationsDTO = {
+  data: TeamApplication[];
+};
+
+type TeamApplicationItemDTO = TeamApplication & {
+  players?: Player[];
 };
 
 export const teamsApi = rootApi.injectEndpoints({
@@ -71,7 +74,7 @@ export const teamsApi = rootApi.injectEndpoints({
       }),
       invalidatesTags: [CacheTag.TEAMS, CacheTag.TEAM],
     }),
-    getTeamsApplicationById: build.query<TeamApplicationDTO, RequestGetTeamsApplicationById>({
+    getTeamsApplicationById: build.query<TeamApplicationItemDTO, RequestGetTeamsApplicationById>({
       query: (data) => `user/teams/${data.teamId}/applications/${data.applicationId}`,
       providesTags: (result) => {
         if (!result) {

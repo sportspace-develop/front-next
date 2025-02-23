@@ -11,19 +11,19 @@ import {
 import getLocalizedStatus from '@/lib/get-localized-status';
 import { paths } from '@/paths';
 
-import { TeamApplication } from '../types';
+import { TournamentApplication } from '../types';
 
-interface TeamsApplicationItemProps {
-  item: TeamApplication;
-  teamId: string;
+interface TournamentsApplicationItemProps {
+  item: TournamentApplication;
+  tournamentId: number | string;
 }
 
-const TeamsApplicationItem = ({ item, teamId }: TeamsApplicationItemProps) => {
+const TournamentsApplicationItem = ({ item, tournamentId }: TournamentsApplicationItemProps) => {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea
         component={NextLink}
-        href={`${paths.dashboard.teams.index}/${teamId}/applications/${item.id}/edit`}
+        href={`${paths.dashboard.tournaments.index}/${tournamentId}/applications/${item.id}/edit`}
       >
         <CardContent>
           <Grid
@@ -33,7 +33,7 @@ const TeamsApplicationItem = ({ item, teamId }: TeamsApplicationItemProps) => {
           >
             <Grid md={8} xs={12} spacing={1} sx={{ flexBasis: 'content' }}>
               <Typography variant="h4" sx={{ wordWrap: 'break-word' }}>
-                {item.tournamentTitle || 'Название турнира'}
+                {item.teamTitle || 'Название команды'}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -50,4 +50,4 @@ const TeamsApplicationItem = ({ item, teamId }: TeamsApplicationItemProps) => {
   );
 };
 
-export default TeamsApplicationItem;
+export default TournamentsApplicationItem;

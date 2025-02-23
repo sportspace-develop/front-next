@@ -1,6 +1,7 @@
 import { Metadata, NextPage } from 'next';
+import NextLink from 'next/link';
 
-import { Stack } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 
 import TournamentEditForm from '@/components/dashboard/tournaments/edit/tournament-edit-form';
 import BackToLink from '@/components/ui/back-to-link';
@@ -18,7 +19,20 @@ interface Params {
 const Page: NextPage<{ params: Params }> = ({ params }) => {
   return (
     <Stack spacing={2}>
-      <BackToLink text="Вернуться к списку турниров" href={paths.dashboard.tournaments.index} />
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <BackToLink text="Вернуться к списку турниров" href={paths.dashboard.tournaments.index} />
+        <Link
+          component={NextLink}
+          href={`${paths.dashboard.tournaments.index}/${params.id}/applications`}
+        >
+          <Typography variant="subtitle2">К списку заявок на турнир</Typography>
+        </Link>
+      </Stack>
       <TournamentEditForm title={title} id={params.id} />
     </Stack>
   );
