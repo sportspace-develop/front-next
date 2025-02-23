@@ -20,27 +20,28 @@ const MIN_BIRTH_DATE = new Date('1900-12-01');
 const MAX_BIRTH_DATE = new Date();
 
 type TeamPlayersEditFormProps = {
-  isLoading?: boolean;
-  setIsPlayersDirty?: (value: boolean) => void;
+  isLoading: boolean;
+  setDirty?: (value: boolean) => void;
   item?: PlayerEditFormData;
   onSave: (value: PlayerEditFormData) => void;
 };
 
 const TeamPlayerEditForm = React.memo(
-  ({ item, onSave, isLoading, setIsPlayersDirty }: TeamPlayersEditFormProps) => {
+  ({ item, onSave, setDirty, isLoading }: TeamPlayersEditFormProps) => {
     const handleUploadFile = useUploadFile();
 
     const methods = useForm<PlayerEditFormData>({
       mode: 'all',
       defaultValues: item,
       resolver: zodResolver(playerEditFormSchema),
+      disabled: isLoading,
     });
 
     React.useEffect(() => {
-      if (setIsPlayersDirty) {
-        setIsPlayersDirty(methods.formState.isDirty);
-      }
-    }, [methods.formState.isDirty, setIsPlayersDirty]);
+      setDirty?.(methods.formState.isDirty);
+
+      return () => setDirty?.(false);
+    }, [methods.formState.isDirty, setDirty]);
 
     React.useEffect(() => methods.reset(item), [methods, item]);
 
@@ -144,20 +145,19 @@ const TeamPlayerEditForm = React.memo(
                   p: '4px',
                   display: { xs: 'none', md: 'block' },
                 }}
-                disabled={isLoading}
               >
                 <FloppyDiskBackIcon size={20} />
               </Button>
               <Button
                 type="submit"
                 variant="contained"
+                disabled={isLoading}
                 sx={{
                   width: 'max-content',
                   mt: 1,
                   ml: 'auto',
                   display: { xs: 'block', md: 'none' },
                 }}
-                disabled={isLoading}
               >
                 Сохранить игрока
               </Button>

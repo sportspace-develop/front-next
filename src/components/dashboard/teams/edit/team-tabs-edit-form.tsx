@@ -20,8 +20,8 @@ import { paths } from '@/paths';
 
 import { getPlayersValues, preparePlayerDataForSave } from '../constants';
 import { PlayerEditFormData, TeamEditFormData } from '../types';
-import TeamPlayersTableEditForm from './players-table-edit-form';
-import TeamSettingsEditForm from './settings-edit-form';
+import TeamPlayersTableEditForm from './team-players-table-edit-form';
+import TeamSettingsEditForm from './team-settings-edit-form';
 
 type TabsTeamEditFormProps = {
   id?: string;
@@ -163,7 +163,7 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
           </Button>
         )}
         <ConfirmNavigationDialog
-          open={showModal}
+          isOpen={showModal}
           onClose={() => setShowModal(false)}
           onConfirm={confirmNavigation}
         />
@@ -202,7 +202,7 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
               team={team}
               onSave={handleSaveSettings}
               isLoading={isLoading}
-              setIsSettingsDirty={setIsSettingsDirty}
+              setDirty={setIsSettingsDirty}
             />
           )}
           {tabValue === TabsTeamValues.players && (
@@ -210,8 +210,7 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
               isLoading={isLoading}
               players={getPlayersValues(team?.players)}
               onSave={handleSavePlayers}
-              setIsPlayersDirty={setIsPlayersDirty}
-              selectable={false}
+              setDirty={setIsPlayersDirty}
             />
           )}
         </CardContent>

@@ -85,14 +85,10 @@ export const usePlayerState = ({
   const [selectedPlayersIds, setSelectedPlayersIds] = React.useState<number[]>([]);
 
   React.useEffect(() => {
-    if (team?.players && selectedPlayersIds.length === 0 && application?.players) {
-      setSelectedPlayersIds(application.players.map((item) => item.id));
-    }
-  }, [team?.players, application, selectedPlayersIds.length]);
+    if (team?.players && selectedPlayersIds.length === 0) {
+      const initSelectedPlayers = application?.players ? application.players : team.players;
 
-  React.useEffect(() => {
-    if (team?.players && selectedPlayersIds.length === 0 && application === undefined) {
-      setSelectedPlayersIds(team.players.map((item) => item.id));
+      setSelectedPlayersIds(initSelectedPlayers.map((item) => item.id));
     }
   }, [team?.players, application, selectedPlayersIds.length]);
 
@@ -122,6 +118,8 @@ export const useSavePlayer = (team?: TeamDTO) => {
         if (result) {
           toast.success(`Игрок ${values.firstName} создан и добавлен в команду!`);
         }
+
+        return result;
       }
     } catch {}
   };

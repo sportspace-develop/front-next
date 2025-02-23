@@ -3,18 +3,18 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 type ConfirmNavigationDialogProps = {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
 };
 
 const ConfirmNavigationDialog: React.FC<ConfirmNavigationDialogProps> = ({
-  open,
+  isOpen,
   onClose,
   onConfirm,
 }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>Несохранённые изменения</DialogTitle>
       <DialogContent>Вы хотите сохранить изменения перед переходом?</DialogContent>
       <DialogActions sx={{ pb: 2, px: 2 }}>

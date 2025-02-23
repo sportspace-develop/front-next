@@ -29,7 +29,7 @@ import { useGetTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { ApplicationStatus, TeamApplicationUpdateStatuses } from '@/lib/store/types';
 
 import { getPlayersValues, teamApplicationEditFormSchema } from '../constants';
-import TeamPlayersTableEditForm from '../edit/players-table-edit-form';
+import TeamPlayersTableEditForm from '../edit/team-players-table-edit-form';
 import { TeamApplicationEditFormData, TeamDTO } from '../types';
 import { usePlayerState, useSaveApplication, useSavePlayer } from './hooks';
 
@@ -220,7 +220,7 @@ const TeamsApplicationEditForm = ({
           onSave={handleSavePlayers}
           selectable
           selectedIds={selectedPlayersIds}
-          onSelectedIds={setSelectedPlayersIds}
+          onSelectedIdsChange={setSelectedPlayersIds}
         />
       </CardContent>
     </Card>

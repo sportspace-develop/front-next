@@ -24,13 +24,13 @@ type TournamentApplicationsDTO = {
   data: TournamentApplication[];
 };
 
-export type RequestUpdateTournamentsApplication = {
+export type PayloadUpdateTournamentsApplication = {
   applicationId: number | string;
   tournamentId: number | string;
   status: TournamentApplicationUpdateStatuses;
 };
 
-type RequestGetTournamentsApplicationById = {
+type PayloadGetTournamentsApplicationById = {
   tournamentId: number | string;
   applicationId: number | string;
 };
@@ -76,7 +76,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
     }),
     getTournamentsApplicationById: build.query<
       TournamentApplicationDTO,
-      RequestGetTournamentsApplicationById
+      PayloadGetTournamentsApplicationById
     >({
       query: (data) => `user/tournaments/${data.tournamentId}/applications/${data.applicationId}`,
       providesTags: (result) => {
@@ -105,7 +105,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
     }),
     updateTournamentsApplication: build.mutation<
       TournamentApplication,
-      RequestUpdateTournamentsApplication
+      PayloadUpdateTournamentsApplication
     >({
       query: (data) => ({
         method: 'PUT',

@@ -49,10 +49,10 @@ const ListError = React.memo(() => {
 });
 
 type ListNoDataProps = {
-  hiddenCreateText?: boolean;
+  isHiddenCreateText?: boolean;
 };
 
-const ListNoData = React.memo(({ hiddenCreateText }: ListNoDataProps) => {
+const ListNoData = React.memo(({ isHiddenCreateText }: ListNoDataProps) => {
   return (
     <Stack
       display="flex"
@@ -81,7 +81,7 @@ const ListNoData = React.memo(({ hiddenCreateText }: ListNoDataProps) => {
         <Typography textAlign="center" variant="h3">
           Пока список пуст
         </Typography>
-        {!hiddenCreateText && (
+        {!isHiddenCreateText && (
           <Typography textAlign="center" variant="subtitle2">
             Но вы можете создать первый элемент
           </Typography>
