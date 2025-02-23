@@ -9,6 +9,7 @@ import { UserPlus as UserPlusIcon } from '@phosphor-icons/react/dist/ssr/UserPlu
 import {
   Avatar,
   Button,
+  Checkbox,
   Divider,
   IconButton,
   Stack,
@@ -22,6 +23,7 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 
+import { SkeletonList } from '@/components/ui/list';
 import formatDate from '@/lib/format-date';
 
 import { DEFAULT_INITIAL_VALUES_PLAYER } from '../constants';
@@ -32,7 +34,19 @@ type TeamPlayersEditFormProps = {
   players: PlayerEditFormData[];
   onSave: SubmitHandler<PlayerEditFormData>;
   isLoading: boolean;
-};
+  setIsPlayersDirty?: (value: boolean) => void;
+} & (
+  | {
+      selectable: true;
+      selectedIds: number[];
+      onSelectedIds: (selected: number[]) => void;
+    }
+  | {
+      selectable: false;
+      selectedIds?: never;
+      onSelectedIds?: never;
+    }
+);
 
 const TruncateTableCell = styled(TableCell)({
   maxWidth: '150px',
@@ -42,7 +56,15 @@ const TruncateTableCell = styled(TableCell)({
 });
 
 const TeamPlayersTableEditForm = React.memo(
-  ({ players, onSave, isLoading }: TeamPlayersEditFormProps) => {
+  ({
+    players,
+    onSave,
+    isLoading,
+    setIsPlayersDirty,
+    selectable,
+    selectedIds,
+    onSelectedIds,
+  }: TeamPlayersEditFormProps) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -60,12 +82,12 @@ const TeamPlayersTableEditForm = React.memo(
         return;
       }
 
-      if (editingPlayer) {
+      if (editingPlayer && !selectable) {
         editingElementRef.current?.scrollIntoView({
           behavior: 'smooth', // Плавная прокрутка
         });
       }
-    }, [editingPlayer]);
+    }, [editingPlayer, selectable]);
 
     const handleSave = React.useCallback(
       async (values: PlayerEditFormData) => {
@@ -73,14 +95,31 @@ const TeamPlayersTableEditForm = React.memo(
 
         if (result) {
           setEditingPlayer(null);
+          setIsPlayersDirty?.(false);
         }
       },
-      [onSave],
+      [onSave, setIsPlayersDirty],
     );
 
     const handleAddPlayer = React.useCallback(() => {
       setEditingPlayer(DEFAULT_INITIAL_VALUES_PLAYER);
     }, []);
+
+    const handleSelectPlayer = (id?: number) => {
+      if (!selectable || !id) {
+        return;
+      }
+
+      const newSelected = selectedIds.includes(id)
+        ? selectedIds.filter((playerId) => playerId !== id)
+        : [...selectedIds, id];
+
+      onSelectedIds(newSelected);
+    };
+
+    if (isLoading) {
+      return <SkeletonList />;
+    }
 
     return (
       <>
@@ -88,14 +127,25 @@ const TeamPlayersTableEditForm = React.memo(
           <Table>
             <TableHead>
               <TableRow>
+                {selectable && <TableCell sx={{ maxWidth: '70px' }}>Выбрать</TableCell>}
                 <TableCell>Фамилия</TableCell>
                 <TableCell>Имя</TableCell>
-                <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Отчество</TableCell>
-                <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                <TableCell sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }}>
+                  Отчество
+                </TableCell>
+                <TableCell
+                  sx={{
+                    display: {
+                      xs: 'none',
+                      sm: selectable ? 'none' : 'table-cell',
+                      md: 'table-cell',
+                    },
+                  }}
+                >
                   Дата рождения
                 </TableCell>
                 <TableCell>Фото</TableCell>
-                <TableCell sx={{ maxWidth: '36px' }} />
+                {!selectable && <TableCell sx={{ maxWidth: '36px' }} />}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -105,22 +155,44 @@ const TeamPlayersTableEditForm = React.memo(
                   onClick={() => isMobile && setEditingPlayer(player)}
                   sx={{ cursor: { xs: 'pointer', sm: 'default' } }}
                 >
-                  <TruncateTableCell>{player.lastName}</TruncateTableCell>
-                  <TruncateTableCell>{player.firstName}</TruncateTableCell>
-                  <TruncateTableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                  {selectable && (
+                    <TableCell sx={{ maxWidth: '60px', p: 0 }}>
+                      <Checkbox
+                        checked={selectedIds.includes(player.id)}
+                        onChange={() => handleSelectPlayer(player.id)}
+                        color="primary"
+                      />
+                    </TableCell>
+                  )}
+                  <TruncateTableCell title={player.lastName}>{player.lastName}</TruncateTableCell>
+                  <TruncateTableCell title={player.firstName}>{player.firstName}</TruncateTableCell>
+                  <TruncateTableCell
+                    sx={{ display: { xs: 'none', sm: 'table-cell', md: 'table-cell' } }}
+                    title={player.secondName}
+                  >
                     {player.secondName}
                   </TruncateTableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                  <TableCell
+                    sx={{
+                      display: {
+                        xs: 'none',
+                        sm: selectable ? 'none' : 'table-cell',
+                        md: 'table-cell',
+                      },
+                    }}
+                  >
                     {player.bDay && formatDate(player.bDay, { format: 'dd.MM.yyyy' })}
                   </TableCell>
                   <TableCell>
                     <Avatar src={player.photoUrl} />
                   </TableCell>
-                  <TableCell sx={{ maxWidth: '36px', p: 0 }}>
-                    <IconButton onClick={() => setEditingPlayer(player)} color="primary">
-                      <PencilIcon size={20} />
-                    </IconButton>
-                  </TableCell>
+                  {!selectable && (
+                    <TableCell sx={{ maxWidth: '36px', p: 0 }}>
+                      <IconButton onClick={() => setEditingPlayer(player)} color="primary">
+                        <PencilIcon size={20} />
+                      </IconButton>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
@@ -129,7 +201,12 @@ const TeamPlayersTableEditForm = React.memo(
         <div ref={editingElementRef}>
           {editingPlayer && (
             <Stack sx={{ mt: 2 }}>
-              <TeamPlayerEditForm item={editingPlayer} onSave={handleSave} isLoading={isLoading} />
+              <TeamPlayerEditForm
+                item={editingPlayer}
+                onSave={handleSave}
+                isLoading={isLoading}
+                setIsPlayersDirty={setIsPlayersDirty}
+              />
               <Divider sx={{ mt: 3, display: { xs: 'block', sm: 'none' } }} />
             </Stack>
           )}
