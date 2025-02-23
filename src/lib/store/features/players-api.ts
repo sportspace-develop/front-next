@@ -16,7 +16,7 @@ type ResponseGetPlayers = {
   pagination: PaginationTypes;
 };
 
-export type RequestBatchPlayer = Omit<Player, 'id'> & {
+export type PayloadBatchPlayer = Omit<Player, 'id'> & {
   id?: Player['id'];
 };
 
@@ -27,7 +27,7 @@ export const playersApi = rootApi.injectEndpoints({
         url: 'user/teams',
       }),
     }),
-    saveBatchPlayer: build.query<{ data: Player[] }, RequestBatchPlayer[]>({
+    saveBatchPlayer: build.query<{ data: Player[] }, PayloadBatchPlayer[]>({
       query: (data) => ({
         method: 'POST',
         url: 'user/players/batch',

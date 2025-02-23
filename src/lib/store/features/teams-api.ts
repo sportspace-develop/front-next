@@ -17,25 +17,25 @@ type ResponseGetTeams = {
   pagination: PaginationTypes;
 };
 
-export type RequestSaveTeam = Omit<Team, 'players' | 'id'> & {
+export type PayloadSaveTeam = Omit<Team, 'players' | 'id'> & {
   id?: Team['id'];
   playerIds?: Player['id'][];
 };
 
-export type RequestCreateTeamsApplication = {
+export type PayloadCreateTeamsApplication = {
   teamId: Team['id'];
   tournamentId?: Tournament['id'];
   playerIds?: Player['id'][];
 };
 
-export type RequestUpdateTeamsApplication = {
+export type PayloadUpdateTeamsApplication = {
   teamId: Team['id'];
   applicationId: TeamApplication['id'];
   playerIds: Player['id'][];
   status?: TeamApplicationUpdateStatuses;
 };
 
-type RequestGetTeamsApplicationById = {
+type PayloadGetTeamsApplicationById = {
   teamId: number | string;
   applicationId?: number | string;
 };
@@ -72,7 +72,7 @@ export const teamsApi = rootApi.injectEndpoints({
         return [CacheTag.TEAM, { id: result.id, type: CacheTag.TEAM }];
       },
     }),
-    saveTeam: build.mutation<Team, RequestSaveTeam>({
+    saveTeam: build.mutation<Team, PayloadSaveTeam>({
       query: (data) => ({
         method: data.id ? 'PUT' : 'POST',
         url: `user/teams/${data.id ?? ''}`,
@@ -80,7 +80,7 @@ export const teamsApi = rootApi.injectEndpoints({
       }),
       invalidatesTags: [CacheTag.TEAMS, CacheTag.TEAM],
     }),
-    getTeamsApplicationById: build.query<TeamApplicationItemDTO, RequestGetTeamsApplicationById>({
+    getTeamsApplicationById: build.query<TeamApplicationItemDTO, PayloadGetTeamsApplicationById>({
       query: (data) => `user/teams/${data.teamId}/applications/${data.applicationId}`,
       providesTags: (result) => {
         if (!result) {
@@ -103,7 +103,7 @@ export const teamsApi = rootApi.injectEndpoints({
         ];
       },
     }),
-    createTeamsApplication: build.mutation<Team, RequestCreateTeamsApplication>({
+    createTeamsApplication: build.mutation<Team, PayloadCreateTeamsApplication>({
       query: (data) => ({
         method: 'POST',
         url: `user/teams/${data.teamId}/applications`,
@@ -122,7 +122,7 @@ export const teamsApi = rootApi.injectEndpoints({
         return response;
       },
     }),
-    updateTeamsApplication: build.mutation<Team, RequestUpdateTeamsApplication>({
+    updateTeamsApplication: build.mutation<Team, PayloadUpdateTeamsApplication>({
       query: (data) => ({
         method: 'PUT',
         url: `user/teams/${data.teamId}/applications/${data.applicationId}`,

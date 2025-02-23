@@ -13,11 +13,14 @@ interface Params {
   id: string;
 }
 
-const Page: NextPage<{ params: Params }> = ({ params }) => {
+const Page: NextPage<{ params: Params }> = ({ params: { id: teamId } }) => {
   return (
     <Stack spacing={2}>
-      <BackToLink text="Вернуться к списку команд" href={paths.dashboard.teams.index} />
-      <TeamsApplicationsList teamId={params.id} />
+      <BackToLink
+        text="Вернуться к команде"
+        href={`${paths.dashboard.teams.index}/${teamId}/edit`}
+      />
+      <TeamsApplicationsList teamId={teamId} />
     </Stack>
   );
 };
