@@ -38,6 +38,7 @@ interface TeamsApplicationHeaderProps {
   team?: TeamDTO;
   applicationStatus?: ApplicationStatus;
   isLoading: boolean;
+  disabled: boolean;
 }
 
 const TeamsApplicationHeader = ({
@@ -45,6 +46,7 @@ const TeamsApplicationHeader = ({
   team,
   applicationStatus,
   isLoading,
+  disabled,
 }: TeamsApplicationHeaderProps) => (
   <Stack spacing={3} sx={{ mb: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
     <Stack sx={{ flex: '1 1 auto' }}>
@@ -63,7 +65,12 @@ const TeamsApplicationHeader = ({
       )}
     </Stack>
     <Stack spacing={1}>
-      <Button type="submit" variant="contained" disabled={isLoading} sx={{ height: 'max-content' }}>
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={disabled || isLoading}
+        sx={{ height: 'max-content' }}
+      >
         Сохранить
       </Button>
       {applicationStatus && (
@@ -104,6 +111,18 @@ interface TeamsApplicationEditFormProps {
   applicationId?: number;
   title: string;
 }
+
+const isValidApplicationStatus = (status?: ApplicationStatus) => {
+  if (!status) {
+    return true;
+  }
+
+  return [
+    ApplicationStatus.Draft,
+    ApplicationStatus.InProgress,
+    ApplicationStatus.Canceled,
+  ].includes(status);
+};
 
 const TeamsApplicationEditForm = ({
   teamId,
@@ -155,6 +174,8 @@ const TeamsApplicationEditForm = ({
   const isLoading =
     isApplicationSaveLoading || isGetTeamLoading || isGetApplicationLoading || isSavePlayerLoading;
 
+  const disabled = !isValidApplicationStatus(application?.status);
+
   return (
     <Card>
       <CardContent>
@@ -165,9 +186,10 @@ const TeamsApplicationEditForm = ({
               team={team}
               applicationStatus={application?.status}
               isLoading={isLoading}
+              disabled={disabled}
             />
             <Stack spacing={3}>
-              {applicationId && (
+              {applicationId && !disabled && (
                 <Controller
                   control={methods.control}
                   name="status"
@@ -204,7 +226,7 @@ const TeamsApplicationEditForm = ({
                     loadNextPage={loadTournamentsNextPage}
                     data={tournaments}
                     isLoading={isTournamentsLoading}
-                    disabled={isLoading || !!applicationId}
+                    disabled={isLoading || !!applicationId || disabled}
                   />
                 )}
               />
@@ -215,6 +237,7 @@ const TeamsApplicationEditForm = ({
           Выберите игроков для турнира
         </Typography>
         <TeamPlayersTableEditForm
+          disabled={disabled}
           isLoading={isLoading}
           players={getPlayersValues(team?.players)}
           onSave={handleSavePlayers}

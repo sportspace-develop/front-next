@@ -9,9 +9,9 @@ export type AppDispatch = AppStore['dispatch'];
 export enum ApplicationStatus {
   Draft = 'draft',
   InProgress = 'inprogress',
+  Canceled = 'canceled',
   Accepted = 'accepted',
   Rejected = 'rejected',
-  Canceled = 'canceled',
 }
 
 export type Player = {

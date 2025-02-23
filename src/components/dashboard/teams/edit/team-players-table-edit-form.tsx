@@ -34,6 +34,7 @@ interface BaseTeamPlayersEditFormProps {
   onSave: SubmitHandler<PlayerEditFormData>;
   isLoading: boolean;
   setDirty?: (value: boolean) => void;
+  disabled?: boolean;
 }
 
 interface SelectableProps {
@@ -57,7 +58,7 @@ const TruncateTableCell = styled(TableCell)({
 });
 
 const TeamPlayersTableEditForm = React.memo((props: TeamPlayersEditFormProps) => {
-  const { players, onSave, isLoading, setDirty, selectable } = props;
+  const { players, onSave, isLoading, setDirty, selectable, disabled } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -150,6 +151,7 @@ const TeamPlayersTableEditForm = React.memo((props: TeamPlayersEditFormProps) =>
                       checked={props.selectedIds.includes(player.id)}
                       onChange={() => handleSelectPlayer(player.id)}
                       color="primary"
+                      disabled={disabled}
                     />
                   </TableCell>
                 )}
@@ -186,19 +188,14 @@ const TeamPlayersTableEditForm = React.memo((props: TeamPlayersEditFormProps) =>
         </Table>
       </TableContainer>
       <div ref={editingElementRef}>
-        {editingPlayer && (
+        {!disabled && !isLoading && editingPlayer && (
           <Stack sx={{ mt: 2 }}>
-            <TeamPlayerEditForm
-              isLoading={isLoading}
-              item={editingPlayer}
-              onSave={handleSave}
-              setDirty={setDirty}
-            />
+            <TeamPlayerEditForm item={editingPlayer} onSave={handleSave} setDirty={setDirty} />
             <Divider sx={{ mt: 3, display: { xs: 'block', sm: 'none' } }} />
           </Stack>
         )}
       </div>
-      {!editingPlayer && (
+      {!disabled && !editingPlayer && (
         <Button
           sx={{ boxShadow: 4, width: 'max-content', mt: 2 }}
           variant="outlined"
