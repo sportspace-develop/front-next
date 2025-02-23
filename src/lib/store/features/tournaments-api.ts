@@ -5,7 +5,7 @@ import {
 } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
-import { ApplicationStatus, Player } from '../types';
+import { Player, TournamentApplicationUpdateStatuses } from '../types';
 
 export type PaginationTypes = {
   currentPage: number;
@@ -27,9 +27,7 @@ type TournamentApplicationsDTO = {
 export type RequestUpdateTournamentsApplication = {
   applicationId: number | string;
   tournamentId: number | string;
-  application: {
-    status: ApplicationStatus;
-  };
+  status: TournamentApplicationUpdateStatuses;
 };
 
 type RequestGetTournamentsApplicationById = {
@@ -112,9 +110,9 @@ export const tournamentsApi = rootApi.injectEndpoints({
       query: (data) => ({
         method: 'PUT',
         url: `user/tournaments/${data.tournamentId}/applications/${data.applicationId}`,
-        body: data.application,
+        body: data,
       }),
-      invalidatesTags: [CacheTag.TOURNAMENT_APPLICATIONS],
+      invalidatesTags: [CacheTag.TOURNAMENT_APPLICATIONS, CacheTag.TOURNAMENT_APPLICATION],
     }),
   }),
 });

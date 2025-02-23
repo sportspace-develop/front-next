@@ -24,7 +24,7 @@ import {
   useGetTournamentsApplicationByIdQuery,
   useUpdateTournamentsApplicationMutation,
 } from '@/lib/store/features/tournaments-api';
-import { ApplicationStatus } from '@/lib/store/types';
+import { ApplicationStatus, TournamentApplicationUpdateStatuses } from '@/lib/store/types';
 
 import { tournamentApplicationEditFormSchema } from '../constants';
 import { TournamentApplicationEditFormData } from '../types';
@@ -36,8 +36,30 @@ interface TournamentsApplicationEditFormProps {
   title: string;
 }
 
-const DEFAULT_INITIAL_VALUES: TournamentApplicationEditFormData = {
-  status: ApplicationStatus.Draft,
+const getLocalizedTournamentApplicationUpdateStatuses = (
+  status: TournamentApplicationUpdateStatuses,
+) => {
+  if (status === TournamentApplicationUpdateStatuses.ACCEPT) {
+    return 'Принять';
+  }
+
+  if (status === TournamentApplicationUpdateStatuses.REJECT) {
+    return 'Отклонить';
+  }
+
+  return '';
+};
+
+const getTournamentsApplicationStatus = (status: ApplicationStatus) => {
+  if (status === ApplicationStatus.Rejected) {
+    return TournamentApplicationUpdateStatuses.REJECT;
+  }
+
+  if (status === ApplicationStatus.Accepted) {
+    return TournamentApplicationUpdateStatuses.ACCEPT;
+  }
+
+  return '';
 };
 
 const TournamentsApplicationEditForm = ({
@@ -57,13 +79,12 @@ const TournamentsApplicationEditForm = ({
 
   const methods = useForm<TournamentApplicationEditFormData>({
     mode: 'all',
-    defaultValues: DEFAULT_INITIAL_VALUES,
     resolver: zodResolver(tournamentApplicationEditFormSchema),
   });
 
   React.useEffect(() => {
     if (application) {
-      methods.reset({ status: application.status });
+      methods.reset({ status: getTournamentsApplicationStatus(application.status) });
     }
   }, [methods, application]);
 
@@ -78,7 +99,7 @@ const TournamentsApplicationEditForm = ({
         const result = await updateApplication({
           tournamentId,
           applicationId,
-          application: values,
+          status: values.status as TournamentApplicationUpdateStatuses,
         }).unwrap();
 
         if (result) {
@@ -120,14 +141,21 @@ const TournamentsApplicationEditForm = ({
                     </Stack>
                   )}
                 </Stack>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ width: 'max-content', height: 'max-content', ml: 'auto' }}
-                  disabled={isLoading}
-                >
-                  Сохранить
-                </Button>
+                <Stack spacing={1}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isLoading}
+                    sx={{ height: 'max-content' }}
+                  >
+                    Сохранить
+                  </Button>
+                  {application?.status && (
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Статус: {getLocalizedStatus(application.status)}
+                    </Typography>
+                  )}
+                </Stack>
               </Stack>
               <Controller
                 control={methods.control}
@@ -135,17 +163,17 @@ const TournamentsApplicationEditForm = ({
                 render={({ field, fieldState }) => (
                   <TextField
                     select
-                    label="Выберите статус"
-                    value={field.value}
+                    label="Действия с заявкой"
+                    value={field.value ?? ''}
                     onChange={field.onChange}
                     helperText={fieldState.error?.message}
                     error={fieldState.invalid}
                     fullWidth
                     variant="outlined"
                   >
-                    {Object.values(ApplicationStatus).map((status) => (
+                    {Object.values(TournamentApplicationUpdateStatuses).map((status) => (
                       <MenuItem key={status} value={status}>
-                        {getLocalizedStatus(status)}
+                        {getLocalizedTournamentApplicationUpdateStatuses(status)}
                       </MenuItem>
                     ))}
                   </TextField>
