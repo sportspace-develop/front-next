@@ -25,7 +25,7 @@ import {
   useGetTeamByIdQuery,
   useGetTeamsApplicationByIdQuery,
 } from '@/lib/store/features/teams-api';
-import { useGetTournamentsQuery } from '@/lib/store/features/tournaments-api';
+import { useGetAllTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { ApplicationStatus, TeamApplicationUpdateStatuses } from '@/lib/store/types';
 
 import { getPlayersValues, teamApplicationEditFormSchema } from '../constants';
@@ -145,7 +145,7 @@ const TeamsApplicationEditForm = ({
     isLoading: isTournamentsLoading,
     loadNextPage: loadTournamentsNextPage,
   } = useDataSelector(
-    useGetTournamentsQuery,
+    useGetAllTournamentsQuery,
     application ? { id: application.tournamentId, title: application.tournamentTitle } : undefined,
   );
 
