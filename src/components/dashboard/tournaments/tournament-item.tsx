@@ -2,8 +2,6 @@ import NextLink from 'next/link';
 
 import * as React from 'react';
 
-import { parseISO } from 'date-fns';
-
 import {
   Avatar,
   Card,
@@ -14,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import formatDate from '@/lib/format-date';
+import DateTimePeriod from '@/components/ui/date-time-period';
 import { paths } from '@/paths';
 
 import { Tournament } from './types';
@@ -22,20 +20,6 @@ import { Tournament } from './types';
 interface TournamentProps {
   item: Tournament;
 }
-
-const FORMAT_DATE = 'd MMMM yyyy';
-
-const DateTimePeriod = React.memo(
-  ({ startDate, endDate }: { startDate?: string; endDate?: string }) => {
-    return (
-      <Typography color="text.secondary" variant="caption">
-        {startDate && formatDate(parseISO(startDate), { format: FORMAT_DATE })}
-        {startDate && endDate && ' - '}
-        {endDate && formatDate(parseISO(endDate), { format: FORMAT_DATE })}
-      </Typography>
-    );
-  },
-);
 
 const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element => {
   return (
@@ -68,29 +52,19 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
               {item.description}
             </Typography>
           )}
-          {item.organization && (
-            <Stack>
-              <Typography color="text.secondary" variant="subtitle2">
-                Организатор:
-              </Typography>
-              <Typography variant="caption" color="text.secondary" sx={{ wordWrap: 'break-word' }}>
-                {item.organization}
-              </Typography>
-            </Stack>
-          )}
           <Stack>
+            <Typography color="text.secondary" variant="subtitle2">
+              Регистрация:
+            </Typography>
+            <DateTimePeriod
+              startDate={item.registerStartDate}
+              endDate={item.registerEndDate}
+              variant="caption"
+            />
             <Typography color="text.secondary" variant="subtitle2">
               Продолжительность:
             </Typography>
-            <DateTimePeriod startDate={item.startDate} endDate={item.endDate} />
-            {(item.registerStartDate || item.registerEndDate) && (
-              <>
-                <Typography color="text.secondary" variant="subtitle2">
-                  Регистрация:
-                </Typography>
-                <DateTimePeriod startDate={item.registerStartDate} endDate={item.registerEndDate} />
-              </>
-            )}
+            <DateTimePeriod startDate={item.startDate} endDate={item.endDate} variant="caption" />
           </Stack>
         </CardContent>
       </CardActionArea>

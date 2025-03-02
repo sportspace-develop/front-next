@@ -17,7 +17,10 @@ const title = 'Создание заявки';
 const Page: NextPage<{ params: Params }> = ({ params }) => {
   return (
     <Stack spacing={2}>
-      <BackToLink text="Вернуться к списку команд" href={paths.dashboard.teams.index} />
+      <BackToLink
+        text="Вернуться к команде"
+        href={`${paths.dashboard.teams.index}/${params.id}/edit`}
+      />
       <TeamsApplicationEditForm teamId={params.id} title={title} />
     </Stack>
   );
