@@ -4,8 +4,6 @@ import { TournamentApplicationUpdateStatuses } from '@/lib/store/types';
 
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
-export const MAX_TOURNAMENT_ORGANIZATION = 50;
-
 export const MAX_TOURNAMENT_DESCRIPTION = 100;
 
 const dateSchema = zod.date({
@@ -47,41 +45,33 @@ export const tournamentEditFormSchema = zod
           message: `Максимум ${MAX_TOURNAMENT_DESCRIPTION} символов`,
         }),
     ]),
-    organization: zod.union([
-      zod.literal(''),
-      zod
-        .string()
-        .min(3, { message: 'Минимум 3 символа' })
-        .max(MAX_TOURNAMENT_ORGANIZATION, {
-          message: `Максимум ${MAX_TOURNAMENT_ORGANIZATION} символов`,
-        }),
-    ]),
     logoUrl: zod.string().optional(),
     startDate: dateSchema,
     endDate: dateSchema,
-    registerStartDate: dateSchema.nullable(),
-    registerEndDate: dateSchema.nullable(),
+    registerStartDate: dateSchema,
+    registerEndDate: dateSchema,
   })
+  .refine(
+    (data) => !data.registerEndDate || !data.startDate || data.registerEndDate <= data.startDate,
+    {
+      path: ['startDate'],
+      message: 'Дата должна быть позже конца регистрации на турнир',
+    },
+  )
   .refine((data) => !data.startDate || !data.endDate || data.startDate <= data.endDate, {
     path: ['endDate'],
     message: 'Дата должна быть позже начала турнира',
   })
   .refine(
     (data) =>
-      !data.registerStartDate || !data.registerEndDate || data.registerStartDate <= data.endDate,
+      !data.registerStartDate ||
+      !data.registerEndDate ||
+      data.registerStartDate <= data.registerEndDate,
     {
       path: ['registerEndDate'],
       message: 'Дата должна быть позже начала регистрации турнира',
     },
-  )
-  .refine((data) => data.registerStartDate || !data.registerEndDate, {
-    path: ['registerStartDate'],
-    message: 'Укажите дату начала регистрации',
-  })
-  .refine((data) => !data.registerStartDate || data.registerEndDate, {
-    path: ['registerEndDate'],
-    message: 'Укажите дату завершения регистрации',
-  });
+  );
 
 export const tournamentApplicationEditFormSchema = zod.object({
   status: zod

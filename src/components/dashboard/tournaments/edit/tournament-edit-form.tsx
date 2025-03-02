@@ -34,7 +34,6 @@ import { paths } from '@/paths';
 
 import {
   MAX_TOURNAMENT_DESCRIPTION,
-  MAX_TOURNAMENT_ORGANIZATION,
   MAX_TOURNAMENT_TITLE_LENGTH,
   tournamentEditFormSchema,
 } from '../constants';
@@ -50,9 +49,8 @@ const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData
     return {
       title: '',
       description: '',
-      organization: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: null,
+      endDate: null,
       registerStartDate: null,
       registerEndDate: null,
     };
@@ -61,9 +59,8 @@ const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData
   return {
     ...tournament,
     description: tournament.description || '',
-    organization: tournament.organization || '',
-    startDate: new Date(tournament.startDate),
-    endDate: new Date(tournament.endDate),
+    startDate: parseDateFromISO(tournament.startDate),
+    endDate: parseDateFromISO(tournament.endDate),
     registerStartDate: parseDateFromISO(tournament.registerStartDate),
     registerEndDate: parseDateFromISO(tournament.registerEndDate),
   };
@@ -193,61 +190,6 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                     />
                   )}
                 />
-                <Controller
-                  control={methods.control}
-                  name="organization"
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      {...field}
-                      helperText={fieldState.error?.message}
-                      error={fieldState.invalid}
-                      label="Организатор турнира"
-                      fullWidth
-                      inputProps={{ maxLength: MAX_TOURNAMENT_ORGANIZATION }}
-                    />
-                  )}
-                />
-                <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
-                  <Grid sm={6} xs={12} display="grid">
-                    <Controller
-                      control={methods.control}
-                      name="startDate"
-                      render={({ field, fieldState }) => (
-                        <DatePicker
-                          {...field}
-                          label="Начало турнира"
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              error: fieldState.invalid,
-                              helperText: fieldState.error?.message,
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid sm={6} xs={12} display="grid">
-                    <Controller
-                      control={methods.control}
-                      name="endDate"
-                      render={({ field, fieldState }) => (
-                        <DatePicker
-                          {...field}
-                          label="Конец турнира"
-                          minDate={startDate || new Date()}
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              error: fieldState.invalid,
-                              helperText: fieldState.error?.message,
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
                 <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
                   <Grid sm={6} xs={12} display="grid">
                     <Controller
@@ -257,7 +199,8 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                         <DatePicker
                           {...field}
                           label="Начало регистрации на турнир"
-                          maxDate={startDate || new Date()}
+                          maxDate={startDate}
+                          minDate={new Date()}
                           slotProps={{
                             textField: {
                               fullWidth: true,
@@ -278,7 +221,49 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
                           {...field}
                           label="Конец регистрации на турнир"
                           minDate={registerStartDate || new Date()}
-                          maxDate={startDate || new Date()}
+                          maxDate={startDate}
+                          slotProps={{
+                            textField: {
+                              fullWidth: true,
+                              error: fieldState.invalid,
+                              helperText: fieldState.error?.message,
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
+                  <Grid sm={6} xs={12} display="grid">
+                    <Controller
+                      control={methods.control}
+                      name="startDate"
+                      render={({ field, fieldState }) => (
+                        <DatePicker
+                          {...field}
+                          label="Начало турнира"
+                          minDate={new Date()}
+                          slotProps={{
+                            textField: {
+                              fullWidth: true,
+                              error: fieldState.invalid,
+                              helperText: fieldState.error?.message,
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid sm={6} xs={12} display="grid">
+                    <Controller
+                      control={methods.control}
+                      name="endDate"
+                      render={({ field, fieldState }) => (
+                        <DatePicker
+                          {...field}
+                          label="Конец турнира"
+                          minDate={startDate || new Date()}
                           slotProps={{
                             textField: {
                               fullWidth: true,

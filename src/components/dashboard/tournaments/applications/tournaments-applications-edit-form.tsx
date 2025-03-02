@@ -17,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import DateTimePeriod from '@/components/ui/date-time-period';
 import addQuotes from '@/lib/add-quotes';
 import getLocalizedStatus from '@/lib/get-localized-status';
 import {
@@ -118,7 +119,7 @@ const TournamentsApplicationEditForm = ({
         <CardContent>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(handleSave)}>
-              <Stack direction="row" spacing={3} sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={3} sx={{ mb: 1 }}>
                 <Stack sx={{ flex: '1 1 auto' }}>
                   <Typography variant="h2">{title}</Typography>
                   {application && tournament && (
@@ -126,18 +127,18 @@ const TournamentsApplicationEditForm = ({
                       <Typography variant="h3" color="text.secondary" sx={{ mt: 1 }}>
                         на турнир {addQuotes(tournament.title)} для команды{' '}
                         {addQuotes(application.teamTitle)}
+                        <Avatar
+                          src={tournament.logoUrl}
+                          title={tournament.title}
+                          sx={{
+                            width: 35,
+                            height: 35,
+                            boxShadow: 3,
+                            ml: 1,
+                            display: { xs: 'none', md: 'inline-flex' },
+                          }}
+                        />
                       </Typography>
-                      <Avatar
-                        src={tournament.logoUrl}
-                        title={tournament.title}
-                        sx={{
-                          width: 35,
-                          height: 35,
-                          boxShadow: 3,
-                          ml: 1,
-                          display: { xs: 'none', md: 'inherit' },
-                        }}
-                      />
                     </Stack>
                   )}
                 </Stack>
@@ -151,12 +152,35 @@ const TournamentsApplicationEditForm = ({
                     Сохранить
                   </Button>
                   {application?.status && (
-                    <Typography variant="subtitle2" color="text.secondary">
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
                       Статус: {getLocalizedStatus(application.status)}
                     </Typography>
                   )}
                 </Stack>
               </Stack>
+              {tournament && (
+                <Stack sx={{ mb: 2 }}>
+                  <Stack direction="row" alignItems="flex-end">
+                    <Typography color="text.secondary" variant="subtitle1" sx={{ mr: 1 }}>
+                      Регистрация на турнира:
+                    </Typography>
+                    <DateTimePeriod
+                      startDate={tournament.registerStartDate}
+                      endDate={tournament.registerEndDate}
+                    />
+                  </Stack>
+                  <Stack direction="row" alignItems="flex-end">
+                    <Typography color="text.secondary" variant="subtitle1" sx={{ mr: 1 }}>
+                      Продолжительность турнира:
+                    </Typography>
+                    <DateTimePeriod startDate={tournament.startDate} endDate={tournament.endDate} />
+                  </Stack>
+                </Stack>
+              )}
               <Controller
                 control={methods.control}
                 name="status"

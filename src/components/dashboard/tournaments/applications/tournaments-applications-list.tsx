@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Avatar, Unstable_Grid2 as Grid, Stack, Typography } from '@mui/material';
 
+import DateTimePeriod from '@/components/ui/date-time-period';
 import { ListNoData, SkeletonList } from '@/components/ui/list';
 import addQuotes from '@/lib/add-quotes';
 import {
@@ -44,6 +45,25 @@ const TournamentApplicationList = ({ tournamentId }: TournamentApplicationListPr
           />
         )}
       </Stack>
+      {tournament && (
+        <Stack sx={{ mb: 2 }}>
+          <Stack direction="row" alignItems="flex-end">
+            <Typography color="text.secondary" variant="subtitle1" sx={{ mr: 1 }}>
+              Регистрация на турнира:
+            </Typography>
+            <DateTimePeriod
+              startDate={tournament.registerStartDate}
+              endDate={tournament.registerEndDate}
+            />
+          </Stack>
+          <Stack direction="row" alignItems="flex-end">
+            <Typography color="text.secondary" variant="subtitle1" sx={{ mr: 1 }}>
+              Продолжительность турнира:
+            </Typography>
+            <DateTimePeriod startDate={tournament.startDate} endDate={tournament.endDate} />
+          </Stack>
+        </Stack>
+      )}
       {isLoading && <SkeletonList />}
       {!isLoading && isEmptyList && <ListNoData isHiddenCreateText />}
       <Grid container spacing={3}>
