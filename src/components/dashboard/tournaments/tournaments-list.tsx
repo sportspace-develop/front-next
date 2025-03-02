@@ -9,7 +9,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Button, Unstable_Grid2 as Grid, Pagination, Stack } from '@mui/material';
 
 import { ListHeader, ListNoData, SkeletonList } from '@/components/ui/list';
-import { useGetTournamentsQuery } from '@/lib/store/features/tournaments-api';
+import { useGetAllTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { paths } from '@/paths';
 
 import TournamentItem from './tournament-item';
@@ -19,7 +19,7 @@ const PAGE_ELEMENT_LIMIT = 12;
 const TournamentsList = React.memo((): React.JSX.Element => {
   const [page, setPage] = React.useState(1);
 
-  const { isLoading, data } = useGetTournamentsQuery({
+  const { isLoading, data } = useGetAllTournamentsQuery({
     limit: PAGE_ELEMENT_LIMIT,
     page,
   });

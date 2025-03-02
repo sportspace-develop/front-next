@@ -41,6 +41,21 @@ type TournamentApplicationDTO = TournamentApplication & {
 
 export const tournamentsApi = rootApi.injectEndpoints({
   endpoints: (build) => ({
+    getAllTournaments: build.query<ResponseGetTournaments, { page: number; limit: number }>({
+      query: (data) => ({
+        url: `tournaments?page=${data.page}&limit=${data.limit}`,
+      }),
+      providesTags: (result) => {
+        if (!result) {
+          return [CacheTag.ALL_TOURNAMENTS];
+        }
+
+        return [
+          CacheTag.ALL_TOURNAMENTS,
+          ...result.data.map(({ id }) => ({ id, type: CacheTag.ALL_TOURNAMENTS })),
+        ];
+      },
+    }),
     getTournaments: build.query<ResponseGetTournaments, { page: number; limit: number }>({
       query: (data) => ({
         url: `user/tournaments?page=${data.page}&limit=${data.limit}`,
@@ -72,7 +87,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
         url: `user/tournaments/${data.id ?? ''}`,
         body: data,
       }),
-      invalidatesTags: [CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
+      invalidatesTags: [CacheTag.ALL_TOURNAMENTS, CacheTag.TOURNAMENTS, CacheTag.TOURNAMENT],
     }),
     getTournamentsApplicationById: build.query<
       TournamentApplicationDTO,
@@ -118,6 +133,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
 });
 
 export const {
+  useGetAllTournamentsQuery,
   useGetTournamentsQuery,
   useGetTournamentByIdQuery,
   useSaveTournamentMutation,
