@@ -59,12 +59,12 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
             <DateTimePeriod
               startDate={item.registerStartDate}
               endDate={item.registerEndDate}
-              isSmall
+              variant="caption"
             />
             <Typography color="text.secondary" variant="subtitle2">
               Продолжительность:
             </Typography>
-            <DateTimePeriod startDate={item.startDate} endDate={item.endDate} isSmall />
+            <DateTimePeriod startDate={item.startDate} endDate={item.endDate} variant="caption" />
           </Stack>
         </CardContent>
       </CardActionArea>
