@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import * as React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
@@ -24,6 +26,7 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = { email: 'help@sportspace.com' } satisfies Values;
 
 export const SignInForm = (): React.JSX.Element => {
+  const t = useTranslations('Auth');
   const [requestOtp] = useRequestOtpMutation();
   const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(false);
 
@@ -53,7 +56,7 @@ export const SignInForm = (): React.JSX.Element => {
   return (
     <Box sx={{ maxWidth: '450px', width: '100%' }}>
       <Card elevation={16}>
-        <CardHeader sx={{ pb: 0 }} title="Войти" />
+        <CardHeader sx={{ pb: 0 }} title={t('signIn')} />
         <CardContent>
           <form onSubmit={handleSubmit(handleSubmitForm)}>
             <Stack spacing={2}>
@@ -72,7 +75,7 @@ export const SignInForm = (): React.JSX.Element => {
                 )}
               />
               <Button disabled={isSubmitDisabled} type="submit" variant="contained">
-                Войти
+                {t('signIn')}
               </Button>
             </Stack>
           </form>

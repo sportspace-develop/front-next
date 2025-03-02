@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 
 import * as React from 'react';
@@ -24,6 +25,7 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = { otp: '' } satisfies Values;
 
 const VerifyCodeForm = (): React.JSX.Element => {
+  const t = useTranslations('Auth');
   const asyncRouteReplace = useAsyncRouteReplace();
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
@@ -60,7 +62,7 @@ const VerifyCodeForm = (): React.JSX.Element => {
     <Box sx={{ maxWidth: '400px', width: '100%' }}>
       <BackToLink href={paths.auth.signIn} />
       <Card elevation={16} sx={{ mt: 1 }}>
-        <CardHeader sx={{ pb: 0 }} title="Введите код" />
+        <CardHeader sx={{ pb: 0 }} title={t('insertCode')} />
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
@@ -79,7 +81,7 @@ const VerifyCodeForm = (): React.JSX.Element => {
                 )}
               />
               <Button disabled={isSubmitDisabled} type="submit" variant="contained">
-                Отправить
+                {t('send')}
               </Button>
             </Stack>
           </form>
