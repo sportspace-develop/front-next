@@ -12,10 +12,23 @@ import {
   useSaveTeamMutation,
   useUpdateTeamsApplicationMutation,
 } from '@/lib/store/features/teams-api';
+import { TeamApplicationUpdateStatuses } from '@/lib/store/types';
 import { paths } from '@/paths';
 
-import { preparePlayerDataForSave } from '../constants';
+import { TeamApplicationSubmitType, preparePlayerDataForSave } from '../constants';
 import { PlayerEditFormData, TeamApplicationEditFormData, TeamDTO } from '../types';
+
+const getStatus = (submitType: TeamApplicationSubmitType) => {
+  if (submitType === TeamApplicationSubmitType.SEND) {
+    return TeamApplicationUpdateStatuses.SUBMIT;
+  }
+
+  if (submitType === TeamApplicationSubmitType.RECALL) {
+    return TeamApplicationUpdateStatuses.CANCEL;
+  }
+
+  return undefined;
+};
 
 export const useSaveApplication = ({
   teamId,
@@ -26,6 +39,11 @@ export const useSaveApplication = ({
   applicationId?: number;
   selectedPlayersIds: number[];
 }) => {
+  const submitTypeRef = React.useRef(TeamApplicationSubmitType.SAVE);
+  const onChangeSubmitType = (type: TeamApplicationSubmitType) => {
+    submitTypeRef.current = type;
+  };
+
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const [updateApplication, { isLoading: isUpdateTeamsApplication }] =
@@ -44,7 +62,7 @@ export const useSaveApplication = ({
           teamId,
           applicationId,
           playerIds: selectedPlayersIds,
-          status: values.status || undefined,
+          status: getStatus(submitTypeRef.current),
         }).unwrap();
 
         if (result) {
@@ -72,6 +90,7 @@ export const useSaveApplication = ({
   return {
     handleApplicationSave,
     isApplicationSaveLoading: isUpdateTeamsApplication || isCreateTeamsApplication || isSubmitting,
+    onChangeSubmitType,
   };
 };
 

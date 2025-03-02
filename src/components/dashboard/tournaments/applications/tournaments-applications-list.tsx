@@ -46,7 +46,7 @@ const TournamentApplicationList = ({ tournamentId }: TournamentApplicationListPr
         )}
       </Stack>
       {tournament && (
-        <Stack sx={{ mb: 2 }}>
+        <Stack sx={{ mb: 1 }}>
           <Stack direction="row" alignItems="flex-end">
             <Typography color="text.secondary" variant="subtitle1" sx={{ mr: 1 }}>
               Регистрация на турнира:

@@ -1,7 +1,5 @@
 import { z as zod } from 'zod';
 
-import { TournamentApplicationUpdateStatuses } from '@/lib/store/types';
-
 export const MAX_TOURNAMENT_TITLE_LENGTH = 50;
 
 export const MAX_TOURNAMENT_DESCRIPTION = 100;
@@ -73,9 +71,7 @@ export const tournamentEditFormSchema = zod
     },
   );
 
-export const tournamentApplicationEditFormSchema = zod.object({
-  status: zod
-    .nativeEnum(TournamentApplicationUpdateStatuses)
-    .or(zod.literal(''))
-    .refine((data) => !!data, { message: 'Поле обязательно' }),
-});
+export enum TournamentApplicationSubmitType {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+}

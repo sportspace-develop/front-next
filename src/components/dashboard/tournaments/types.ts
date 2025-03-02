@@ -2,7 +2,7 @@ import { z as zod } from 'zod';
 
 import { ApplicationStatus } from '@/lib/store/types';
 
-import { tournamentApplicationEditFormSchema, tournamentEditFormSchema } from './constants';
+import { tournamentEditFormSchema } from './constants';
 
 export type Tournament = {
   id: number;
@@ -31,10 +31,6 @@ export type TournamentEditFormData = Omit<
   'startDate' | 'endDate' | 'registerStartDate' | 'registerEndDate'
 > &
   TournamentEditFormDataDate;
-
-export type TournamentApplicationEditFormData = zod.input<
-  typeof tournamentApplicationEditFormSchema
->;
 
 export type TournamentApplication = {
   id?: number;
