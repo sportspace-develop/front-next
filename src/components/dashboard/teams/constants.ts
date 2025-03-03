@@ -1,7 +1,6 @@
 import { z as zod } from 'zod';
 
 import formatDateToISO from '@/lib/format-date-to-ISO';
-import { TeamApplicationUpdateStatuses } from '@/lib/store/types';
 
 import { PlayerDTO, PlayerEditFormData } from './types';
 
@@ -9,7 +8,6 @@ export const MAX_PLAYER_FIO_LENGTH = 50;
 
 export const teamApplicationEditFormSchema = zod.object({
   tournamentId: zod.coerce.number({ message: 'Поле обязательно' }),
-  status: zod.nativeEnum(TeamApplicationUpdateStatuses).or(zod.literal('')).optional(),
 });
 
 export const playerEditFormSchema = zod.object({
@@ -91,3 +89,9 @@ export const preparePlayerDataForSave = (values: PlayerEditFormData): PlayerDTO 
   ...values,
   bDay: formatDateToISO(values.bDay),
 });
+
+export enum TeamApplicationSubmitType {
+  SAVE = 'save',
+  SEND = 'send',
+  RECALL = 'recall',
+}

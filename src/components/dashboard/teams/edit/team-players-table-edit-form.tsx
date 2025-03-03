@@ -178,7 +178,11 @@ const TeamPlayersTableEditForm = React.memo((props: TeamPlayersEditFormProps) =>
                   <Avatar src={player.photoUrl} />
                 </TableCell>
                 <TableCell sx={{ maxWidth: '36px', p: 0 }}>
-                  <IconButton onClick={() => setEditingPlayer(player)} color="primary">
+                  <IconButton
+                    disabled={disabled}
+                    onClick={() => setEditingPlayer(player)}
+                    color="primary"
+                  >
                     <PencilIcon size={20} />
                   </IconButton>
                 </TableCell>
