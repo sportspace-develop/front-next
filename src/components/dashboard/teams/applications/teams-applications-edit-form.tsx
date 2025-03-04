@@ -94,27 +94,17 @@ const TeamsApplicationHeader = ({
       );
     }
 
-    if (
-      [
-        ApplicationStatus.InProgress,
-        ApplicationStatus.Accepted,
-        ApplicationStatus.Rejected,
-      ].includes(applicationStatus)
-    ) {
-      return (
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={isLoading}
-          sx={{ height: 'max-content' }}
-          onClick={() => onChangeSubmitType(TeamApplicationSubmitType.RECALL)}
-        >
-          Отозвать
-        </Button>
-      );
-    }
-
-    return null;
+    return (
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={isLoading}
+        sx={{ height: 'max-content' }}
+        onClick={() => onChangeSubmitType(TeamApplicationSubmitType.RECALL)}
+      >
+        Отозвать
+      </Button>
+    );
   };
 
   return (
@@ -153,7 +143,12 @@ const getIsValidRegisterDate = (tournament?: TournamentDTO) => {
     return true;
   }
 
-  return differenceInDays(new Date(tournament?.registerEndDate), new Date()) >= 0;
+  const now = new Date();
+
+  return (
+    differenceInDays(now, new Date(tournament?.registerStartDate)) >= 0 &&
+    differenceInDays(new Date(tournament?.registerEndDate), now) >= 0
+  );
 };
 
 const getIsValidEditStatus = (applicationStatus?: ApplicationStatus) => {
