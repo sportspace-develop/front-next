@@ -27,6 +27,7 @@ import { useUploadFile } from '@/hooks/use-upload-file';
 import formatDateToISO from '@/lib/format-date-to-ISO';
 import parseDateFromISO from '@/lib/parse-date-from-ISO';
 import {
+  TournamentDTO,
   useGetTournamentByIdQuery,
   useSaveTournamentMutation,
 } from '@/lib/store/features/tournaments-api';
@@ -37,7 +38,7 @@ import {
   MAX_TOURNAMENT_TITLE_LENGTH,
   tournamentEditFormSchema,
 } from '../constants';
-import { TournamentDTO, TournamentEditFormData } from '../types';
+import { TournamentEditFormData } from '../types';
 
 type TournamentEditFormProps = {
   id?: string;

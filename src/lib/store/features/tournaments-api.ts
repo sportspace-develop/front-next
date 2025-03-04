@@ -1,13 +1,9 @@
-import {
-  Tournament,
-  TournamentApplication,
-  TournamentDTO,
-} from '@/components/dashboard/tournaments/types';
+import { Tournament, TournamentApplication } from '@/components/dashboard/tournaments/types';
 import { CacheTag, rootApi } from '@/lib/store/api';
 
 import { Player, TournamentApplicationUpdateStatuses } from '../types';
 
-export type { TournamentDTO };
+export type TournamentDTO = Omit<Tournament, 'id'> & { id?: Tournament['id'] };
 
 export type PaginationTypes = {
   currentPage: number;

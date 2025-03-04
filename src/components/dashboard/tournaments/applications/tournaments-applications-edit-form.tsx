@@ -3,20 +3,77 @@
 import * as React from 'react';
 import { toast } from 'react-toastify';
 
+import { differenceInDays } from 'date-fns';
+
 import { Avatar, Button, Card, CardContent, Stack, Typography } from '@mui/material';
 
 import DateTimePeriod from '@/components/ui/date-time-period';
 import addQuotes from '@/lib/add-quotes';
 import getLocalizedStatus from '@/lib/get-localized-status';
 import {
+  TournamentDTO,
   useGetTournamentByIdQuery,
   useGetTournamentsApplicationByIdQuery,
   useUpdateTournamentsApplicationMutation,
 } from '@/lib/store/features/tournaments-api';
 import { ApplicationStatus, TournamentApplicationUpdateStatuses } from '@/lib/store/types';
 
-import { TournamentApplicationSubmitType } from '../constants';
 import PlayersTable from './players-table';
+
+const getIsValidStartDate = (tournament?: TournamentDTO) => {
+  if (!tournament) {
+    return false;
+  }
+
+  return differenceInDays(tournament.startDate, new Date()) > 0;
+};
+
+enum TournamentApplicationSubmitType {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+}
+
+const getStatusForSave = (submitType: TournamentApplicationSubmitType) => {
+  if (submitType === TournamentApplicationSubmitType.REJECT) {
+    return TournamentApplicationUpdateStatuses.REJECT;
+  }
+
+  return TournamentApplicationUpdateStatuses.ACCEPT;
+};
+
+export const useSaveApplication = ({
+  tournamentId,
+  applicationId,
+  submitType,
+}: {
+  tournamentId: number;
+  applicationId: number;
+  submitType: TournamentApplicationSubmitType;
+}) => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [updateApplication, { isLoading: isUpdateApplication }] =
+    useUpdateTournamentsApplicationMutation();
+
+  const handleSave = async () => {
+    try {
+      setIsSubmitting(true);
+
+      const result = await updateApplication({
+        tournamentId,
+        applicationId,
+        status: getStatusForSave(submitType),
+      }).unwrap();
+
+      if (result) {
+        toast.success(`Заявка изменена!`);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return { handleSave, isSubmitting: isSubmitting || isUpdateApplication };
+};
 
 interface TournamentsApplicationEditFormProps {
   tournamentId: number;
@@ -36,34 +93,16 @@ const TournamentsApplicationEditForm = ({
   const { data: tournament, isLoading: isGetTournamentLoading } =
     useGetTournamentByIdQuery(tournamentId);
 
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { handleSave, isSubmitting } = useSaveApplication({
+    tournamentId,
+    applicationId,
+    submitType: submitTypeRef.current,
+  });
 
-  const [updateApplication, { isLoading: isUpdateApplication }] =
-    useUpdateTournamentsApplicationMutation();
+  const isLoading = isSubmitting || isGetApplicationLoading || isGetTournamentLoading;
 
-  const isLoading =
-    isSubmitting || isGetApplicationLoading || isUpdateApplication || isGetTournamentLoading;
-
-  const handleSave = async () => {
-    try {
-      setIsSubmitting(true);
-
-      const result = await updateApplication({
-        tournamentId,
-        applicationId,
-        status:
-          submitTypeRef.current === TournamentApplicationSubmitType.REJECT
-            ? TournamentApplicationUpdateStatuses.REJECT
-            : TournamentApplicationUpdateStatuses.ACCEPT,
-      }).unwrap();
-
-      if (result) {
-        toast.success(`Заявка изменена!`);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const isValid =
+    application?.status === ApplicationStatus.InProgress && getIsValidStartDate(tournament);
 
   return (
     <>
@@ -93,7 +132,7 @@ const TournamentsApplicationEditForm = ({
               )}
             </Stack>
             <Stack spacing={1}>
-              {application?.status === ApplicationStatus.InProgress && (
+              {isValid && (
                 <Stack direction="row" spacing={1} justifyContent="end">
                   <Button
                     variant="outlined"
