@@ -15,8 +15,6 @@ export type Tournament = {
   endDate: string;
 };
 
-export type TournamentDTO = Omit<Tournament, 'id'> & { id?: Tournament['id'] };
-
 type TournamentEditFormDataBase = zod.input<typeof tournamentEditFormSchema>;
 
 type TournamentEditFormDataDate = {

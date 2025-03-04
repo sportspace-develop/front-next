@@ -70,8 +70,3 @@ export const tournamentEditFormSchema = zod
       message: 'Дата должна быть позже начала регистрации турнира',
     },
   );
-
-export enum TournamentApplicationSubmitType {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-}

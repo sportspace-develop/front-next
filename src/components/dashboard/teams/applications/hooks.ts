@@ -18,7 +18,7 @@ import { paths } from '@/paths';
 import { TeamApplicationSubmitType, preparePlayerDataForSave } from '../constants';
 import { PlayerEditFormData, TeamApplicationEditFormData, TeamDTO } from '../types';
 
-const getStatus = (submitType: TeamApplicationSubmitType) => {
+const getStatusForSave = (submitType: TeamApplicationSubmitType) => {
   if (submitType === TeamApplicationSubmitType.SEND) {
     return TeamApplicationUpdateStatuses.SUBMIT;
   }
@@ -62,7 +62,7 @@ export const useSaveApplication = ({
           teamId,
           applicationId,
           playerIds: selectedPlayersIds,
-          status: getStatus(submitTypeRef.current),
+          status: getStatusForSave(submitTypeRef.current),
         }).unwrap();
 
         if (result) {
