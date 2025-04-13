@@ -1,13 +1,42 @@
 'use client';
 
-import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
+import { toast } from 'react-toastify';
 
-import { Avatar, Box, Stack, ToggleButton, Typography } from '@mui/material';
+import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
+import { SignOut as SignOutIcon } from '@phosphor-icons/react/dist/ssr/SignOut';
+
+import { Box, Button, Stack, ToggleButton, Typography } from '@mui/material';
+
+import { useLogoutMutation } from '@/lib/store/features/auth-api';
 
 type HeaderToggleProps = {
   open: boolean;
   onToggle: () => void;
   isDrawer?: boolean;
+};
+
+const LogoutButton = () => {
+  const [logout] = useLogoutMutation();
+
+  const handleSignOut = async () => {
+    try {
+      await logout().unwrap();
+      toast.success('Вы успешно вышли');
+    } catch (error) {
+      toast.error('Произошла ошибка при выходе');
+    }
+  };
+
+  return (
+    <Button
+      sx={{ ml: 'auto', boxShadow: 4, width: 'max-content', mr: 2 }}
+      variant="outlined"
+      onClick={handleSignOut}
+      startIcon={<SignOutIcon />}
+    >
+      Выход
+    </Button>
+  );
 };
 
 const HeaderToggle = ({ onToggle, open, isDrawer }: HeaderToggleProps) => {
@@ -56,7 +85,7 @@ const HeaderToggle = ({ onToggle, open, isDrawer }: HeaderToggleProps) => {
           Sportspace
         </Typography>
       </Stack>
-      {!isDrawer && <Avatar sx={{ ml: 'auto', mr: 3, width: 30, height: 30 }} />}
+      {!isDrawer && <LogoutButton />}
     </Stack>
   );
 };
