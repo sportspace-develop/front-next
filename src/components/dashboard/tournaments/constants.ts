@@ -64,7 +64,7 @@ export const tournamentEditFormSchema = zod
     (data) =>
       !data.registerStartDate ||
       !data.registerEndDate ||
-      data.registerStartDate <= data.registerEndDate,
+      data.registerStartDate < data.registerEndDate,
     {
       path: ['registerEndDate'],
       message: 'Дата должна быть позже начала регистрации турнира',
