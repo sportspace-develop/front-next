@@ -3,8 +3,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_BACKEND_URL=http://api:8080
     container_name: sportspace-frontend
     restart: always
+    depends_on:
+      - api
     ports:
       - '3000:3000'
     networks:
