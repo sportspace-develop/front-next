@@ -64,6 +64,7 @@ export const teamsApi = rootApi.injectEndpoints({
     }),
     getTeamById: build.query<TeamDTO, number | string | undefined>({
       query: (id) => `user/teams/${id}`,
+      keepUnusedDataFor: 0, // отключаем кеширование чтобы каждый раз запрашивались данные
       providesTags: (result) => {
         if (!result) {
           return [CacheTag.TEAM];

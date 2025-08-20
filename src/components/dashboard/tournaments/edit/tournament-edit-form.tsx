@@ -1,5 +1,7 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+
 import * as React from 'react';
 import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -23,11 +25,13 @@ import FileInput from '@/components/ui/file-input';
 import { SkeletonList } from '@/components/ui/list';
 import { ACCEPTED_IMAGE_TYPES } from '@/constants';
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
+import { useProfileId } from '@/hooks/use-profile';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import formatDateToISO from '@/lib/format-date-to-ISO';
 import parseDateFromISO from '@/lib/parse-date-from-ISO';
 import {
   TournamentDTO,
+  TournamentSaveDTO,
   useGetTournamentByIdQuery,
   useSaveTournamentMutation,
 } from '@/lib/store/features/tournaments-api';
@@ -67,7 +71,7 @@ const getTournamentValues = (tournament?: TournamentDTO): TournamentEditFormData
   };
 };
 
-const prepareTournamentDataForSave = (values: TournamentEditFormData): TournamentDTO => ({
+const prepareTournamentDataForSave = (values: TournamentEditFormData): TournamentSaveDTO => ({
   ...values,
   startDate: formatDateToISO(values.startDate),
   endDate: formatDateToISO(values.endDate),
@@ -79,11 +83,18 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
   const asyncRouterPush = useAsyncRoutePush();
 
   const handleUploadFile = useUploadFile();
+  const userId = useProfileId();
 
   const { data: tournament, isLoading: isGetLoading } = useGetTournamentByIdQuery(id ?? skipToken);
   const [saveTournament, { isLoading: isSaveTournamentLoading }] = useSaveTournamentMutation();
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  React.useEffect(() => {
+    if (tournament && tournament.id && tournament.organizationID !== userId) {
+      redirect(`${paths.dashboard.tournaments.index}/${tournament.id}/view`);
+    }
+  }, [tournament, userId]);
 
   const handleSave: SubmitHandler<TournamentEditFormData> = React.useCallback(
     async (values) => {

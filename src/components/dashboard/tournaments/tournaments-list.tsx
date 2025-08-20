@@ -9,6 +9,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Button, Unstable_Grid2 as Grid, Pagination, Stack } from '@mui/material';
 
 import { ListHeader, ListNoData, SkeletonList } from '@/components/ui/list';
+import { useProfileId } from '@/hooks/use-profile';
 import { useGetAllTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { paths } from '@/paths';
 
@@ -18,6 +19,7 @@ const PAGE_ELEMENT_LIMIT = 12;
 
 const TournamentsList = React.memo((): React.JSX.Element => {
   const [page, setPage] = React.useState(1);
+  const userId = useProfileId();
 
   const { isLoading, data } = useGetAllTournamentsQuery({
     limit: PAGE_ELEMENT_LIMIT,
@@ -55,7 +57,7 @@ const TournamentsList = React.memo((): React.JSX.Element => {
       <Grid container spacing={3}>
         {tournaments.map((item) => (
           <Grid key={item.id} md={4} sm={6} xs={12} display="grid">
-            <TournamentItem item={item} />
+            <TournamentItem item={item} isOwner={item.organizationID === userId} />
           </Grid>
         ))}
       </Grid>

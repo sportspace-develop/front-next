@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Box, Container, GlobalStyles } from '@mui/material';
 
+import UserProfileInitializer from '@/components/core/user-provider';
 import Header from '@/components/dashboard/layout/header';
 
 interface LayoutProps {
@@ -11,6 +12,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
     <>
+      <UserProfileInitializer />
       <GlobalStyles
         styles={{
           body: {

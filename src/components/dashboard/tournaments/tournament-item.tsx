@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import {
   Avatar,
+  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -19,14 +20,15 @@ import { Tournament } from './types';
 
 interface TournamentProps {
   item: Tournament;
+  isOwner: boolean;
 }
 
-const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element => {
+const TournamentItem = React.memo(({ item, isOwner }: TournamentProps): React.JSX.Element => {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea
         component={NextLink}
-        href={`${paths.dashboard.tournaments.index}/${item.id}/edit`}
+        href={`${paths.dashboard.tournaments.index}/${item.id}/${isOwner ? 'edit' : 'view'}`}
       >
         <CardMedia
           sx={{ height: { xs: 100, sm: 200 }, display: 'flex', backgroundSize: 'contain' }}
@@ -44,6 +46,11 @@ const TournamentItem = React.memo(({ item }: TournamentProps): React.JSX.Element
           )}
         </CardMedia>
         <CardContent>
+          {isOwner && (
+            <Button component="div" variant="outlined" sx={{ padding: '0 5px' }}>
+              Ваш турнир
+            </Button>
+          )}
           <Typography variant="h3" sx={{ wordWrap: 'break-word' }}>
             {item.title}
           </Typography>
