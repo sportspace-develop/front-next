@@ -73,7 +73,6 @@ export const tournamentsApi = rootApi.injectEndpoints({
     }),
     getTournamentById: build.query<TournamentDTO, number | string | undefined>({
       query: (id) => `user/tournaments/${id}`,
-      keepUnusedDataFor: 0, // отключаем кеширование чтобы каждый раз запрашивались данные
       providesTags: (result) => {
         if (!result) {
           return [CacheTag.TOURNAMENT];

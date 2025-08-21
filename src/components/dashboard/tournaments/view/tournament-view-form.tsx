@@ -16,16 +16,16 @@ type TournamentEditFormProps = {
 };
 
 const TournamentViewForm = React.memo(({ id }: TournamentEditFormProps) => {
-  const { data: tournament, isLoading: isGetLoading } = useGetTournamentByIdQuery(id ?? skipToken);
+  const { data: tournament, isLoading: isGetTournamentLoading } = useGetTournamentByIdQuery(
+    id ?? skipToken,
+  );
 
-  const isLoading = React.useMemo(() => isGetLoading, [isGetLoading]);
-
-  if (isLoading) {
+  if (isGetTournamentLoading) {
     return <SkeletonList />;
   }
 
   if (!tournament) {
-    return <div>Туринир не найден</div>;
+    return <div>Турнир не найден</div>;
   }
 
   return (
@@ -55,16 +55,6 @@ const TournamentViewForm = React.memo(({ id }: TournamentEditFormProps) => {
         <Typography variant="h3" sx={{ wordWrap: 'break-word', marginBottom: '4px' }}>
           {tournament.title}
         </Typography>
-        {tournament.organization && (
-          <Stack>
-            <Typography color="text.secondary" variant="subtitle2">
-              Организатор:
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ wordWrap: 'break-word' }}>
-              {tournament.organization}
-            </Typography>
-          </Stack>
-        )}
         {tournament.description && (
           <Stack>
             <Typography color="text.secondary" variant="subtitle2">

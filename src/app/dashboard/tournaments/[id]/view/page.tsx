@@ -18,14 +18,7 @@ interface Params {
 const Page: NextPage<{ params: Params }> = ({ params }) => {
   return (
     <Stack spacing={2}>
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: 'space-between',
-        }}
-      >
-        <BackToLink text="Вернуться к списку турниров" href={paths.dashboard.tournaments.index} />
-      </Stack>
+      <BackToLink text="Вернуться к списку турниров" href={paths.dashboard.tournaments.index} />
       <TournamentViewForm title={title} id={params.id} />
     </Stack>
   );

@@ -25,10 +25,10 @@ import FileInput from '@/components/ui/file-input';
 import { SkeletonList } from '@/components/ui/list';
 import { ACCEPTED_IMAGE_TYPES } from '@/constants';
 import { useAsyncRoutePush } from '@/hooks/use-async-route';
-import { useProfileId } from '@/hooks/use-profile';
 import { useUploadFile } from '@/hooks/use-upload-file';
 import formatDateToISO from '@/lib/format-date-to-ISO';
 import parseDateFromISO from '@/lib/parse-date-from-ISO';
+import { useGetProfileQuery } from '@/lib/store/features/profile-api';
 import {
   TournamentDTO,
   TournamentSaveDTO,
@@ -83,18 +83,20 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
   const asyncRouterPush = useAsyncRoutePush();
 
   const handleUploadFile = useUploadFile();
-  const userId = useProfileId();
+  const { data: profile, isLoading: isGetProfileLoading } = useGetProfileQuery();
 
-  const { data: tournament, isLoading: isGetLoading } = useGetTournamentByIdQuery(id ?? skipToken);
+  const { data: tournament, isLoading: isGetTournamentLoading } = useGetTournamentByIdQuery(
+    id ?? skipToken,
+  );
   const [saveTournament, { isLoading: isSaveTournamentLoading }] = useSaveTournamentMutation();
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   React.useEffect(() => {
-    if (tournament && tournament.id && tournament.organizationID !== userId) {
+    if (profile?.id && tournament?.id && tournament.organizationID !== profile?.id) {
       redirect(`${paths.dashboard.tournaments.index}/${tournament.id}/view`);
     }
-  }, [tournament, userId]);
+  }, [tournament, profile]);
 
   const handleSave: SubmitHandler<TournamentEditFormData> = React.useCallback(
     async (values) => {
@@ -119,8 +121,8 @@ const TournamentEditForm = React.memo(({ id, title }: TournamentEditFormProps) =
   );
 
   const isLoading = React.useMemo(
-    () => isGetLoading || isSaveTournamentLoading || isSubmitting,
-    [isGetLoading, isSaveTournamentLoading, isSubmitting],
+    () => isGetTournamentLoading || isSaveTournamentLoading || isSubmitting || isGetProfileLoading,
+    [isGetTournamentLoading, isGetProfileLoading, isSaveTournamentLoading, isSubmitting],
   );
 
   const methods = useForm<TournamentEditFormData>({

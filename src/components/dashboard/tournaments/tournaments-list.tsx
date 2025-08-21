@@ -9,7 +9,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Button, Unstable_Grid2 as Grid, Pagination, Stack } from '@mui/material';
 
 import { ListHeader, ListNoData, SkeletonList } from '@/components/ui/list';
-import { useProfileId } from '@/hooks/use-profile';
+import { useGetProfileQuery } from '@/lib/store/features/profile-api';
 import { useGetAllTournamentsQuery } from '@/lib/store/features/tournaments-api';
 import { paths } from '@/paths';
 
@@ -19,12 +19,17 @@ const PAGE_ELEMENT_LIMIT = 12;
 
 const TournamentsList = React.memo((): React.JSX.Element => {
   const [page, setPage] = React.useState(1);
-  const userId = useProfileId();
+  const { data: profile, isLoading: isGetProfileLoading } = useGetProfileQuery();
 
-  const { isLoading, data } = useGetAllTournamentsQuery({
+  const { data, isLoading: isGetAllTournamentsLoading } = useGetAllTournamentsQuery({
     limit: PAGE_ELEMENT_LIMIT,
     page,
   });
+
+  const isLoading = React.useMemo(
+    () => isGetProfileLoading || isGetAllTournamentsLoading,
+    [isGetProfileLoading, isGetAllTournamentsLoading],
+  );
 
   const tournaments = React.useMemo(() => data?.data || [], [data?.data]);
   const pagination = React.useMemo(() => data?.pagination, [data?.pagination]);
@@ -57,7 +62,7 @@ const TournamentsList = React.memo((): React.JSX.Element => {
       <Grid container spacing={3}>
         {tournaments.map((item) => (
           <Grid key={item.id} md={4} sm={6} xs={12} display="grid">
-            <TournamentItem item={item} isOwner={item.organizationID === userId} />
+            <TournamentItem item={item} isOwner={item.organizationID === profile?.id} />
           </Grid>
         ))}
       </Grid>
