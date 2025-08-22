@@ -5,6 +5,8 @@ import { Player, TournamentApplicationUpdateStatuses } from '../types';
 
 export type TournamentDTO = Omit<Tournament, 'id'> & { id?: Tournament['id'] };
 
+export type TournamentSaveDTO = Omit<TournamentDTO, 'organization' | 'organizationID'>;
+
 export type PaginationTypes = {
   currentPage: number;
   nextPage: number;
@@ -79,7 +81,7 @@ export const tournamentsApi = rootApi.injectEndpoints({
         return [CacheTag.TOURNAMENT, { id: result.id, type: CacheTag.TOURNAMENT }];
       },
     }),
-    saveTournament: build.mutation<Tournament, TournamentDTO>({
+    saveTournament: build.mutation<Tournament, TournamentSaveDTO>({
       query: (data) => ({
         method: data.id ? 'PUT' : 'POST',
         url: `user/tournaments/${data.id ?? ''}`,

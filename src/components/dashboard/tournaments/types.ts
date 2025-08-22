@@ -13,6 +13,7 @@ export type Tournament = {
   registerEndDate: string;
   startDate: string;
   endDate: string;
+  organizationID: number | string;
 };
 
 type TournamentEditFormDataBase = zod.input<typeof tournamentEditFormSchema>;

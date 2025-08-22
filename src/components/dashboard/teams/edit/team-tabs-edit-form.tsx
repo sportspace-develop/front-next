@@ -34,7 +34,7 @@ enum TabsTeamValues {
 }
 
 const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
-  const { data: team, isLoading: isGetLoading } = useGetTeamByIdQuery(id ?? skipToken);
+  const { data: team, isLoading: isGetTeamLoading } = useGetTeamByIdQuery(id ?? skipToken);
   const [saveTeam, { isLoading: isSaveTeamLoading }] = useSaveTeamMutation();
   const [savePlayer, { isLoading: isSavePlayerLoading }] = useSavePlayerMutation();
   const asyncRouterPush = useAsyncRoutePush();
@@ -142,8 +142,8 @@ const TabsTeamEditForm = React.memo(({ id, title }: TabsTeamEditFormProps) => {
   );
 
   const isLoading = React.useMemo(
-    () => isGetLoading || isSavePlayerLoading || isSaveTeamLoading || isSubmitting,
-    [isGetLoading, isSavePlayerLoading, isSaveTeamLoading, isSubmitting],
+    () => isGetTeamLoading || isSavePlayerLoading || isSaveTeamLoading || isSubmitting,
+    [isGetTeamLoading, isSavePlayerLoading, isSaveTeamLoading, isSubmitting],
   );
 
   return (
